@@ -2,7 +2,7 @@
 
 PROJECT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-sudo docker run \
+docker run \
   --rm \
   -t \
   -e DISPLAY=$DISPLAY \
