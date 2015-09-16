@@ -8,4 +8,4 @@ sudo docker run \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v $PROJECT_DIR/test:/test \
-  dibyo/firefox-browser-gui
+  dibyo/cc-qa-test-auto
