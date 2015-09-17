@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 RUN apt-get update && apt-get install -y firefox python3-pip ipython
-RUN pip3 install selenium pytest
+RUN pip3 install selenium pytest-xdist
 
 RUN export uid=1000 gid=1000 && \
     mkdir -p /home/developer && \
@@ -14,4 +14,4 @@ RUN export uid=1000 gid=1000 && \
 USER developer
 ENV HOME /home/developer
 
-ENTRYPOINT ["py.test", "/test"]
+ENTRYPOINT exec py.test -n=$(nproc) /test
