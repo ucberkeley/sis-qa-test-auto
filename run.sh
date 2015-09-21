@@ -9,4 +9,4 @@ docker run \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -v ${CC_TEST_DIR}:/test \
-  dibyo/cc-qa-test-auto
+  ucberkeley/sis-qa-test-auto
