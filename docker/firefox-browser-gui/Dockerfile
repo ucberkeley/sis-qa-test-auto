@@ -1,7 +1,6 @@
 FROM ubuntu:14.04
 
-RUN apt-get update && apt-get install -y firefox python-pip ipython
-RUN pip install selenium
+RUN apt-get update && apt-get install -y firefox
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
@@ -14,4 +13,5 @@ RUN export uid=1000 gid=1000 && \
 
 USER developer
 ENV HOME /home/developer
+
 CMD /usr/bin/firefox

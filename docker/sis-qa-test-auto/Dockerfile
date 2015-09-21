@@ -1,17 +1,7 @@
-FROM ubuntu:14.04
+FROM firefox-browser-gui
 
-RUN apt-get update && apt-get install -y firefox python3-pip ipython
-RUN pip3 install selenium pytest-xdist
-
-RUN export uid=1000 gid=1000 && \
-    mkdir -p /home/developer && \
-    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
-    echo "developer:x:${uid}:" >> /etc/group && \
-    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-    chmod 0440 /etc/sudoers.d/developer && \
-    chown ${uid}:${gid} -R /home/developer
-
-USER developer
-ENV HOME /home/developer
+# sudo required since firefox-browser-gui needs specific (non-root) user to be able to use GUI
+RUN sudo apt-get update && sudo apt-get install -y python3-pip # ipython
+RUN sudo pip3 install selenium pytest-xdist
 
 ENTRYPOINT exec py.test -n=$(nproc) /test
