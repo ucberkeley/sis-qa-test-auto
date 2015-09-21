@@ -14,30 +14,32 @@ from selenium.webdriver.support import expected_conditions as EC # available sin
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), ".config.json")
 
 
-_driver = None
 _config = None
 
 
 def new_driver():
-    return webdriver.Firefox()
+    driver = webdriver.Firefox()
+    driver.implicitly_wait(3)
+    return driver
 
 
-def setup_module(module):
-    global _driver
-    _driver = new_driver()
-
-
-def teardown_module(module):
-    global _driver
-    if not has_quit(_driver):
-        _driver.quit()
+def has_quit(driver):
+    try:
+        driver.execute(Command.STATUS)
+        return False
+    except (socket.error, http.client.CannotSendRequest):
+        return True
 
 
 @pytest.fixture(scope='function')
-def driver():
-    global _driver
-    if has_quit(_driver):
-        _driver = new_driver()
+def driver(request):
+    _driver = new_driver()
+
+    def driver_quit():
+        if not has_quit(_driver):
+            _driver.quit()
+    request.addfinalizer(driver_quit)
+
     return _driver
 
 
@@ -47,14 +49,6 @@ def config():
     if _config is None:
         _config = json.load(open(CONFIG_FILE))
     return _config
-
-
-def has_quit(driver):
-    try:
-        driver.execute(Command.STATUS)
-        return False
-    except (socket.error, http.client.CannotSendRequest):
-        return True
 
 
 def test_driver(driver):
@@ -73,3 +67,16 @@ def test_driver(driver):
     # we have to wait for the page to refresh, the last thing that seems to be updated is the title
     WebDriverWait(driver, 10).until(EC.title_contains(query))
     assert driver.title == "{} - Google Search".format(query)
+
+
+def test_website(driver, config):
+    driver.get(config["website_url"])
+
+    email_element = driver.find_element_by_id('email')
+    email_element.send_keys(config["username"])
+
+    password_element = driver.find_element_by_id('pass')
+    password_element.send_keys(config["password"])
+    password_element.submit()
+
+    WebDriverWait(driver, 10).until(EC.title_contains(config["title"]))
