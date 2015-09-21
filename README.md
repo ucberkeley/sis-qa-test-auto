@@ -9,9 +9,9 @@ QA Test Automation framework for SIS Campus Solutions.
 4. Add file test/.config.json with the following information:
 ```json
 {
-    "website_url": <Campus Solutions Test Instance URL>,
-    "userid": <User ID for Test Instance>,
-    "password": <Password for Test Instance>,
+    "website_url": "<Campus Solutions Test Instance URL>",
+    "userid": "<User ID for Test Instance>",
+    "password": "<Password for Test Instance>",
     "title": "Berkeley Student Information System"
 }
 ```
