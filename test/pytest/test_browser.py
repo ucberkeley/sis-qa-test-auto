@@ -72,10 +72,10 @@ def test_driver(driver):
 def test_website(driver, config):
     driver.get(config["website_url"])
 
-    email_element = driver.find_element_by_id('email')
-    email_element.send_keys(config["username"])
+    email_element = driver.find_element_by_id('userid')
+    email_element.send_keys(config["userid"])
 
-    password_element = driver.find_element_by_id('pass')
+    password_element = driver.find_element_by_id('pwd')
     password_element.send_keys(config["password"])
     password_element.submit()
 
