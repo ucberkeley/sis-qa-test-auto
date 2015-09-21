@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 
 
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), ".config.json")
+CONFIG_FILE = os.path.join(os.path.dirname(__file__), "../.config.json")
 
 
 _config = None
