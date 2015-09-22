@@ -1,4 +1,4 @@
-FROM firefox-browser-gui
+FROM ucberkeley/firefox-browser-gui
 
 # sudo required since firefox-browser-gui needs specific (non-root) user to be able to use GUI
 RUN sudo apt-get update && sudo apt-get install -y python3-pip # ipython
