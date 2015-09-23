@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'selenium-webdriver', '~> 2.45.0'
+gem 'selenium-cucumber', '~> 2.1.3'
+
+
