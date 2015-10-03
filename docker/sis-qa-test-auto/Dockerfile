@@ -10,17 +10,12 @@ RUN sudo apt-get install -y curl \
     && command curl -sSL https://rvm.io/mpapis.asc | gpg --import - \
     && curl -sSL https://get.rvm.io | bash -s stable --ruby=jruby
 
-
-# RUN sudo sh -c 'echo "source /home/developer/.rvm/scripts/rvm" >> etc/bash.bashrc'
-# RUN sudo bash -c 'echo "source /home/developer/.rvm/scripts/rvm" >> /.bashrc'
-RUN bash -c "source /home/developer/.rvm/scripts/rvm && gem install bundle"
-
 COPY Gemfile ${HOME}/Gemfile
 RUN bash -c "\
     cd ${HOME} \
     && source /home/developer/.rvm/scripts/rvm \
+    && gem install bundle \
     && bundle install"
 
 COPY execute_tests.sh /
-
 ENTRYPOINT exec ./execute_tests.sh

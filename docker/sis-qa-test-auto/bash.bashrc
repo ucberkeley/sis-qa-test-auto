@@ -1,1 +1,0 @@
-source /home/developer/.rvm/scripts/rvm

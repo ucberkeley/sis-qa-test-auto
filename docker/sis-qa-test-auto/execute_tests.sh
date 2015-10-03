@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-source /home/developer/.rvm/scripts/rvm
-# rvm rvmrc warning ignore /test/.rvmrc
+source ${HOME}/.rvm/scripts/rvm
 cd /test
 bundle install
 bundle exec cucumber
