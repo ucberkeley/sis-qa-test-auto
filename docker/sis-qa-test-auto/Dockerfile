@@ -10,7 +10,7 @@ RUN usermod -a -G rvm developer
 
 USER developer
 
-COPY Gemfile ${HOME}/Gemfile
+COPY Gemfile Gemfile.lock ${HOME}/
 RUN bash -c "\
     source /etc/profile.d/rvm.sh \
     && cd ${HOME} \

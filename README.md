@@ -5,7 +5,7 @@ QA Test Automation framework for SIS Campus Solutions.
 
 ### Instructions for running
 1. [Install Docker](https://docs.docker.com/installation/).
-1. If using external test directory, set `$CC_TEST_DIR` to location of external test directory.
+1. If using external test directory, set `$SIS_TEST_DIR` to location of external test directory.
 1. Add file test/.config.json with the following information:
 
     ```json
@@ -20,3 +20,10 @@ QA Test Automation framework for SIS Campus Solutions.
 1. Run `run.sh` (may required sudo. If using external test directory, run as `sudo -E ./run.sh` to 
 pass in environment variables). The first run will take longer since the docker container will be 
 downloaded and then run.
+
+### Additional notes
+1. Keep docker/sis-qa-test-auto/Gemfile (and docker/sis-qa-test-auto/Gemfile.lock) in sync with
+corresponding file(s) in in test directory by running `sync.sh`. This will ensure that all required
+gems are installed when the sis-qa-test-auto docker container is being built. Though all
+dependencies are checked for during test execution, and installed if not satisfied, having them
+pre-installed will speed up test execution considerably.
