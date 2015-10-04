@@ -30,6 +30,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+## Vagrant
+.vagrant/
+
+## Project files/directories
+
 # Configuration files
 test/.config.json
 
