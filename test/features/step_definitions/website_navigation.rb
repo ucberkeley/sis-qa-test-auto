@@ -1,18 +1,18 @@
 require 'selenium-webdriver'
+require 'json'
 
-
-Given 'I visit website $website' do |website|
-  $driver.navigate.to website
+Given 'I visit the Campus Solutions website' do
+  $driver.navigate.to $config['website_url']
 end
 
-Given 'I fill in $username in the username field' do |username|
+Given 'I fill in the username field' do
   element = $driver.find_element(:id, 'email')
-  element.send_keys username
+  element.send_keys $config['userid']
 end
 
-Given 'I fill in $password in the password field' do |password|
+Given 'I fill in the password field' do
   element = $driver.find_element(:id, 'pass')
-  element.send_keys password
+  element.send_keys $config['password']
 end
 
 When 'I press the \'$button_value\' button' do |button_value|
