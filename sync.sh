@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ `id | sed -e 's/(.*//'` == "uid=0" ]; then
+  echo "Please rerun without super user privileges. "
+  exit 1
+fi
+
 : ${DOCKER_NAMESPACE:=ucberkeley}
 PROJECT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 : ${SIS_TEST_DIR:=${PROJECT_DIR}/test}
