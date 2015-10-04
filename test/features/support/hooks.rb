@@ -13,6 +13,7 @@ end
 
 Before do
   $driver = Selenium::WebDriver.for :firefox
+  $driver.manage.timeouts.implicit_wait = 3
 end
 
 After do

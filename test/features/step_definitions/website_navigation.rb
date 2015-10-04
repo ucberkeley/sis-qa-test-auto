@@ -6,12 +6,12 @@ Given 'I visit the Campus Solutions website' do
 end
 
 Given 'I fill in the username field' do
-  element = $driver.find_element(:id, 'email')
+  element = $driver.find_element(:id, 'userid')
   element.send_keys $config['userid']
 end
 
 Given 'I fill in the password field' do
-  element = $driver.find_element(:id, 'pass')
+  element = $driver.find_element(:id, 'pwd')
   element.send_keys $config['password']
 end
 
@@ -21,5 +21,7 @@ When 'I press the \'$button_value\' button' do |button_value|
 end
 
 Then 'I should be logged in' do
-  true
+  wait = Selenium::WebDriver::Wait.new(:timeout => 10)
+  wait.until { $driver.title.start_with? $config['title'] }
+  $driver.title.start_with? $config['title']
 end
