@@ -51,5 +51,6 @@ PLATFORMS
   java
 
 DEPENDENCIES
+  json
   selenium-cucumber (~> 2.1.3)
   selenium-webdriver (~> 2.45.0)
