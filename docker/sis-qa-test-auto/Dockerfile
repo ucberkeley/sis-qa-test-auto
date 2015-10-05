@@ -1,7 +1,21 @@
 FROM ucberkeley/firefox-browser-gui
 
-# sudo required since firefox-browser-gui needs specific (non-root) user to be able to use GUI
-RUN sudo apt-get update && sudo apt-get install -y python3-pip
-RUN sudo pip3 install selenium pytest-xdist
+MAINTAINER Dibyo Majumdar <dibyo.majumdar@gmail.com>
 
-ENTRYPOINT exec py.test -n=$(nproc) /test
+USER root
+RUN apt-get update && apt-get install -y curl \
+    && command curl -sSL https://rvm.io/mpapis.asc | gpg --import - \
+    && curl -sSL https://get.rvm.io | bash -s stable --ruby=jruby
+RUN usermod -a -G rvm developer
+
+USER developer
+
+COPY Gemfile Gemfile.lock ${HOME}/
+RUN bash -c "\
+    source /etc/profile.d/rvm.sh \
+    && cd ${HOME} \
+    && gem install bundle \
+    && bundle install"
+
+COPY execute_tests.sh /
+ENTRYPOINT ["/execute_tests.sh"]
