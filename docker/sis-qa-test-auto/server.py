@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import subprocess
 
@@ -20,4 +20,5 @@ app = tornado.web.Application([
 
 if __name__ == '__main__':
     app.listen(8421)
+    print('Server ready!')
     tornado.ioloop.IOLoop.current().start()

@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y curl \
     && curl -sSL https://get.rvm.io | bash -s stable --ruby=jruby
 RUN usermod -a -G rvm developer
 
+RUN apt-get update && apt-get install -y python3-pip \
+    && pip3 install tornado
+
 USER developer
 
 COPY Gemfile Gemfile.lock ${HOME}/
@@ -17,5 +20,7 @@ RUN bash -c "\
     && gem install bundle \
     && bundle install"
 
-COPY execute_tests.sh /
+EXPOSE 8421
+
+COPY execute_tests.sh server.py /
 ENTRYPOINT ["/execute_tests.sh"]
