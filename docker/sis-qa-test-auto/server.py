@@ -9,13 +9,21 @@ __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
 
 
-class MainHandler(tornado.web.RequestHandler):
+class TestHandler(tornado.web.RequestHandler):
     def get(self):
         subprocess.call(['bundle', 'exec', 'cucumber'])
         self.write('tests completed!\n')
 
+
+class CloseHandler(tornado.web.RequestHandler):
+    def post(self):
+        print('Server shutting down!')
+        tornado.ioloop.IOLoop.current().stop()
+
+
 app = tornado.web.Application([
-    (r'/.*', MainHandler),
+    (r'/close', CloseHandler),
+    (r'/.*', TestHandler),
 ])
 
 if __name__ == '__main__':
