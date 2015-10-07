@@ -2,31 +2,34 @@
 
 import subprocess
 
-import tornado.ioloop
-import tornado.web
+from tornado.ioloop import IOLoop
+from tornado.web import RequestHandler, Application
+from tornado.httpserver import HTTPServer
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
 
 
-class TestHandler(tornado.web.RequestHandler):
+class TestHandler(RequestHandler):
     def get(self):
         subprocess.call(['bundle', 'exec', 'cucumber'])
         self.write('tests completed!\n')
 
 
-class CloseHandler(tornado.web.RequestHandler):
+class CloseHandler(RequestHandler):
     def post(self):
         print('Server shutting down!')
-        tornado.ioloop.IOLoop.current().stop()
+        server.stop()
 
 
-app = tornado.web.Application([
+app = Application([
     (r'/close', CloseHandler),
     (r'/.*', TestHandler),
 ])
 
 if __name__ == '__main__':
-    app.listen(8421)
+    server = HTTPServer(app)
+    server.bind(8421)
+    server.start(0)
     print('Server ready!')
-    tornado.ioloop.IOLoop.current().start()
+    IOLoop.current().start()
