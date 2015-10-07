@@ -7,6 +7,7 @@ if [ $( id | sed -e 's/(.*//' ) != "uid=0" ]; then
 fi
 
 cid_file=/var/run/qata.pid
+port=8421
 
 project_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 : ${SIS_TEST_DIR:=${project_dir}/test}
@@ -17,7 +18,7 @@ start() {
   if [ -f ${cid_file} ]; then
     container_id=$(cat ${cid_file})
     if [[ $(docker ps -q -f Id=${container_id}) ]]; then
-      echo "QAAT already running. Not doing anything."
+      echo "QATA already running. Not doing anything."
       return 1
     fi
     rm -f ${cid_file}
@@ -55,12 +56,32 @@ stop() {
   echo "QATA stopped..."
 }
 
+attach() {
+  if [ ! -f ${cid_file} ]; then
+    echo "QATA not running. Not doing anything."
+    return 1
+  fi
+
+  container_id=$(cat ${cid_file})
+  if ! [[ $(docker ps -q -f Id=${container_id}) ]]; then
+    echo "QATA not running. Cleaning up."
+    stop
+    return 1
+  fi
+
+  docker attach --no-stdin ${container_id}
+}
+
+
 case "$1" in
   start)
     start
     ;;
   stop)
     stop
+    ;;
+  attach)
+    attach
     ;;
   restart)
     stop

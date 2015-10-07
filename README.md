@@ -19,6 +19,7 @@
 directory, run as `sudo -E ./run.sh` to pass in environment variables). The first run will take
 longer since the docker container will be downloaded and then run.
 1. When required, stop the service with `./qata stop`, or restart with `./qata restart`
+1. If required, attach to the service with `./qata attach`.
 
 ### Additional notes
 1. Keep docker/sis-qa-test-auto/Gemfile (and docker/sis-qa-test-auto/Gemfile.lock) in sync with
