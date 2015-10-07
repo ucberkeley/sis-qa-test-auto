@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# The QA Test Automation (QATA) framework service
 
 if [ $( id | sed -e 's/(.*//' ) != "uid=0" ]; then
   echo "Please rerun with super user privileges. "

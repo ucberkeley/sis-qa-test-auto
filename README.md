@@ -1,6 +1,4 @@
-# sis-qa-test-auto
-
-QA Test Automation framework for SIS Campus Solutions.
+# QA Test Automation (QATA) framework for SIS Campus Solutions.
 
 
 ### Instructions for running
@@ -17,9 +15,10 @@ QA Test Automation framework for SIS Campus Solutions.
     }
     ```
 
-1. Run `run.sh` (may required sudo. If using external test directory, run as `sudo -E ./run.sh` to 
-pass in environment variables). The first run will take longer since the docker container will be 
-downloaded and then run.
+1. Run the Test Framework service with `./qata start` (may required sudo. If using external test
+directory, run as `sudo -E ./run.sh` to pass in environment variables). The first run will take
+longer since the docker container will be downloaded and then run.
+1. When required, stop the service with `./qata stop`, or restart with `./qata restart`
 
 ### Additional notes
 1. Keep docker/sis-qa-test-auto/Gemfile (and docker/sis-qa-test-auto/Gemfile.lock) in sync with
