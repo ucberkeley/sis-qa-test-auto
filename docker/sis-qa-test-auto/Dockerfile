@@ -22,5 +22,5 @@ RUN bash -c "\
 
 EXPOSE 8421
 
-COPY execute_tests.sh server.py /
-ENTRYPOINT ["/execute_tests.sh"]
+COPY run_server.sh server.py /
+ENTRYPOINT ["/run_server.sh"]

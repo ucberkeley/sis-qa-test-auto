@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # The QA Test Automation (QATA) framework service
+# Serves request on port 8421 (set below)
 
 if [ $( id | sed -e 's/(.*//' ) != "uid=0" ]; then
   echo "Please rerun with super user privileges. "
@@ -17,9 +18,12 @@ docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto
 start() {
   if [ -f ${cid_file} ]; then
     container_id=$(cat ${cid_file})
-    if [[ $(docker ps -q -f Id=${container_id}) ]]; then
-      echo "QATA already running. Not doing anything."
-      return 1
+    if [[ $(docker ps -a -q -f Id=${container_id}) ]]; then
+      if [[ $(netstat -tulnp | grep ${port}) ]]; then
+        echo "QATA already running. Not doing anything."
+        return 1
+      fi
+      docker stop ${container_id} && docker rm ${container_id}
     fi
     rm -f ${cid_file}
   fi
@@ -36,7 +40,11 @@ start() {
       -e DISPLAY=${DISPLAY} \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
       -v ${SIS_TEST_DIR}:/test \
-      ${docker_image})
+      ${docker_image} \
+      ${port})
+  while ! [[ $(netstat -tulnp | grep ${port}) ]]; do
+    sleep 1
+  done
   echo ${container_id} > ${cid_file}
   echo "QATA started"
 }
@@ -63,7 +71,7 @@ attach() {
   fi
 
   container_id=$(cat ${cid_file})
-  if ! [[ $(docker ps -q -f Id=${container_id}) ]]; then
+  if ! [[ $(docker ps -a -q -f Id=${container_id}) ]] || ! [[ $(netstat -tulnp | grep 8421) ]]; then
     echo "QATA not running. Cleaning up."
     stop
     return 1

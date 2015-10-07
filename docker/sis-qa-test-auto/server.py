@@ -28,8 +28,11 @@ app = Application([
 ])
 
 if __name__ == '__main__':
+    import sys
+    port = sys.argv[1] if len(sys.argv) >= 2 else 8421
+
     server = HTTPServer(app)
-    server.bind(8421)
+    server.bind(port)
     server.start(0)
     print('Server ready!')
     IOLoop.current().start()
