@@ -1,8 +1,11 @@
-# QA Test Automation (QATA) framework for SIS Campus Solutions.
+# QA Test Automation (QATA) framework
+for UC Berkeley SIS Campus Solutions
 
 
 ### Instructions for running
 1. [Install Docker](https://docs.docker.com/installation/).
+1. Install the QATA framework with `./install.sh`. This will create a symlink to the server script
+in /usr/bin.
 1. If using external test directory, set `$SIS_TEST_DIR` to location of external test directory.
 1. Add file test/.config.json with the following information:
 
@@ -15,11 +18,11 @@
     }
     ```
 
-1. Run the Test Framework service with `./qata start` (may required sudo. If using external test
-directory, run as `sudo -E ./run.sh` to pass in environment variables). The first run will take
+1. Run the Test Framework service with `qata start` (may required sudo. If using external test
+directory, run as `sudo -E qata start` to pass in environment variables). The first run will take
 longer since the docker container will be downloaded and then run.
-1. When required, stop the service with `./qata stop`, or restart with `./qata restart`
-1. If required, attach to the service with `./qata attach`.
+1. When required, stop the service with `qata stop`, or restart with `qata restart`
+1. If required, attach to the service with `qata attach`.
 
 ### Additional notes
 1. Keep docker/sis-qa-test-auto/Gemfile (and docker/sis-qa-test-auto/Gemfile.lock) in sync with
