@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+if [ $( id | sed -e 's/(.*//' ) != "uid=0" ]; then
+  echo "Please rerun with super user privileges. "
+  exit 1
+fi
+
+cid_file=/var/run/qata.pid
+
+project_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+: ${SIS_TEST_DIR:=${project_dir}/test}
+: ${DOCKER_NAMESPACE:=ucberkeley}
+docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto
+
+start() {
+  if [ -f ${cid_file} ]; then
+    container_id=$(cat ${cid_file})
+    if [[ $(docker ps -q -f Id=${container_id}) ]]; then
+      echo "QAAT already running. Not doing anything."
+      return 1
+    fi
+    rm -f ${cid_file}
+  fi
+
+  echo "Starting QATA..."
+  docker inspect ${docker_image} &> /dev/null; if [ $? -ne 0 ]; then
+    docker pull ${docker_image}
+  fi
+
+  container_id=$(docker run \
+      --net=host \
+      -t \
+      -d \
+      -e DISPLAY=${DISPLAY} \
+      -v /tmp/.X11-unix:/tmp/.X11-unix \
+      -v ${SIS_TEST_DIR}:/test \
+      ${docker_image})
+  echo ${container_id} > ${cid_file}
+  echo "QATA started"
+}
+
+stop() {
+  if [ ! -f ${cid_file} ]; then
+    echo "QATA not running. Not doing anything."
+    return 1
+  fi
+
+  echo "Stopping QATA..."
+  container_id=$(cat ${cid_file})
+  if [[ $(docker ps -q -f Id=${container_id}) ]]; then
+    docker stop ${container_id} && docker rm ${container_id}
+  fi
+  rm -f ${cid_file}
+  echo "QATA stopped..."
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+esac
