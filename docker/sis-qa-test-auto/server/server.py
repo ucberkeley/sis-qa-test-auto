@@ -16,14 +16,7 @@ class TestHandler(RequestHandler):
         self.write('tests completed!\n')
 
 
-class CloseHandler(RequestHandler):
-    def post(self):
-        print('Server shutting down!')
-        server.stop()
-
-
 app = Application([
-    (r'/close', CloseHandler),
     (r'/.*', TestHandler),
 ])
 

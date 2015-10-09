@@ -22,5 +22,6 @@ RUN bash -c "\
 
 EXPOSE 8421
 
-COPY run_server.sh server.py /
+COPY server /server/
+COPY run_server.sh /
 ENTRYPOINT ["/run_server.sh"]
