@@ -10,7 +10,7 @@ fi
 cid_file=/var/run/qata.pid
 port=8421
 
-project_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+project_dir="$(dirname "$(readlink -f "$0")")"
 : ${SIS_TEST_DIR:=${project_dir}/test}
 : ${DOCKER_NAMESPACE:=ucberkeley}
 docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto
@@ -46,7 +46,7 @@ start() {
     sleep 1
   done
   echo ${container_id} > ${cid_file}
-  echo "QATA started"
+  echo "QATA started on port ${port}"
 }
 
 stop() {
