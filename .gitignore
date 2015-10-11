@@ -27,3 +27,6 @@ crashlytics-build.properties
 
 # Configuration files
 test/.config.json
+
+# Log files
+logs/*
