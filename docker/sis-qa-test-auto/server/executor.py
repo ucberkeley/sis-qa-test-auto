@@ -3,7 +3,7 @@
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
 import json
-from multiprocessing.managers import SyncManager, NamespaceProxy
+from multiprocessing.managers import BaseManager, NamespaceProxy
 import os
 import os.path as osp
 import subprocess
@@ -16,6 +16,12 @@ __email__ = "dibyo.majumdar@gmail.com"
 
 
 class TestResult:
+    """Wrapper for test results.
+
+    This provides conversion from test output to result and an iterator
+    for easy recording of results.
+    """
+
     ERRORED = -1
     DONE = 0
     QUEUED = 1
@@ -58,6 +64,7 @@ class TestResult:
 
 
 class TestResultProxy(NamespaceProxy):
+    """Proxy for TestResult, for syncing between multiple processes."""
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
                  'update_counters')
 
@@ -68,7 +75,7 @@ class TestResultProxy(NamespaceProxy):
         return self._callmethod('update_counters', (curr_result, ))
 
 
-class TestResultsManager(SyncManager):
+class TestResultsManager(BaseManager):
     pass
 
 TestResultsManager.register('TestResult', TestResult, TestResultProxy)
@@ -109,6 +116,13 @@ def execute_tests(test_uuid: str, test_result: TestResult or TestResultProxy):
 
 
 class TestsExecutor(ProcessPoolExecutor):
+    """ProcessPoolExecutor implementation for test execution.
+
+    This implementation adds a dictionary of current tests which get
+    updated when test executions are requested and when test executions
+    are completed.
+    """
+
     def __init__(self, results_manager: TestResultsManager, max_workers=None):
         super().__init__(max_workers)
         self.current_tests = {}

@@ -27,11 +27,13 @@ class ExecuteHandler(BaseHandler):
 
 class StatusHandler(BaseHandler):
     def get(self, test_uuid):
+        # check if tests are execution currently
         test_result = self.executor.current_tests.get(test_uuid, None)
         if test_result is not None:
             self.write(test_result.counters)
             return
 
+        # check if tests have already completed execution
         counters_file = osp.join(LOGS_DIR, test_uuid, 'result_counters.json')
         if osp.isfile(counters_file):
             with open(counters_file) as f:
