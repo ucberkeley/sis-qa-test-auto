@@ -38,6 +38,10 @@ class StatusHandler(BaseHandler):
         if osp.isfile(counters_file):
             with open(counters_file) as f:
                 self.write(f.read())
+            return
+
+        self.send_error(400,
+                        reason='Test execution run with UUID {} does not exist'.format(test_uuid))
 
 
 if __name__ == '__main__':
