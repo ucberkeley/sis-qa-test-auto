@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 
-import subprocess
-import os.path as osp
-import os
-import json
 from collections import Counter
+import json
+from multiprocessing.managers import SyncManager, NamespaceProxy
+import os
+import os.path as osp
+import subprocess
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
+
 
 LOGS_DIR = osp.abspath(os.environ['SIS_LOGS_DIR'])
 
 
 class TestResult:
     ERRORED = -1
-    COMPLETED = 0
+    DONE = 0
     QUEUED = 1
     DRYRUN = 2
     RUNNING = 3
@@ -26,7 +28,7 @@ class TestResult:
             '-': 'skipped',
         }
 
-        def __init__(self, result: 'TestResult', step: dict):
+        def __init__(self, result: 'TestResult' or 'TestResultProxy', step: dict):
             self._test_results = result
             self._step = step
 
@@ -54,17 +56,40 @@ class TestResult:
         self.counters['completed'] += 1
 
 
+class TestResultProxy(NamespaceProxy):
+    _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
+                 'iterator', 'update_counters')
+
+    def iterator(self):
+        if self.data is None:
+            return
+
+        for test_file in self.data:
+            for test_scenario in test_file['elements']:
+                for test_step in test_scenario['steps']:
+                    yield TestResult.TestStep(self, test_step)
+
+    def update_counters(self, curr_result: str):
+        return self._callmethod('update_counters', (curr_result, ))
+
+
+class TestManager(SyncManager):
+    pass
+
+TestManager.register('TestResult', TestResult, TestResultProxy)
+
+
 CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d -f json'
 CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber -f json -o {output}' \
                          ' -f progress'
 
-def execute_tests(uid: str, test_result: TestResult):
+def execute_tests(uid: str, test_result: TestResult or TestResultProxy):
     try:
         # dryrun
         test_result.status = TestResult.DRYRUN
         dryrun = subprocess.Popen(CUCUMBER_DRYRUN_CMD.split(),
                                   stdout=subprocess.PIPE)
-        json_data =  dryrun.stdout.read().decode('utf-8')
+        json_data = dryrun.stdout.read().decode('utf-8')
         test_result.data = json.loads(json_data)
 
         # execution
@@ -78,7 +103,7 @@ def execute_tests(uid: str, test_result: TestResult):
             symbol = execution.stdout.read1(1).decode('utf-8')
             test_step.set_result(symbol)
 
-        test_result.status = TestResult.COMPLETED
+        test_result.status = TestResult.DONE
     except subprocess.SubprocessError as error:
         test_result.status = TestResult.ERRORED
         test_result.data = error
