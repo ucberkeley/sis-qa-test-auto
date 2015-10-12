@@ -41,6 +41,7 @@ start() {
       -e DISPLAY=${DISPLAY} \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
       -v ${SIS_TEST_DIR}:/test \
+      -v ${SIS_LOGS_DIR}:/logs \
       ${docker_image} \
       ${port})
   while ! [[ $(netstat -tulnp | grep ${port}) ]]; do

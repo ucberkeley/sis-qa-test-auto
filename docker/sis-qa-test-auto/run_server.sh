@@ -2,5 +2,4 @@
 source /etc/profile.d/rvm.sh
 cd /test
 bundle install
-export SIS_TEST_DIR=/test
-./../server/server.py "$@"
+SIS_TEST_DIR=/test SIS_LOGS_DIR=/logs ./../server/server.py "$@"
