@@ -1,31 +1,42 @@
 #!/usr/bin/env python3
 
-import subprocess
+from concurrent.futures import ProcessPoolExecutor
 
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 from tornado.httpserver import HTTPServer
+from uuid import uuid4
+
+from executor import TestResultsManager, TestsExecutor
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
 
 
-class TestHandler(RequestHandler):
-    def get(self):
-        subprocess.call(['bundle', 'exec', 'cucumber'])
-        self.write('tests completed!\n')
+class BaseHandler(RequestHandler):
+    def initialize(self, executor):
+        self.executor = executor
 
 
-app = Application([
-    (r'/.*', TestHandler),
-])
+class ExecuteHandler(BaseHandler):
+    def post(self):
+        uid = uuid4()
+        self.executor.submit(uid)
+        self.write(uid)
+
 
 if __name__ == '__main__':
     import sys
     port = sys.argv[1] if len(sys.argv) >= 2 else 8421
 
-    server = HTTPServer(app)
-    server.bind(port)
-    server.start(0)
-    print('Server ready!')
-    IOLoop.current().start()
+    with TestResultsManager() as manager:
+        with TestsExecutor(results_manager=manager) as executor:
+            init_kwargs = dict(executor=executor)
+            app = Application([
+                (r'/.*', ExecuteHandler, init_kwargs),
+            ])
+            server = HTTPServer(app)
+            server.bind(port)
+            server.start(0)
+            print('Server ready!')
+            IOLoop.current().start()

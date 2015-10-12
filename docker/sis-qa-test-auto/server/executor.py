@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from collections import Counter
+from concurrent.futures import Future, ProcessPoolExecutor
 import json
 from multiprocessing.managers import SyncManager, NamespaceProxy
 import os
@@ -67,10 +68,10 @@ class TestResultProxy(NamespaceProxy):
         return self._callmethod('update_counters', (curr_result, ))
 
 
-class TestManager(SyncManager):
+class TestResultsManager(SyncManager):
     pass
 
-TestManager.register('TestResult', TestResult, TestResultProxy)
+TestResultsManager.register('TestResult', TestResult, TestResultProxy)
 
 
 CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d -f json'
@@ -101,3 +102,17 @@ def execute_tests(uid: str, test_result: TestResult or TestResultProxy):
     except subprocess.SubprocessError as error:
         test_result.status = TestResult.ERRORED
         test_result.data = error
+
+
+class TestsExecutor(ProcessPoolExecutor):
+    def __init__(self, results_manager: TestResultsManager, max_workers=None):
+        super().__init__(max_workers)
+        self.current_tests = {}
+        self.results_manager = results_manager
+
+    def submit(self, uid: str):
+        test_result = self.results_manager.TestResult()
+        self.current_tests[uid] = test_result
+        future = super().submit(execute_tests, (uid, test_result))
+        future.add_done_callback(lambda _: self.current_tests.pop(uid))
+
