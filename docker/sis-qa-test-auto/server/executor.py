@@ -58,16 +58,10 @@ class TestResult:
 
 class TestResultProxy(NamespaceProxy):
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
-                 'iterator', 'update_counters')
+                 'update_counters')
 
     def iterator(self):
-        if self.data is None:
-            return
-
-        for test_file in self.data:
-            for test_scenario in test_file['elements']:
-                for test_step in test_scenario['steps']:
-                    yield TestResult.TestStep(self, test_step)
+        return TestResult.iterator(self)
 
     def update_counters(self, curr_result: str):
         return self._callmethod('update_counters', (curr_result, ))
