@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from collections import Counter
-from concurrent.futures import Future, ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 import json
 from multiprocessing.managers import SyncManager, NamespaceProxy
 import os

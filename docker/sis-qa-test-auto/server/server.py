@@ -5,7 +5,6 @@ import os.path as osp
 
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
-from tornado.httpserver import HTTPServer
 
 from __init__ import LOGS_DIR
 from executor import TestResultsManager, TestsExecutor
