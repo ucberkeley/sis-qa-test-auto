@@ -4,9 +4,11 @@ for UC Berkeley SIS Campus Solutions
 
 ### Instructions for running
 1. [Install Docker](https://docs.docker.com/installation/).
-1. Install the QATA framework with `./install.sh`. This will create a symlink to the server script
-in /usr/bin.
+1. Install the QATA framework with `scripts/install.sh`. This will create a symlink to the server
+script in /usr/bin.
 1. If using external test directory, set `$SIS_TEST_DIR` to location of external test directory.
+1. Similarly, if using external logs directory, set `$SIS_LOGS_DIR` to location of external logs
+directory.
 1. Add file test/.config.json with the following information:
 
     ```json
@@ -26,7 +28,8 @@ longer since the docker container will be downloaded and then run.
 
 ### Additional notes
 1. Keep docker/sis-qa-test-auto/Gemfile (and docker/sis-qa-test-auto/Gemfile.lock) in sync with
-corresponding file(s) in in test directory by running `sync.sh`. This will ensure that all required
-gems are installed when the sis-qa-test-auto docker container is being built. Though all
+corresponding file(s) in in test directory by running `scripts/sync.sh`. This will ensure that all
+required gems are installed when the sis-qa-test-auto docker container is being built. Though all
 dependencies are checked for during test execution, and installed if not satisfied, having them
 pre-installed will speed up test execution considerably.
+1. You can clean up the logs folder by running `scripts/cleanup.sh`.

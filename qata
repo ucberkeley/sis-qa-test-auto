@@ -12,6 +12,7 @@ port=8421
 
 project_dir=$(dirname $(readlink -f "$0"))
 : ${SIS_TEST_DIR:=${project_dir}/test}
+: ${SIS_LOGS_DIR:=${project_dir}/logs}
 : ${DOCKER_NAMESPACE:=ucberkeley}
 docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto
 
@@ -40,6 +41,7 @@ start() {
       -e DISPLAY=${DISPLAY} \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
       -v ${SIS_TEST_DIR}:/test \
+      -v ${SIS_LOGS_DIR}:/logs \
       ${docker_image} \
       ${port})
   while ! [[ $(netstat -tulnp | grep ${port}) ]]; do

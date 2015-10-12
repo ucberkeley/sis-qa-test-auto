@@ -25,5 +25,13 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Configuration files
 test/.config.json
+
+# Log files
+logs/*

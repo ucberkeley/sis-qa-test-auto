@@ -6,7 +6,7 @@ if [ $( id | sed -e 's/(.*//' ) == "uid=0" ]; then
 fi
 
 : ${DOCKER_NAMESPACE:=ucberkeley}
-PROJECT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
 : ${SIS_TEST_DIR:=${PROJECT_DIR}/test}
 DOCKER_IMAGE_DIR=${PROJECT_DIR}/docker/sis-qa-test-auto
 
