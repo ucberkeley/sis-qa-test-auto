@@ -8,11 +8,11 @@ import os
 import os.path as osp
 import subprocess
 
+from __init__ import LOGS_DIR
+
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
 
-
-LOGS_DIR = osp.abspath(os.environ['SIS_LOGS_DIR'])
 
 
 class TestResult:
@@ -91,14 +91,18 @@ def execute_tests(test_uuid: str, test_result: TestResult or TestResultProxy):
         test_result.status = TestResult.RUNNING
         logs_output = osp.join(LOGS_DIR, test_uuid)
         subprocess.check_call('mkdir -p {}'.format(logs_output).split())
+        results_output_file = os.path.join(logs_output, 'results.json')
         execution = subprocess.Popen(
-            CUCUMBER_EXECUTION_CMD.format(output=os.path.join(logs_output, 'results.json')).split(),
+            CUCUMBER_EXECUTION_CMD.format(output=results_output_file).split(),
             stdout=subprocess.PIPE)
         for test_step in test_result.iterator():
             symbol = execution.stdout.read1(1).decode('utf-8')
             test_step.set_result(symbol)
 
+        # completion
         test_result.status = TestResult.DONE
+        with open(osp.join(logs_output, 'result_counters.json'), 'w') as out:
+            json.dump(test_result.counters, out)
     except subprocess.SubprocessError as error:
         test_result.status = TestResult.ERRORED
         test_result.data = error

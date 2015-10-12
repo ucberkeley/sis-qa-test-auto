@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-from concurrent.futures import ProcessPoolExecutor
+from datetime import datetime
+import os.path as osp
 
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 from tornado.httpserver import HTTPServer
-from datetime import datetime
 
+from __init__ import LOGS_DIR
 from executor import TestResultsManager, TestsExecutor
 
 __author__ = "Dibyo Majumdar"
@@ -30,6 +31,12 @@ class StatusHandler(BaseHandler):
         test_result = self.executor.current_tests.get(test_uuid, None)
         if test_result is not None:
             self.write(test_result.counters)
+            return
+
+        counters_file = osp.join(LOGS_DIR, test_uuid, 'result_counters.json')
+        if osp.isfile(counters_file):
+            with open(counters_file) as f:
+                self.write(f.read())
 
 
 if __name__ == '__main__':
