@@ -5,7 +5,7 @@ from concurrent.futures import ProcessPoolExecutor
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 from tornado.httpserver import HTTPServer
-from uuid import uuid4
+from datetime import datetime
 
 from executor import TestResultsManager, TestsExecutor
 
@@ -20,7 +20,7 @@ class BaseHandler(RequestHandler):
 
 class ExecuteHandler(BaseHandler):
     def post(self):
-        test_uuid = uuid4().hex # str(datetime.datetime.now())
+        test_uuid = str(datetime.now().strftime("%Y%m%d%H%M%S%f"))
         self.executor.submit(test_uuid)
         self.write(test_uuid)
 
