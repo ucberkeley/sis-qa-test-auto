@@ -78,7 +78,7 @@ CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d -f json'
 CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber -f json -o {output}' \
                          ' -f progress'
 
-def execute_tests(uid: str, test_result: TestResult or TestResultProxy):
+def execute_tests(test_uuid: str, test_result: TestResult or TestResultProxy):
     try:
         # dryrun
         test_result.status = TestResult.DRYRUN
@@ -89,7 +89,7 @@ def execute_tests(uid: str, test_result: TestResult or TestResultProxy):
 
         # execution
         test_result.status = TestResult.RUNNING
-        logs_output = osp.join(LOGS_DIR, uid)
+        logs_output = osp.join(LOGS_DIR, test_uuid)
         subprocess.check_call('mkdir -p {}'.format(logs_output).split())
         execution = subprocess.Popen(
             CUCUMBER_EXECUTION_CMD.format(output=os.path.join(logs_output, 'results.json')).split(),
@@ -110,9 +110,9 @@ class TestsExecutor(ProcessPoolExecutor):
         self.current_tests = {}
         self.results_manager = results_manager
 
-    def submit(self, uid: str):
+    def submit(self, test_uuid: str):
         test_result = self.results_manager.TestResult()
-        self.current_tests[uid] = test_result
-        future = super().submit(execute_tests, (uid, test_result))
-        future.add_done_callback(lambda _: self.current_tests.pop(uid))
+        self.current_tests[test_uuid] = test_result
+        future = super().submit(execute_tests, test_uuid, test_result)
+        future.add_done_callback(lambda _: self.current_tests.pop(test_uuid))
 

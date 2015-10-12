@@ -20,9 +20,16 @@ class BaseHandler(RequestHandler):
 
 class ExecuteHandler(BaseHandler):
     def post(self):
-        uid = uuid4()
-        self.executor.submit(uid)
-        self.write(uid)
+        test_uuid = uuid4().hex # str(datetime.datetime.now())
+        self.executor.submit(test_uuid)
+        self.write(test_uuid)
+
+
+class StatusHandler(BaseHandler):
+    def get(self, test_uuid):
+        test_result = self.executor.current_tests.get(test_uuid, None)
+        if test_result is not None:
+            self.write(test_result.counters)
 
 
 if __name__ == '__main__':
@@ -33,10 +40,9 @@ if __name__ == '__main__':
         with TestsExecutor(results_manager=manager) as executor:
             init_kwargs = dict(executor=executor)
             app = Application([
-                (r'/.*', ExecuteHandler, init_kwargs),
+                (r'/execute', ExecuteHandler, init_kwargs),
+                (r'/status/(.*)', StatusHandler, init_kwargs)
             ])
-            server = HTTPServer(app)
-            server.bind(port)
-            server.start(0)
+            app.listen(port)
             print('Server ready!')
             IOLoop.current().start()
