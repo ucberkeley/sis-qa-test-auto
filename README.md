@@ -27,9 +27,10 @@ longer since the docker container will be downloaded and then run.
 1. If required, attach to the service with `qata attach`.
 
 ### Additional notes
-1. Keep docker/sis-qa-test-auto/Gemfile (and docker/sis-qa-test-auto/Gemfile.lock) in sync with
-corresponding file(s) in in test directory by running `scripts/sync.sh`. This will ensure that all
-required gems are installed when the sis-qa-test-auto docker container is being built. Though all
-dependencies are checked for during test execution, and installed if not satisfied, having them
-pre-installed will speed up test execution considerably.
+1. Keep the test execution server files and Gemfile (and Gemfile.lock) in docker/sis-qa-test-auto
+in sync with corresponding file(s) in the server directory and the test directory by running
+`scripts/sync.sh`. The up-to-date Gemfile will ensure that all required gems are installed when
+the sis-qa-test-auto docker container is being built. Though all dependencies are checked for
+during test execution, and installed if not satisfied, having them pre-installed will speed up
+test execution considerably.
 1. You can clean up the logs folder by running `scripts/cleanup.sh`.
