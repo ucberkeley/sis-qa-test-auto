@@ -35,3 +35,6 @@ test/.config.json
 
 # Log files
 logs/*
+
+# Synced files
+docker/sis-qa-test-auto/server
