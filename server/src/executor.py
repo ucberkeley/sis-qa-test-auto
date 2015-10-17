@@ -2,6 +2,7 @@
 
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
+from enum import Enum
 import json
 from multiprocessing.managers import BaseManager, NamespaceProxy
 import os
@@ -22,11 +23,12 @@ class TestsExecResult:
     for easy recording of results.
     """
 
-    ERRORED = -1
-    DONE = 0
-    QUEUED = 1
-    DRYRUN = 2
-    RUNNING = 3
+    class Status(Enum):
+        errored = -1
+        done = 0
+        queued = 1
+        dryrun = 2
+        executing = 3
 
     class TestStep:
         symbol_result_map = {
@@ -45,7 +47,7 @@ class TestsExecResult:
             self.tests_exec_results.update_counters(result)
 
     def __init__(self, status=None):
-        self.status = status if status is not None else self.QUEUED
+        self.status = status if status is not None else self.Status.queued
         self.data = None
         self.counters = Counter()
 
@@ -88,14 +90,14 @@ CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber -f json -o {output}' \
 def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or TestsExecResultProxy):
     try:
         # dryrun
-        tests_exec_result.status = TestsExecResult.DRYRUN
+        tests_exec_result.status = TestsExecResult.Status.dryrun
         dryrun = subprocess.Popen(CUCUMBER_DRYRUN_CMD.split(),
                                   stdout=subprocess.PIPE)
         json_data = dryrun.stdout.read().decode('utf-8')
         tests_exec_result.data = json.loads(json_data)
 
         # execution
-        tests_exec_result.status = TestsExecResult.RUNNING
+        tests_exec_result.status = TestsExecResult.Status.executing
         logs_output = osp.join(LOGS_DIR, tests_exec_uuid)
         subprocess.check_call('mkdir -p {}'.format(logs_output).split())
         results_output_file = os.path.join(logs_output, 'results.json')
@@ -107,11 +109,11 @@ def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or Te
             test_step.set_result(symbol)
 
         # completion
-        tests_exec_result.status = TestsExecResult.DONE
+        tests_exec_result.status = TestsExecResult.Status.done
         with open(osp.join(logs_output, 'result_counters.json'), 'w') as out:
             json.dump(tests_exec_result.counters, out)
     except subprocess.SubprocessError as error:
-        tests_exec_result.status = TestsExecResult.ERRORED
+        tests_exec_result.status = TestsExecResult.Status.errored
         tests_exec_result.data = error
 
 
