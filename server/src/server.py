@@ -7,7 +7,7 @@ from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 
 from __init__ import LOGS_DIR
-from executor import TestResultsManager, TestsExecutor
+from executor import TestsExecResultsManager, TestsExecutor
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
@@ -20,35 +20,35 @@ class BaseHandler(RequestHandler):
 
 class ExecuteHandler(BaseHandler):
     def post(self):
-        test_uuid = str(datetime.now().strftime("%Y%m%d%H%M%S%f"))
-        self.executor.submit(test_uuid)
-        self.write(test_uuid)
+        tests_exec_uuid = str(datetime.now().strftime("%Y%m%d%H%M%S%f"))
+        self.executor.submit(tests_exec_uuid)
+        self.write(tests_exec_uuid)
 
 
 class StatusHandler(BaseHandler):
-    def get(self, test_uuid):
-        # check if tests are execution currently
-        test_result = self.executor.current_tests.get(test_uuid, None)
-        if test_result is not None:
-            self.write(test_result.counters)
+    def get(self, tests_exec_uuid):
+        # check if tests are executing currently
+        tests_exec_result = self.executor.current_tests_execs.get(tests_exec_uuid, None)
+        if tests_exec_result is not None:
+            self.write(tests_exec_result.counters)
             return
 
-        # check if tests have already completed execution
-        counters_file = osp.join(LOGS_DIR, test_uuid, 'result_counters.json')
+        # check if tests have already been completely executed.
+        counters_file = osp.join(LOGS_DIR, tests_exec_uuid, 'result_counters.json')
         if osp.isfile(counters_file):
             with open(counters_file) as f:
                 self.write(f.read())
             return
 
         self.send_error(400,
-                        reason='Test execution run with UUID {} does not exist'.format(test_uuid))
+                        reason='Tests execution run with UUID {} does not exist'.format(tests_exec_uuid))
 
 
 if __name__ == '__main__':
     import sys
     port = sys.argv[1] if len(sys.argv) >= 2 else 8421
 
-    with TestResultsManager() as manager:
+    with TestsExecResultsManager() as manager:
         with TestsExecutor(results_manager=manager) as executor:
             init_kwargs = dict(executor=executor)
             app = Application([
