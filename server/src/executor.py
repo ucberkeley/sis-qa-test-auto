@@ -9,6 +9,8 @@ import os
 import os.path as osp
 import subprocess
 
+from multiprocessing import Process
+
 from __init__ import LOGS_DIR
 
 __author__ = "Dibyo Majumdar"
@@ -22,13 +24,6 @@ class TestsExecResult:
     This provides conversion from test output to result and an iterator
     for easy recording of results.
     """
-
-    class Status(Enum):
-        errored = -1
-        done = 0
-        queued = 1
-        dryrun = 2
-        executing = 3
 
     class TestStep:
         symbol_result_map = {
@@ -47,7 +42,7 @@ class TestsExecResult:
             self.tests_exec_results.update_counters(result)
 
     def __init__(self, status=None):
-        self.status = status if status is not None else self.Status.queued
+        self.status = status if status is not None else TestsExecStatusEnum.queued
         self.data = None
         self.counters = Counter()
 
@@ -63,6 +58,14 @@ class TestsExecResult:
     def update_counters(self, curr_result: str):
         self.counters[curr_result] += 1
         self.counters['completed'] += 1
+
+
+class TestsExecStatusEnum(Enum):
+    errored = -1
+    done = 0
+    queued = 1
+    dryrun = 2
+    executing = 3
 
 
 class TestsExecResultProxy(NamespaceProxy):
@@ -81,6 +84,7 @@ class TestsExecResultsManager(BaseManager):
     pass
 
 TestsExecResultsManager.register('TestsExecResult', TestsExecResult, TestsExecResultProxy)
+# TestsExecResultsManager.register('TestsExecResult_Status', TestsExecResult.Status)
 
 
 CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d -f json'
@@ -88,18 +92,19 @@ CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber -f json -o {output}' \
                          ' -f progress'
 
 def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or TestsExecResultProxy):
+    logs_output = osp.join(LOGS_DIR, tests_exec_uuid)
+    subprocess.check_call('mkdir -p {}'.format(logs_output).split())
+
     try:
         # dryrun
-        tests_exec_result.status = TestsExecResult.Status.dryrun
+        tests_exec_result.status = TestsExecStatusEnum.dryrun
         dryrun = subprocess.Popen(CUCUMBER_DRYRUN_CMD.split(),
                                   stdout=subprocess.PIPE)
         json_data = dryrun.stdout.read().decode('utf-8')
         tests_exec_result.data = json.loads(json_data)
 
         # execution
-        tests_exec_result.status = TestsExecResult.Status.executing
-        logs_output = osp.join(LOGS_DIR, tests_exec_uuid)
-        subprocess.check_call('mkdir -p {}'.format(logs_output).split())
+        tests_exec_result.status = TestsExecStatusEnum.executing
         results_output_file = os.path.join(logs_output, 'results.json')
         execution = subprocess.Popen(
             CUCUMBER_EXECUTION_CMD.format(output=results_output_file).split(),
@@ -109,12 +114,15 @@ def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or Te
             test_step.set_result(symbol)
 
         # completion
-        tests_exec_result.status = TestsExecResult.Status.done
-        with open(osp.join(logs_output, 'result_counters.json'), 'w') as out:
-            json.dump(tests_exec_result.counters, out)
+        tests_exec_result.status = TestsExecStatusEnum.done
     except subprocess.SubprocessError as error:
-        tests_exec_result.status = TestsExecResult.Status.errored
+        tests_exec_result.status = TestsExecStatusEnum.errored
         tests_exec_result.data = error
+        with open(osp.join(logs_output, 'error.txt'), 'w') as error_out:
+            error_out.write(error)
+    finally:
+        with open(osp.join(logs_output, 'result_counters.json'), 'w') as counters_out:
+            json.dump(tests_exec_result.counters, counters_out)
 
 
 class TestsExecutor(ProcessPoolExecutor):
@@ -125,7 +133,7 @@ class TestsExecutor(ProcessPoolExecutor):
     executions are completed.
     """
 
-    def __init__(self, results_manager: TestsExecResultsManager, max_workers=None):
+    def __init__(self, results_manager: TestsExecResultsManager, max_workers: int=None):
         super().__init__(max_workers)
         self.current_tests_execs = {}
         self.results_manager = results_manager

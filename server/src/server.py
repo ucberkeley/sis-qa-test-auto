@@ -7,7 +7,7 @@ from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 
 from __init__ import LOGS_DIR
-from executor import TestsExecResultsManager, TestsExecutor
+from executor import TestsExecResultsManager, TestsExecutor, TestsExecStatusEnum
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
@@ -34,10 +34,17 @@ class StatusHandler(BaseHandler):
             return
 
         # check if tests have already been completely executed.
-        counters_file = osp.join(LOGS_DIR, tests_exec_uuid, 'result_counters.json')
-        if osp.isfile(counters_file):
-            with open(counters_file) as f:
-                self.write(f.read())
+        tests_log_dir = osp.join(LOGS_DIR, tests_exec_uuid)
+        if osp.exists(tests_log_dir):
+            error_file = osp.join(tests_log_dir, 'error.txt')
+            if osp.isfile(error_file):
+                with open(error_file) as error_in:
+                    self.write(error_in.read())
+            counters_file = osp.join(tests_log_dir, 'result_counters.json')
+            if osp.isfile(counters_file):
+                with open(counters_file) as counters_in:
+                    self.write(counters_in.read())
+
             return
 
         self.send_error(400,
