@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 from datetime import datetime
+import json
 import os.path as osp
 
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 
 from __init__ import LOGS_DIR
-from executor import TestsExecResultsManager, TestsExecutor, TestsExecStatusEnum
+from executor import TestsExecResultsManager, TestsExecutor, TestsExecResult, TestsExecStatusEnum
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
@@ -16,6 +17,10 @@ __email__ = "dibyo.majumdar@gmail.com"
 class BaseHandler(RequestHandler):
     def initialize(self, executor):
         self.executor = executor
+
+    def write_json(self, json_str: str):
+        self.set_header("Content-Type", "application/json; charset=UTF-8")
+        self.write(json_str)
 
 
 class ExecuteHandler(BaseHandler):
@@ -30,7 +35,7 @@ class StatusHandler(BaseHandler):
         # check if tests are executing currently
         tests_exec_result = self.executor.current_tests_execs.get(tests_exec_uuid, None)
         if tests_exec_result is not None:
-            self.write(tests_exec_result.counters)
+            self.write_json(tests_exec_result.json())
             return
 
         # check if tests have already been completely executed.
@@ -40,11 +45,10 @@ class StatusHandler(BaseHandler):
             if osp.isfile(error_file):
                 with open(error_file) as error_in:
                     self.write(error_in.read())
-            counters_file = osp.join(tests_log_dir, 'result_counters.json')
-            if osp.isfile(counters_file):
-                with open(counters_file) as counters_in:
-                    self.write(counters_in.read())
-
+            result_file = osp.join(tests_log_dir, 'result.json')
+            if osp.isfile(result_file):
+                with open(result_file) as result_in:
+                    self.write_json(result_in.read())
             return
 
         self.send_error(400,

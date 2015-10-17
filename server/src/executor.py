@@ -41,10 +41,16 @@ class TestsExecResult:
             self._step['result']['status'] = result
             self.tests_exec_results.update_counters(result)
 
-    def __init__(self, status=None):
+    def __init__(self, status=None, counters=None):
         self.status = status if status is not None else TestsExecStatusEnum.queued
         self.data = None
-        self.counters = Counter()
+        self.counters = counters if counters is not None else Counter()
+
+    def json(self):
+        return json.dumps({
+            'status': self.status.name.upper(),
+            'counters': self.counters,
+        }, indent=4)
 
     def iterator(self):
         if self.data is None:
@@ -105,7 +111,7 @@ def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or Te
 
         # execution
         tests_exec_result.status = TestsExecStatusEnum.executing
-        results_output_file = os.path.join(logs_output, 'results.json')
+        results_output_file = os.path.join(logs_output, 'cucumber_report.json')
         execution = subprocess.Popen(
             CUCUMBER_EXECUTION_CMD.format(output=results_output_file).split(),
             stdout=subprocess.PIPE)
@@ -121,8 +127,8 @@ def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or Te
         with open(osp.join(logs_output, 'error.txt'), 'w') as error_out:
             error_out.write(error)
     finally:
-        with open(osp.join(logs_output, 'result_counters.json'), 'w') as counters_out:
-            json.dump(tests_exec_result.counters, counters_out)
+        with open(osp.join(logs_output, 'result.json'), 'w') as result_out:
+            result_out.write(tests_exec_result.json())
 
 
 class TestsExecutor(ProcessPoolExecutor):
