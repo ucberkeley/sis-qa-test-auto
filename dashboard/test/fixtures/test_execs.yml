@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uuid: 2015
+  name: Test 1
+  status: 1
+
+two:
+  uuid: MyString
+  name: Test 2
+  status: 0
