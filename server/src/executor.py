@@ -2,7 +2,7 @@
 
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
-from enum import Enum
+import enum
 import json
 from multiprocessing.managers import BaseManager, NamespaceProxy
 import os
@@ -66,7 +66,8 @@ class TestsExecResult:
         self.counters['completed'] += 1
 
 
-class TestsExecStatusEnum(Enum):
+@enum.unique
+class TestsExecStatusEnum(enum.Enum):
     errored = -1
     done = 0
     queued = 1

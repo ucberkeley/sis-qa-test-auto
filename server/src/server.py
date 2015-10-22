@@ -23,6 +23,26 @@ class BaseHandler(RequestHandler):
         self.write(json_str)
 
 
+class TestsExecsListHandler(BaseHandler):
+    def get(self, *args, **kwargs):
+        status_name = self.get_argument('status', '')
+        if status_name:
+            status = ''
+            try:
+                status = TestsExecStatusEnum[status_name]
+            except KeyError:
+                self.send_error(400,
+                                reason='{} is not a valid status'.format(status_name))
+                return
+            results = []
+            for uuid, tests_exec_result in self.executor.current_tests_execs.items():
+                if tests_exec_result.status == status:
+                    results.append(uuid)
+        else:
+            results = list(self.executor.current_tests_execs.keys())
+        self.write_json(json.dumps(results))
+
+
 class ExecuteHandler(BaseHandler):
     def post(self):
         tests_exec_uuid = str(datetime.now().strftime("%Y%m%d%H%M%S%f"))
@@ -63,6 +83,7 @@ if __name__ == '__main__':
         with TestsExecutor(results_manager=manager) as executor:
             init_kwargs = dict(executor=executor)
             app = Application([
+                (r'/', TestsExecsListHandler, init_kwargs),
                 (r'/execute', ExecuteHandler, init_kwargs),
                 (r'/status/(.*)', StatusHandler, init_kwargs)
             ])
