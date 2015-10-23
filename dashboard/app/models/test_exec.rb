@@ -1,5 +1,5 @@
 class TestExec
-  attr_accessor :uuid, :status, :counters
+  attr_reader :uuid, :status, :counters
 
   def initialize(uuid, status, counters={})
     @uuid = uuid

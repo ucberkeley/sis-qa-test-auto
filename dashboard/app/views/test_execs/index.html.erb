@@ -1,1 +1,15 @@
-<h1>Current test executions</h1>
+<h1>Last 5 test executions</h1>
+
+<table>
+  <tr>
+    <th>UUID</th>
+    <th>Status</th>
+  </tr>
+
+  <% @test_execs.each do |test_exec| %>
+    <tr>
+      <td><%= test_exec.uuid %></td>
+      <td><%= test_exec.status %></td>
+    </tr>
+  <% end %>
+</table>
