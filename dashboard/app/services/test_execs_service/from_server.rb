@@ -6,7 +6,7 @@ module TestExecsService
   class FromServer < Base
     @server_address = URI::HTTP.build({
       :host => 'localhost',
-      :port => ENV[SIS_TEST_SERVER_PORT_ENV]
+      :port => ENV[SIS_TEST_SERVER_PORT_ENV].to_i
     }).to_s
 
     def self.get(uuid)
@@ -15,7 +15,8 @@ module TestExecsService
       if response.status_code >= 300
         return nil
       end
-      JSON.parse response.body.to_s
+      json_hash = JSON.parse response.body.to_s
+      TestExec.new(uuid, json_hash['status'], json_hash['counters'])
     end
 
     def self.all_uuids
