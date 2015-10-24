@@ -4,7 +4,7 @@ module TestExecsService
   class FromDisk < Base
     @test_logs_dir = ENV[SIS_TEST_DIR_ENV]
 
-    def self.get(uuid)
+    def self.status(uuid)
       directory_path = Pathname.new(@test_logs_dir).join uuid
       unless directory_path.directory?
         return nil

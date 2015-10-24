@@ -1,14 +1,18 @@
 class TestExecsController < ApplicationController
+  @@test_execs_service = TestExecsService::FromServerCached
+
   def create
+    @test_exec = @@test_execs_service.execute
     redirect_to test_execs_url
   end
 
   def index
-    @test_execs = TestExecsService::FromServerCached.get_last 5
+    @num = 5
+    @test_execs = @@test_execs_service.status_last @num
   end
 
   def show
-    @test_exec = TestExecsService::FromServerCached.get params[:id]
+    @test_exec = @@test_execs_service.status params[:id]
   end
   
   private
