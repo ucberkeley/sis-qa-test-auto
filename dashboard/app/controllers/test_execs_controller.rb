@@ -1,4 +1,6 @@
 class TestExecsController < ApplicationController
+  respond_to :html, :json
+
   @@test_execs_service = TestExecsService::FromServerCached
 
   def create
@@ -13,6 +15,11 @@ class TestExecsController < ApplicationController
 
   def show
     @test_exec = @@test_execs_service.status params[:id]
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @test_exec }
+    end
   end
   
   private

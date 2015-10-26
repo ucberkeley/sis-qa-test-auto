@@ -11,7 +11,9 @@ module TestExecsService
 
     def self.status(uuid)
       test_exec = FromServer.status uuid
-      @cache[uuid] = test_exec
+      unless test_exec.nil?
+        @cache[uuid] = test_exec
+      end
     end
 
     def self.status_last(n=nil)

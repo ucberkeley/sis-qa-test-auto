@@ -29,18 +29,17 @@ module TestExecsService
     private
 
     def self.make_get_request(request)
-      response = HTTP.get request
-      unless response.status_code >= 300
-        response.body.to_s
-      end
+      response_body HTTP.get request
     end
 
     def self.make_post_request(request)
-      response = HTTP.post request
-      if response.status_code >= 300
-        return nil
+      response_body HTTP.post request
+    end
+
+    def self.response_body(http_response)
+      unless http_response.status_code >= 300
+        http_response.body.to_s
       end
-      response.body.to_s
     end
 
   end

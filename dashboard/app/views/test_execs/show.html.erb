@@ -1,15 +1,38 @@
 <h1>Test Execution</h1>
 
 <p>
-  UUID: <%== @test_exec.uuid %>
+  UUID: <span id="test_exec_uuid"><%== @test_exec.uuid %></span>
 </p>
 
 <p>
-  Status: <%== @test_exec.status %>
+  Status: <span id="test_exec_status"><%== @test_exec.status %></span>
 </p>
 
 <p>
-  Counters: <%== @test_exec.counters %>
+  Counters: <div id="test-exec-counters">.....</div>
 </p>
 
-<%= link_to 'Back', test_execs_path %>
+<%= link_to 'Back', test_execs_path, remote: false %>
+
+<script type="text/javascript">
+  var testExecUUID = $('#test_exec_uuid').html();
+  var tesElement = $('#test_exec_status');
+
+  if (tesElement.html() != 'DONE') {
+    function updateTestExec(testExec) {
+      tesElement.html(testExec['status'])
+
+    }
+
+    var updateInterval = setInterval(function () {
+      if (!$('#test_exec_uuid').length || tesElement.html() == 'DONE') {
+        clearInterval(updateInterval);
+        return;
+      }
+      $.ajax({
+        url: '/test_execs/' + testExecUUID,
+        dataType: 'json'
+      }).done(updateTestExec);
+    }, 5000);
+  }
+</script>
