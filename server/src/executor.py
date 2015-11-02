@@ -16,7 +16,7 @@ __email__ = "dibyo.majumdar@gmail.com"
 
 
 @enum.unique
-class TestsExecStatusEnum(enum.Enum):
+class TestExecStatusEnum(enum.Enum):
     errored = -1
     done = 0
     queued = 1
@@ -24,7 +24,7 @@ class TestsExecStatusEnum(enum.Enum):
     executing = 3
 
 
-class TestsExecResult:
+class TestExecResult:
     """Wrapper for the results of executing a set of tests.
 
     This provides conversion from test output to result and an iterator
@@ -38,16 +38,16 @@ class TestsExecResult:
             '-': 'skipped',
         }
 
-        def __init__(self, result: 'TestsExecResult' or 'TestsExecResultProxy', step: dict):
-            self.tests_exec_results = result
+        def __init__(self, result: 'TestExecResult' or 'TestExecResultProxy', step: dict):
+            self.test_exec_result = result
             self._step = step
 
         def set_result(self, symbol: str):
             result = self.symbol_result_map[symbol]
             self._step['result']['status'] = result
-            self.tests_exec_results.update_counters(result)
+            self.test_exec_result.update_counters(result)
 
-    def __init__(self, status: TestsExecStatusEnum=TestsExecStatusEnum.queued,
+    def __init__(self, status: TestExecStatusEnum=TestExecStatusEnum.queued,
                  counters: dict=None, data=None):
         self.status = status
         self.counters = counters if counters is not None else Counter()
@@ -75,29 +75,29 @@ class TestsExecResult:
         for test_file in self.data:
             for test_scenario in test_file['elements']:
                 for test_step in test_scenario['steps']:
-                    yield TestsExecResult.TestStep(self, test_step)
+                    yield TestExecResult.TestStep(self, test_step)
 
     def update_counters(self, curr_result: str):
         self.counters[curr_result] += 1
         self.counters['completed'] += 1
 
 
-class TestsExecResultProxy(NamespaceProxy):
+class TestExecResultProxy(NamespaceProxy):
     """Proxy for TestsSetResult, for syncing between multiple processes."""
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
                  'update_counters')
 
     def iterator(self):
-        return TestsExecResult.iterator(self)
+        return TestExecResult.iterator(self)
 
     def update_counters(self, curr_result: str):
         return self._callmethod('update_counters', (curr_result, ))
 
 
-class TestsExecResultsManager(BaseManager):
+class TestExecResultsManager(BaseManager):
     pass
 
-TestsExecResultsManager.register('TestsExecResult', TestsExecResult, TestsExecResultProxy)
+TestExecResultsManager.register('TestExecResult', TestExecResult, TestExecResultProxy)
 
 
 CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d' \
@@ -106,38 +106,38 @@ CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber' \
                          ' -f json -o {output}' \
                          ' -f progress'
 
-def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or TestsExecResultProxy):
-    logs_output = osp.join(LOGS_DIR, tests_exec_uuid)
+def execute_tests(test_exec_uuid: str, test_exec_result: TestExecResult or TestExecResultProxy):
+    logs_output = osp.join(LOGS_DIR, test_exec_uuid)
     subprocess.check_call('mkdir -p {}'.format(logs_output).split())
 
     try:
         # dryrun
-        tests_exec_result.status = TestsExecStatusEnum.dryrun
+        test_exec_result.status = TestExecStatusEnum.dryrun
         dryrun = subprocess.Popen(CUCUMBER_DRYRUN_CMD.split(),
                                   stdout=subprocess.PIPE)
         json_data = dryrun.stdout.read().decode('utf-8')
-        tests_exec_result.data = json.loads(json_data)
+        test_exec_result.data = json.loads(json_data)
 
         # execution
-        tests_exec_result.status = TestsExecStatusEnum.executing
+        test_exec_result.status = TestExecStatusEnum.executing
         results_output_file = os.path.join(logs_output, 'cucumber_report.json')
         execution = subprocess.Popen(
             CUCUMBER_EXECUTION_CMD.format(output=results_output_file).split(),
             stdout=subprocess.PIPE)
-        for test_step in tests_exec_result.iterator():
+        for test_step in test_exec_result.iterator():
             symbol = execution.stdout.read1(1).decode('utf-8')
             test_step.set_result(symbol)
 
         # completion
-        tests_exec_result.status = TestsExecStatusEnum.done
+        test_exec_result.status = TestExecStatusEnum.done
     except subprocess.SubprocessError as error:
-        tests_exec_result.status = TestsExecStatusEnum.errored
-        tests_exec_result.data = error
+        test_exec_result.status = TestExecStatusEnum.errored
+        test_exec_result.data = error
         with open(osp.join(logs_output, 'error.txt'), 'w') as error_out:
             error_out.write(error)
     finally:
         with open(osp.join(logs_output, 'result.json'), 'w') as result_out:
-            result_out.write(tests_exec_result.json())
+            result_out.write(test_exec_result.json())
 
 
 class TestsExecutor(ProcessPoolExecutor):
@@ -148,14 +148,14 @@ class TestsExecutor(ProcessPoolExecutor):
     executions are completed.
     """
 
-    def __init__(self, results_manager: TestsExecResultsManager, max_workers: int=None):
+    def __init__(self, results_manager: TestExecResultsManager, max_workers: int=None):
         super().__init__(max_workers)
-        self.current_tests_execs = {}
+        self.current_test_execs = {}
         self.results_manager = results_manager
 
-    def submit(self, tests_exec_uuid: str):
-        tests_exec_result = self.results_manager.TestsExecResult()
-        self.current_tests_execs[tests_exec_uuid] = tests_exec_result
-        future = super().submit(execute_tests, tests_exec_uuid, tests_exec_result)
-        future.add_done_callback(lambda _: self.current_tests_execs.pop(tests_exec_uuid))
+    def submit(self, test_exec_uuid: str):
+        test_exec_result = self.results_manager.TestExecResult()
+        self.current_test_execs[test_exec_uuid] = test_exec_result
+        future = super().submit(execute_tests, test_exec_uuid, test_exec_result)
+        future.add_done_callback(lambda _: self.current_test_execs.pop(test_exec_uuid))
 
