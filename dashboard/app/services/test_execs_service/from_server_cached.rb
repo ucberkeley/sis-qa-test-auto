@@ -21,7 +21,7 @@ module TestExecsService
         n = @cache.size
       end
 
-      @cache.keys.sort!.reverse!.last(n).map do |uuid|
+      @cache.keys.sort!.reverse!.first(n).map do |uuid|
         self.status uuid
       end
     end
