@@ -9,13 +9,19 @@ import os
 import os.path as osp
 import subprocess
 
-from multiprocessing import Process
-
 from __init__ import LOGS_DIR
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
 
+
+@enum.unique
+class TestsExecStatusEnum(enum.Enum):
+    errored = -1
+    done = 0
+    queued = 1
+    dryrun = 2
+    executing = 3
 
 
 class TestsExecResult:
@@ -41,10 +47,20 @@ class TestsExecResult:
             self._step['result']['status'] = result
             self.tests_exec_results.update_counters(result)
 
-    def __init__(self, status=None, counters=None):
-        self.status = status if status is not None else TestsExecStatusEnum.queued
-        self.data = None
+    def __init__(self, status: TestsExecStatusEnum=TestsExecStatusEnum.queued,
+                 counters: dict=None, data=None):
+        self.status = status
         self.counters = counters if counters is not None else Counter()
+        self._data = data
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data):
+        self._data = data
+        self.counters['total'] = sum(1 for _ in self.iterator())
 
     def json(self):
         return json.dumps({
@@ -66,15 +82,6 @@ class TestsExecResult:
         self.counters['completed'] += 1
 
 
-@enum.unique
-class TestsExecStatusEnum(enum.Enum):
-    errored = -1
-    done = 0
-    queued = 1
-    dryrun = 2
-    executing = 3
-
-
 class TestsExecResultProxy(NamespaceProxy):
     """Proxy for TestsSetResult, for syncing between multiple processes."""
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
@@ -91,11 +98,12 @@ class TestsExecResultsManager(BaseManager):
     pass
 
 TestsExecResultsManager.register('TestsExecResult', TestsExecResult, TestsExecResultProxy)
-# TestsExecResultsManager.register('TestsExecResult_Status', TestsExecResult.Status)
 
 
-CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d -f json'
-CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber -f json -o {output}' \
+CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d' \
+                      ' -f json'
+CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber' \
+                         ' -f json -o {output}' \
                          ' -f progress'
 
 def execute_tests(tests_exec_uuid: str, tests_exec_result: TestsExecResult or TestsExecResultProxy):

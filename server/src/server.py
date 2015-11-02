@@ -8,7 +8,7 @@ from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler, Application
 
 from __init__ import LOGS_DIR
-from executor import TestsExecResultsManager, TestsExecutor, TestsExecResult, TestsExecStatusEnum
+from executor import TestsExecResultsManager, TestsExecutor, TestsExecStatusEnum
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
