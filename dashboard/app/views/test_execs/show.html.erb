@@ -1,57 +1,9 @@
 <h1>Test Execution</h1>
 
-<p>
-  UUID: <span id="test-exec-uuid"><%== @test_exec.uuid %></span>
-</p>
-
-<p>
-  Status: <span id="test-exec-status"><%== @test_exec.status %></span>
-</p>
-
-<p>
-  Counters:
-  <span id="test-exec-counters">
-    <% if @test_exec.counters.has_key? 'total' %>
-      <%== '.' * @test_exec.counters['total'] %>
-    <% end %>
-  </span>
-</p>
+<% if @test_exec.nil? %>
+  This test execution does not exist.
+<% else %>
+  <%= render 'show_valid' %>
+<% end %>
 
 <%= link_to 'Back', test_execs_path, remote: false %>
-
-<script type="text/javascript">
-  var testExecUUID = $('#test-exec-uuid').html();
-  var tesElement = $('#test-exec-status');
-  var tecElement = $('#test-exec-counters');
-
-  if (tesElement.html() != 'DONE') {
-    function updateTestExec(testExec) {
-      tesElement.html(testExec['status']);
-      if ('total' in testExec['counters']) {
-        var counters = testExec['counters'];
-        var counters_string = '';
-        // completed
-        for (var i = 0; i < counters['completed']; i++) { counters_string += '+'; }
-        // failed
-        for (i = 0; i < counters['failed']; i++) { counters_string += '*'; }
-        // skipped
-        for (i = 0; i < counters['skipped']; i++) { counters_string += '-'; }
-        // rest adding up to total
-        for (i = counters_string.length; i < counters['total']; i++) { counters_string += '.'; }
-        tecElement.html(counters_string);
-      }
-    }
-
-    var updateFreq = 1;
-    var updateInterval = setInterval(function () {
-      if (!$('#test-exec-uuid').length || tesElement.html() == 'DONE') {
-        clearInterval(updateInterval);
-        return;
-      }
-      $.ajax({
-        url: '/test_execs/' + testExecUUID,
-        dataType: 'json'
-      }).done(updateTestExec);
-    }, updateFreq * 1000);
-  }
-</script>
