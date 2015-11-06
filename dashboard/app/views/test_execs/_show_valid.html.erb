@@ -38,7 +38,7 @@
   }
 
   if (tesElement.html() != 'DONE') {
-    var updateFreq = 1;
+    var updateFreq = 5;
     var updateInterval = setInterval(function () {
       if (!$('#test-exec-uuid').length || tesElement.html() == 'DONE') {
         clearInterval(updateInterval);
