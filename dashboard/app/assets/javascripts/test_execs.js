@@ -4,9 +4,9 @@ var tecElement = $('#test-exec-counters');
 var testExecUUID = teuElement.html();
 
 function updateTestExec(testExec) {
-    tesElement.html(testExec['status']);
-    if ('total' in testExec['counters']) {
-        var counters = testExec['counters'];
+    tesElement.html(testExec.status);
+    if ('total' in testExec.counters) {
+        var counters = testExec.counters;
         var counters_string = '';
         // passed
         for (var i = 0; i < counters['passed']; i++) { counters_string += '+'; }
@@ -20,13 +20,11 @@ function updateTestExec(testExec) {
     }
 }
 
-console.log('running this now');
-
 if (teuElement.length) {
-    if (tesElement.html() != 'DONE') {
+    if (tesElement.html() !== 'DONE') {
         var updateFreq = 5;
         var updateInterval = setInterval(function () {
-            if (!$('#test-exec-uuid').length || tesElement.html() == 'DONE') {
+            if (!$('#test-exec-uuid').length || tesElement.html() === 'DONE') {
                 clearInterval(updateInterval);
                 return;
             }
