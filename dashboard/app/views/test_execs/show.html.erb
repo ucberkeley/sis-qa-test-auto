@@ -1,9 +1,9 @@
 <h1>Test Execution</h1>
 
 <% if @test_exec.nil? %>
-  This test execution does not exist.
+  <p>This test execution does not exist.</p>
 <% else %>
   <%= render 'show_valid' %>
 <% end %>
 
-<%= link_to 'Back', test_execs_path, remote: false %>
+<%= link_to 'Back to all Test Executions', test_execs_path, remote: false %>
