@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'application' %>
+
 <%= content_tag 'div', id: 'test-exec-info', data: {test_exec: @test_exec} do %>
   <p>
     UUID: <span id="test-exec-uuid"><%== @test_exec.uuid %></span>
@@ -14,42 +16,3 @@
     </span>
   </p>
 <% end %>
-
-<script type="text/javascript">
-  var testExecUUID = $('#test-exec-uuid').html();
-  var tesElement = $('#test-exec-status');
-  var tecElement = $('#test-exec-counters');
-
-  function updateTestExec(testExec) {
-    tesElement.html(testExec['status']);
-    if ('total' in testExec['counters']) {
-      var counters = testExec['counters'];
-      var counters_string = '';
-      // passed
-      for (var i = 0; i < counters['passed']; i++) { counters_string += '+'; }
-      // failed
-      for (i = 0; i < counters['failed']; i++) { counters_string += '*'; }
-      // skipped
-      for (i = 0; i < counters['skipped']; i++) { counters_string += '-'; }
-      // rest adding up to total
-      for (i = counters_string.length; i < counters['total']; i++) { counters_string += '.'; }
-      tecElement.html(counters_string);
-    }
-  }
-
-  if (tesElement.html() != 'DONE') {
-    var updateFreq = 5;
-    var updateInterval = setInterval(function () {
-      if (!$('#test-exec-uuid').length || tesElement.html() == 'DONE') {
-        clearInterval(updateInterval);
-        return;
-      }
-      $.ajax({
-        url: '/test_execs/' + testExecUUID,
-        dataType: 'json'
-      }).done(updateTestExec);
-    }, updateFreq * 1000);
-  }
-
-  updateTestExec($('#test-exec-info').data('testExec'));
-</script>
