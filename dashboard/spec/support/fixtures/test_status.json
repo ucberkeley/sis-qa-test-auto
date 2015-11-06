@@ -1,0 +1,10 @@
+{
+  "counters": {
+    "passed": 1,
+    "completed": 5,
+    "total": 5,
+    "skipped": 3,
+    "failed": 1
+  },
+  "status": "DONE"
+}

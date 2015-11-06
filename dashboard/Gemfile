@@ -50,6 +50,10 @@ group :development, :test do
   # Use RSpec for testing
   gem 'rspec-rails', '~> 3.0'
 
-  gem 'factory_girl_rails'
+  # Use WebMock for mocking HTTP requests in tests
+  gem 'webmock'
+
+  # Use Sinatra to create a mock test execution server
+  gem 'sinatra'
 end
 
