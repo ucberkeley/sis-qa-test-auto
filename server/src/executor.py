@@ -2,6 +2,7 @@
 
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
+import enum
 import json
 from multiprocessing.managers import BaseManager, NamespaceProxy
 import os
@@ -14,19 +15,21 @@ __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
 
 
+@enum.unique
+class TestExecStatusEnum(enum.Enum):
+    errored = -1
+    done = 0
+    queued = 1
+    dryrun = 2
+    executing = 3
 
-class TestResult:
-    """Wrapper for test results.
+
+class TestExecResult:
+    """Wrapper for the results of executing a set of tests.
 
     This provides conversion from test output to result and an iterator
     for easy recording of results.
     """
-
-    ERRORED = -1
-    DONE = 0
-    QUEUED = 1
-    DRYRUN = 2
-    RUNNING = 3
 
     class TestStep:
         symbol_result_map = {
@@ -35,19 +38,35 @@ class TestResult:
             '-': 'skipped',
         }
 
-        def __init__(self, result: 'TestResult' or 'TestResultProxy', step: dict):
-            self._test_results = result
+        def __init__(self, result: 'TestExecResult' or 'TestExecResultProxy', step: dict):
+            self.test_exec_result = result
             self._step = step
 
         def set_result(self, symbol: str):
             result = self.symbol_result_map[symbol]
             self._step['result']['status'] = result
-            self._test_results.update_counters(result)
+            self.test_exec_result.update_counters(result)
 
-    def __init__(self, status=None):
-        self.status = status if status is not None else self.QUEUED
-        self.data = None
-        self.counters = Counter()
+    def __init__(self, status: TestExecStatusEnum=TestExecStatusEnum.queued,
+                 counters: dict=None, data=None):
+        self.status = status
+        self.counters = counters if counters is not None else Counter()
+        self._data = data
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data):
+        self._data = data
+        self.counters['total'] = sum(1 for _ in self.iterator())
+
+    def json(self):
+        return json.dumps({
+            'status': self.status.name.upper(),
+            'counters': self.counters,
+        }, indent=4)
 
     def iterator(self):
         if self.data is None:
@@ -56,81 +75,87 @@ class TestResult:
         for test_file in self.data:
             for test_scenario in test_file['elements']:
                 for test_step in test_scenario['steps']:
-                    yield TestResult.TestStep(self, test_step)
+                    yield TestExecResult.TestStep(self, test_step)
 
     def update_counters(self, curr_result: str):
         self.counters[curr_result] += 1
         self.counters['completed'] += 1
 
 
-class TestResultProxy(NamespaceProxy):
-    """Proxy for TestResult, for syncing between multiple processes."""
+class TestExecResultProxy(NamespaceProxy):
+    """Proxy for TestsSetResult, for syncing between multiple processes."""
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
                  'update_counters')
 
     def iterator(self):
-        return TestResult.iterator(self)
+        return TestExecResult.iterator(self)
 
     def update_counters(self, curr_result: str):
         return self._callmethod('update_counters', (curr_result, ))
 
 
-class TestResultsManager(BaseManager):
+class TestExecResultsManager(BaseManager):
     pass
 
-TestResultsManager.register('TestResult', TestResult, TestResultProxy)
+TestExecResultsManager.register('TestExecResult', TestExecResult, TestExecResultProxy)
 
 
-CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d -f json'
-CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber -f json -o {output}' \
+CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d' \
+                      ' -f json'
+CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber' \
+                         ' -f json -o {output}' \
                          ' -f progress'
 
-def execute_tests(test_uuid: str, test_result: TestResult or TestResultProxy):
+def execute_tests(test_exec_uuid: str, test_exec_result: TestExecResult or TestExecResultProxy):
+    logs_output = osp.join(LOGS_DIR, test_exec_uuid)
+    subprocess.check_call('mkdir -p {}'.format(logs_output).split())
+
     try:
         # dryrun
-        test_result.status = TestResult.DRYRUN
+        test_exec_result.status = TestExecStatusEnum.dryrun
         dryrun = subprocess.Popen(CUCUMBER_DRYRUN_CMD.split(),
                                   stdout=subprocess.PIPE)
         json_data = dryrun.stdout.read().decode('utf-8')
-        test_result.data = json.loads(json_data)
+        test_exec_result.data = json.loads(json_data)
 
         # execution
-        test_result.status = TestResult.RUNNING
-        logs_output = osp.join(LOGS_DIR, test_uuid)
-        subprocess.check_call('mkdir -p {}'.format(logs_output).split())
-        results_output_file = os.path.join(logs_output, 'results.json')
+        test_exec_result.status = TestExecStatusEnum.executing
+        results_output_file = os.path.join(logs_output, 'cucumber_report.json')
         execution = subprocess.Popen(
             CUCUMBER_EXECUTION_CMD.format(output=results_output_file).split(),
             stdout=subprocess.PIPE)
-        for test_step in test_result.iterator():
+        for test_step in test_exec_result.iterator():
             symbol = execution.stdout.read1(1).decode('utf-8')
             test_step.set_result(symbol)
 
         # completion
-        test_result.status = TestResult.DONE
-        with open(osp.join(logs_output, 'result_counters.json'), 'w') as out:
-            json.dump(test_result.counters, out)
+        test_exec_result.status = TestExecStatusEnum.done
     except subprocess.SubprocessError as error:
-        test_result.status = TestResult.ERRORED
-        test_result.data = error
+        test_exec_result.status = TestExecStatusEnum.errored
+        test_exec_result.data = error
+        with open(osp.join(logs_output, 'error.txt'), 'w') as error_out:
+            error_out.write(error)
+    finally:
+        with open(osp.join(logs_output, 'result.json'), 'w') as result_out:
+            result_out.write(test_exec_result.json())
 
 
 class TestsExecutor(ProcessPoolExecutor):
-    """ProcessPoolExecutor implementation for test execution.
+    """ProcessPoolExecutor implementation for tests set execution.
 
-    This implementation adds a dictionary of current tests which get
-    updated when test executions are requested and when test executions
-    are completed.
+    This implementation adds a dictionary of current tests sets which get
+    updated when tests set executions are requested and when tests set
+    executions are completed.
     """
 
-    def __init__(self, results_manager: TestResultsManager, max_workers=None):
+    def __init__(self, results_manager: TestExecResultsManager, max_workers: int=None):
         super().__init__(max_workers)
-        self.current_tests = {}
+        self.current_test_execs = {}
         self.results_manager = results_manager
 
-    def submit(self, test_uuid: str):
-        test_result = self.results_manager.TestResult()
-        self.current_tests[test_uuid] = test_result
-        future = super().submit(execute_tests, test_uuid, test_result)
-        future.add_done_callback(lambda _: self.current_tests.pop(test_uuid))
+    def submit(self, test_exec_uuid: str):
+        test_exec_result = self.results_manager.TestExecResult()
+        self.current_test_execs[test_exec_uuid] = test_exec_result
+        future = super().submit(execute_tests, test_exec_uuid, test_exec_result)
+        future.add_done_callback(lambda _: self.current_test_execs.pop(test_exec_uuid))
 

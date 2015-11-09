@@ -25,6 +25,7 @@ directory, run as `sudo -E qata start` to pass in environment variables). The fi
 longer since the docker container will be downloaded and then run.
 1. When required, stop the service with `qata stop`, or restart with `qata restart`
 1. If required, attach to the service with `qata attach`.
+1. Run the dashboard server following instructions in [dashboard/README.md](dashboard/README.md).
 
 ### Additional notes
 1. Keep the test execution server files and Gemfile (and Gemfile.lock) in docker/sis-qa-test-auto

@@ -1,0 +1,18 @@
+<%= javascript_include_tag 'application' %>
+
+<%= content_tag 'div', id: 'test-exec-info', data: {test_exec: @test_exec} do %>
+  <p>
+    UUID: <span id="test-exec-uuid"><%== @test_exec.uuid %></span>
+  </p>
+  <p>
+    Status: <span id="test-exec-status"><%== @test_exec.status %></span>
+  </p>
+  <p>
+    Counters:
+    <span id="test-exec-counters">
+      <% if @test_exec.counters.has_key? 'total' %>
+        <%== '.' * @test_exec.counters['total'] %>
+      <% end %>
+    </span>
+  </p>
+<% end %>

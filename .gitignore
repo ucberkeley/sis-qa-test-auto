@@ -34,7 +34,8 @@ __pycache__/
 test/.config.json
 
 # Log files
-logs/*
+/logs/*
+!/logs/.keep
 
 # Synced files
 docker/sis-qa-test-auto/server
