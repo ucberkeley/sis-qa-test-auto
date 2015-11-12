@@ -49,6 +49,9 @@ group :development, :test do
 end
 
 group :test do
+  # Use Rake for Travis CI
+  gem 'rake'
+
   # Use RSpec for testing
   gem 'rspec-rails', '~> 3.0'
 
