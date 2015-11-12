@@ -3,8 +3,11 @@ rvm:
  - "1.9.3"
  - rbx
 install:
-  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle install
+  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle install --deployment --jobs 4 --retry 3
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm install
+cache:
+  directories:
+    - dashboard/vendor/bundle
 script:
   - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm run test
