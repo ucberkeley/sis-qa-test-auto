@@ -1,0 +1,25 @@
+{
+  "name": "dashboard",
+  "version": "0.0.2",
+  "description": "Dashboard for the UC Berkeley Student Information Systems project QA Automated Tests server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ucberkeley/sis-qa-test-auto"
+  },
+  "keywords": [
+    "UC Berkeley",
+    "SIS",
+    "QA testing",
+    "dashboard"
+  ],
+  "author": {
+    "name": "Dibyo Majumdar",
+    "email": "dibyo.majumdar@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ucberkeley/sis-qa-test-auto/issues"
+  },
+  "devDependencies": {
+    "jshint": "2.8.0"
+  }
+}
