@@ -10,13 +10,13 @@
           var counters = testExec.counters;
           var counters_string = '';
           // passed
-          for (var i = 0; i < counters['passed']; i++) { counters_string += '+'; }
+          for (var i = 0; i < counters.passed; i++) { counters_string += '+'; }
           // failed
-          for (i = 0; i < counters['failed']; i++) { counters_string += '*'; }
+          for (i = 0; i < counters.failed; i++) { counters_string += '*'; }
           // skipped
-          for (i = 0; i < counters['skipped']; i++) { counters_string += '-'; }
+          for (i = 0; i < counters.skipped; i++) { counters_string += '-'; }
           // rest adding up to total
-          for (i = counters_string.length; i < counters['total']; i++) { counters_string += '.'; }
+          for (i = counters_string.length; i < counters.total; i++) { counters_string += '.'; }
           tecElement.html(counters_string);
       }
   }
