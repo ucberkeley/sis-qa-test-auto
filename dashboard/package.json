@@ -16,6 +16,7 @@
     "name": "Dibyo Majumdar",
     "email": "dibyo.majumdar@gmail.com"
   },
+  "license": "ECL-2.0",
   "bugs": {
     "url": "https://github.com/ucberkeley/sis-qa-test-auto/issues"
   },
