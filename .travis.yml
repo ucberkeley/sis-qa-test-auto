@@ -6,5 +6,5 @@ install:
   - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle install
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm install
 script:
-  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake spec
+  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm run test
