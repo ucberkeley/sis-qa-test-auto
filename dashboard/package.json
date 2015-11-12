@@ -20,6 +20,9 @@
     "url": "https://github.com/ucberkeley/sis-qa-test-auto/issues"
   },
   "devDependencies": {
-    "jshint": "2.8.0"
+    "gulp": "~3.9.0",
+    "gulp-jshint": "~1.12.0",
+    "jshint": "2.8.0",
+    "jshint-stylish": "~2.0.1"
   }
 }
