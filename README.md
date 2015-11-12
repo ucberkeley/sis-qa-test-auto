@@ -1,7 +1,7 @@
 # QA Test Automation (QATA) framework
 for UC Berkeley SIS Campus Solutions
 
-[![Build Status](https://travis-ci.org/mDibyo/sis-qa-test-auto.svg?branch=SISRP-10794)](https://travis-ci.org/mDibyo/sis-qa-test-auto)
+[![Build Status](https://travis-ci.org/ucberkeley/sis-qa-test-auto.svg)](https://travis-ci.org/ucberkeley/sis-qa-test-auto)
 
 ### Instructions for running
 1. [Install Docker](https://docs.docker.com/installation/).
