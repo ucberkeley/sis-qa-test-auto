@@ -2,6 +2,11 @@ language: ruby
 rvm:
  - "1.9.3"
  - rbx
-# uncomment this line if your project needs to run something other than `rake`:
-script: cd dashboard && bundle install && bundle exec rake
-
+install:
+  - cd dashboard
+  - bundle install
+  - npm install
+script:
+  - cd dashboard
+  - bundle exec rake spec
+  - npm run test
