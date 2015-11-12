@@ -1,0 +1,24 @@
+{
+  "bitwise": true,
+  "browser": true,
+  "browserify": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+  "globals": {
+    "$": false
+  },
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "maxdepth": 5,
+  "noempty": true,
+  "nonew": true,
+  "quotmark": "single",
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "trailing": true
+}
