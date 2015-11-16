@@ -1,8 +1,7 @@
 require 'json'
 require 'pathname'
 
-require 'selenium-webdriver'
-
+require 'capybara/cucumber'
 
 SIS_TEST_DIR_ENV = 'SIS_TEST_DIR'
 if ENV.has_key? SIS_TEST_DIR_ENV
@@ -11,11 +10,5 @@ else
   $config = JSON.parse(Pathname.new(__FILE__).dirname.dirname.dirname.join('.config.json').read)
 end
 
-Before do
-  $driver = Selenium::WebDriver.for :firefox
-  $driver.manage.timeouts.implicit_wait = 3
-end
+Capybara.default_driver = :selenium
 
-After do
-  $driver.quit
-end
