@@ -13,6 +13,7 @@ port=8421
 project_dir=$(dirname $(readlink -f "$0"))
 : ${SIS_TEST_DIR:=${project_dir}/test}
 : ${SIS_LOGS_DIR:=${project_dir}/logs}
+: ${SIS_TEST_WEBDRIVER:=selenium}
 : ${DOCKER_NAMESPACE:=ucberkeley}
 docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto
 
@@ -39,6 +40,7 @@ start() {
       -t \
       -d \
       -e DISPLAY=${DISPLAY} \
+      -e SIS_TEST_WEBDRIVER=${SIS_TEST_WEBDRIVER} \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
       -v ${SIS_TEST_DIR}:/test \
       -v ${SIS_LOGS_DIR}:/logs \
