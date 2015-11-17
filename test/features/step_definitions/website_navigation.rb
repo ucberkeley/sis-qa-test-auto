@@ -19,5 +19,5 @@ When 'I press the \'$button_value\' button' do |button_value|
 end
 
 Then 'I should be logged in' do
-  page.title.equal? $config['title']
+  assert page.title.start_with? $config['title']
 end
