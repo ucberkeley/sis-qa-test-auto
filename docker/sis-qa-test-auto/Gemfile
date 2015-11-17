@@ -10,8 +10,16 @@ gem 'cucumber'
 # Use Capybara to write step_definitions for Cucumber tests
 gem 'capybara'
 
-# Use Poltergeist (along with PhantomJS) as webdriver for Capybara
-gem 'poltergeist'
+group :webdriver_poltergeist do
+  # Use Poltergeist (along with PhantomJS) as headless webdriver for Capybara
+  gem 'poltergeist'
+end
+
+group :webdriver_selenium do
+  # Use Selenium (along with firefox) as webdriver for Capybara
+  gem 'selenium-webdriver'
+end
+
 
 
 
