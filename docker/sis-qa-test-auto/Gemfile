@@ -1,7 +1,17 @@
 source 'https://rubygems.org'
 
+
+# Use JSON for interpretting config file
 gem 'json'
-gem 'selenium-webdriver', '~> 2.45.0'
-gem 'selenium-cucumber', '~> 2.1.3'
+
+# Use Cucumber as DSL for browser tests
+gem 'cucumber'
+
+# Use Capybara to write step_definitions for Cucumber tests
+gem 'capybara'
+
+# Use Poltergeist (along with PhantomJS) as webdriver for Capybara
+gem 'poltergeist'
+
 
 
