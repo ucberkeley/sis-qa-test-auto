@@ -13,7 +13,7 @@ port=8421
 project_dir=$(dirname $(readlink -f "$0"))
 : ${SIS_TEST_DIR:=${project_dir}/test}
 : ${SIS_LOGS_DIR:=${project_dir}/logs}
-: ${SIS_TEST_WEBDRIVER:=poltergeist}
+: ${SIS_TEST_WEBDRIVER:=selenium}
 : ${DOCKER_NAMESPACE:=ucberkeley}
 docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto
 

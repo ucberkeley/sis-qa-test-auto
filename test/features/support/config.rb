@@ -13,14 +13,14 @@ end
 
 
 SIS_TEST_WEBDRIVER_ENV = 'SIS_TEST_WEBDRIVER'
-if ENV.has_key? SIS_TEST_WEBDRIVER_ENV and ENV[SIS_TEST_WEBDRIVER_ENV].downcase == 'selenium'
-  Bundler.require(:default, :webdriver_selenium)
-  require 'selenium/webdriver'
-  Capybara.default_driver = :selenium
-else
+if ENV.has_key? SIS_TEST_WEBDRIVER_ENV and ENV[SIS_TEST_WEBDRIVER_ENV].downcase == 'poltergeist'
   Bundler.require(:default, :webdriver_poltergeist)
   require 'capybara/poltergeist'
   Capybara.default_driver = :poltergeist
+else
+  Bundler.require(:default, :webdriver_selenium)
+  require 'selenium/webdriver'
+  Capybara.default_driver = :selenium
 end
 
 Capybara.default_wait_time = 5
