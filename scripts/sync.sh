@@ -20,11 +20,11 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ -f ${SIS_TEST_DIR}/Gemfile ] && ! cmp --silent ${SIS_TEST_DIR}/Gemfile ${DOCKER_IMAGE_DIR}/Gemfile; then
-    stale=true
-    cp ${SIS_TEST_DIR}/Gemfile ${DOCKER_IMAGE_DIR}
-    if [ -f ${SIS_TEST_DIR}/Gemfile.lock ]; then
-        cp ${SIS_TEST_DIR}/Gemfile.lock ${DOCKER_IMAGE_DIR}
-    fi
+  stale=true
+  cp ${SIS_TEST_DIR}/Gemfile ${DOCKER_IMAGE_DIR}
+  if [ -f ${SIS_TEST_DIR}/Gemfile.lock ]; then
+      cp ${SIS_TEST_DIR}/Gemfile.lock ${DOCKER_IMAGE_DIR}
+  fi
 fi
 
 if ${stale}; then
