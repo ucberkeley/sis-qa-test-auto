@@ -27,12 +27,12 @@ longer since the docker container will be downloaded and then run.
 1. Run the dashboard server following instructions in [dashboard/README.md](dashboard/README.md).
 
 ### Setting Environment Variables
-1. If using external test directory, set `$SIS_TEST_DIR` to location of external test directory.
-1. Similarly, if using external logs directory, set `$SIS_LOGS_DIR` to location of external logs
+1. If using external test directory, set `SIS_TEST_DIR` to location of external test directory.
+1. Similarly, if using external logs directory, set `SIS_LOGS_DIR` to location of external logs
 directory.
 1. By default, the framework uses Selenium WebDriver on Firefox for testing. If you want to
 deploy in an environment without a graphical interface (a remote server), set
-`$SIS_TEST_WEBDRIVER=poltergeist`. The framework will then use Poltergeist WebDriver on PhantomJS
+`SIS_TEST_WEBDRIVER=poltergeist`. The framework will then use Poltergeist WebDriver on PhantomJS
 headless browser.
 
 ### Additional notes
