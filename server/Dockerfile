@@ -28,6 +28,5 @@ RUN bash -c "\
 
 EXPOSE 8421
 
-COPY server /server/
-COPY run_server.sh /
-ENTRYPOINT ["/run_server.sh"]
+COPY . /server/
+ENTRYPOINT ["/server/run_server.sh"]
