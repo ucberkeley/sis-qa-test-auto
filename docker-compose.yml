@@ -14,4 +14,7 @@ server:
 dashboard:
   build: dashboard/
   container_name: qata-dashboard
+  environment:
+    - SIS_SERVER_PORT
+    - SIS_DASHBOARD_PORT
   net: "host"
