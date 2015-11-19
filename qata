@@ -22,7 +22,7 @@ server_cid_file=/var/run/qata/server.cid
 server_docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto-server
 
 dashboard_cid_file=/var/run/qata/dashboard.cid
-dashboard_port=3000
+: ${SIS_DASHBOARD_PORT:=3000}
 dashboard_docker_image=${DOCKER_NAMESPACE}/sis-qa-test-auto-dashboard
 
 
@@ -86,7 +86,7 @@ start() {
         ${server_docker_image})
   fi
 
-  if check_container ${dashboard_cid_file} ${dashboard_port}; then
+  if check_container ${dashboard_cid_file} ${SIS_DASHBOARD_PORT}; then
     dashboard_up=0
     echo "QATA Dashboard already running."
   else
@@ -98,6 +98,8 @@ start() {
         --net=host \
         -t \
         -d \
+        -e SIS_SERVER_PORT=${SIS_SERVER_PORT} \
+        -e SIS_DASHBOARD_PORT=${SIS_DASHBOARD_PORT} \
         ${dashboard_docker_image})
   fi
 
@@ -108,10 +110,10 @@ start() {
       echo ${server_cid} > ${server_cid_file}
       echo "QATA Server started on port ${SIS_SERVER_PORT}."
     fi
-    if [[ ${dashboard_up} -ne 0 ]] && [[ $(netstat -tulnp | grep ${dashboard_port}) ]]; then
+    if [[ ${dashboard_up} -ne 0 ]] && [[ $(netstat -tulnp | grep ${SIS_DASHBOARD_PORT}) ]]; then
       dashboard_up=0
       echo ${dashboard_cid} > ${dashboard_cid_file}
-      echo "QATA Dashboard started on port ${dashboard_port}."
+      echo "QATA Dashboard started on port ${SIS_DASHBOARD_PORT}."
     fi
   done
 }

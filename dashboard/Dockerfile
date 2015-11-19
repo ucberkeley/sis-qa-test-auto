@@ -14,5 +14,4 @@ RUN cd /dashboard \
     && bundle install --jobs 4 --retry 3 \
     && npm install
 
-WORKDIR /dashboard
-ENTRYPOINT ["bin/rails", "server"]
+ENTRYPOINT ["/dashboard/run_dashboard.sh"]
