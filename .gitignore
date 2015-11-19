@@ -36,6 +36,3 @@ test/.config.json
 # Log files
 /logs/*
 !/logs/.keep
-
-# Synced files
-docker/sis-qa-test-auto/server
