@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # The QA Test Automation (QATA) framework service
-# Serves request on port 8421 (set below)
+# - Server serves request on port 8421 (by default)
+# - Dashboard listens on port 3000 (by default) and can be accessed
+#   at http://localhost:3000
 
 if [ $( id | sed -e 's/(.*//' ) != "uid=0" ]; then
   echo "Please rerun with super user privileges. "
