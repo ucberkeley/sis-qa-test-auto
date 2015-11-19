@@ -1,0 +1,16 @@
+server:
+  build: server/
+  container_name: qata-server
+  environment:
+    - DISPLAY
+    - SIS_TEST_WEBDRIVER
+  net: "host"
+  volumes:
+    - /tmp/.X11-unix:/tmp/.X11-unix
+    - ${SIS_TEST_DIR}:/test
+    - ${SIS_LOGS_DIR}:/logs
+
+dashboard:
+  build: dashboard/
+  container_name: qata-dashboard
+  net: "host"
