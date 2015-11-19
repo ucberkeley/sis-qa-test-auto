@@ -37,6 +37,7 @@ first run will take longer since the Docker containers will be built and then ru
 1. If using external test directory, set `SIS_TEST_DIR` to location of external test directory.
 1. Similarly, if using external logs directory, set `SIS_LOGS_DIR` to location of external logs
 directory.
+1. By default, the server listens on port 8421. Change this by setting `SIS_SERVER_PORT`.
 1. By default, the framework uses Selenium WebDriver on Firefox for testing. If you want to
 deploy in an environment without a graphical interface (a remote server), set
 `SIS_TEST_WEBDRIVER=poltergeist`. The framework will then use Poltergeist WebDriver on PhantomJS

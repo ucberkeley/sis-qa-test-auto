@@ -3,6 +3,7 @@ server:
   container_name: qata-server
   environment:
     - DISPLAY
+    - SIS_SERVER_PORT
     - SIS_TEST_WEBDRIVER
   net: "host"
   volumes:

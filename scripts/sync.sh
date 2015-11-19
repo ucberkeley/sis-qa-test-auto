@@ -15,6 +15,6 @@ if [ -f ${SIS_TEST_DIR}/Gemfile ] && ! cmp --silent ${SIS_TEST_DIR}/Gemfile ${SI
   if [ -f ${SIS_TEST_DIR}/Gemfile.lock ]; then
     cp ${SIS_TEST_DIR}/Gemfile.lock ${SIS_SERVER_DIR}
   fi
-  echo "Docker image stale. Synced and rebuilding..."
-  sudo docker build -t ${DOCKER_NAMESPACE}/sis-qa-test-auto ${SIS_SERVER_DIR}
+  echo "Server Docker image stale. Synced and rebuilding..."
+  ./build.sh server
 fi
