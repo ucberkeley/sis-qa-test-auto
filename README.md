@@ -5,6 +5,9 @@ for UC Berkeley Student Information Systems (SIS) Campus Solutions
 
 
 ## Environment variables
+By default, the following values are used. New values must be set while running the framework
+and will be automatically picked up.
+
 * `SIS_TEST_DIR=<project-dir>/test`: If using external test directory, set to location of
 external test directory.
 * `SIS_LOGS_DIR=<project-dir>/logs`: If using external logs directory, set to location of
@@ -18,36 +21,50 @@ If deploying in an environment wihtout a graphical interface (for example, a rem
 headless browser.
 
 
-## Instructions for running
+## Methods for setting up and running framework
+The QA Test Automation framework is itself highly automated. There are a number of ways to set
+up and run the framework. The two main components: server and dashboard have been
+[Docker](https://www.docker.com/)ized. Local installation is also possible but not recommended.
+
+First, add file `${SIS_TEST_DIR}/.config.json` with the following information:
+
+   ```json
+   {
+       "website_url": "<Campus Solutions Test Instance URL>",
+       "userid": "<User ID for Test Instance>",
+       "password": "<Password for Test Instance>",
+       "title": "Berkeley Student Information System"
+   }
+   ```
+
+Then, follow instructions in one of the following sections.
+
+### Using Docker Engine
+This method uses pre-built images from the
+[ucberkeley public Docker registry](https://hub.docker.com/r/ucberkeley/). Alternatively, images
+can be built locally by running `scripts/build.sh` (after installing Docker Engine).
+
 1. [Install Docker Engine](https://docs.docker.com/installation/).
 1. Install the QATA framework with `scripts/install.sh`. This will create a symlink to the server
 script in /usr/bin.
-1. Check section on [Setting Environment variables](#setting-environment-variables).
-1. Add file test/.config.json with the following information:
-
-    ```json
-    {
-        "website_url": "<Campus Solutions Test Instance URL>",
-        "userid": "<User ID for Test Instance>",
-        "password": "<Password for Test Instance>",
-        "title": "Berkeley Student Information System"
-    }
-    ```
-
 1. Run the Test Framework service with `qata start` (may required sudo. If using external test
 and/or logs directory, run as `sudo -E qata start` to pass in environment variables). The first
 run will take longer since the docker container will be downloaded and then run.
 1. When required, stop the service with `qata stop`, or restart with `qata restart`
 1. If required, attach to the service with `qata attach`.
 
+### Using Docker Compose (along with Docker Engine)
+This method uses Docker Compose to automate the process of building and running images.
 
-### Alternate instructions for running (using Docker Compose)
 1. [Install Docker Compose](https://docs.docker.com/compose/install/) (in addition to [Docker
 Engine](https://docs.docker.com/installation/)).
-1. In the project directory, run `docker compose up` (may require sudo. If using external test
-and/or logs directory, run as `sudo -E docker compose up` to pass in environment variables). The
-first run will take longer since the Docker containers will be built and then run.
+1. In the project directory, run `docker-compose up` (may require sudo. If using external test
+and/or logs directory, run as `sudo -E docker-compose up` to pass in environment variables). The
+first run will take longer since the Docker images will be built and then run.
 
+### Installing locally
+This method may speed up testing, but is otherwise not recommended. Follow instructions in
+[server/README.md](server/README.md) and [dashboard/README.md](dashboard/README.md).
 
 ## Additional notes
 1. Keep the test execution server files and Gemfile (and Gemfile.lock) in docker/sis-qa-test-auto
