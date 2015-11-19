@@ -4,6 +4,10 @@
 project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
 
 
+usage() {
+  echo "Usage: $0 [all|server|dashboard]"
+}
+
 build_server() {
 sudo docker build \
   -t ${DOCKER_NAMESPACE}/sis-qa-test-auto-server \
@@ -27,5 +31,8 @@ case "$1" in
   all)
     build_server
     build_dashboard
+    ;;
+  *)
+    usage
     ;;
 esac
