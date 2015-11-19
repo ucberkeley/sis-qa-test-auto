@@ -4,7 +4,7 @@ for UC Berkeley SIS Campus Solutions
 [![Build Status](https://travis-ci.org/ucberkeley/sis-qa-test-auto.svg)](https://travis-ci.org/ucberkeley/sis-qa-test-auto)
 
 ### Instructions for running
-1. Install [Docker Engine](https://docs.docker.com/installation/).
+1. [Install Docker Engine](https://docs.docker.com/installation/).
 1. Install the QATA framework with `scripts/install.sh`. This will create a symlink to the server
 script in /usr/bin.
 1. Check section on [Setting Environment variables](#setting-environment-variables).
@@ -26,12 +26,12 @@ run will take longer since the docker container will be downloaded and then run.
 1. If required, attach to the service with `qata attach`.
 1. Run the dashboard server following instructions in [dashboard/README.md](dashboard/README.md).
 
-### Alternate instructions for running (using Docker compose)
-1. Install [Docker Compose](https://docs.docker.com/compose/install/) (in addition to [Docker
+### Alternate instructions for running (using Docker Compose)
+1. [Install Docker Compose](https://docs.docker.com/compose/install/) (in addition to [Docker
 Engine](https://docs.docker.com/installation/)).
 1. In the project directory, run `docker compose up` (may require sudo. If using external test
 and/or logs directory, run as `sudo -E docker compose up` to pass in environment variables). The
-first run will take longer since the Docker containers will be downloaded and then run.
+first run will take longer since the Docker containers will be built and then run.
 
 ### Setting Environment Variables
 1. If using external test directory, set `SIS_TEST_DIR` to location of external test directory.
