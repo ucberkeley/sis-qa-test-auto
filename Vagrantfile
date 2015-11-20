@@ -5,9 +5,18 @@ $setup = <<SCRIPT
   && docker stop $(docker ps -a -q) \
   || docker rm $(docker ps -a -q)
 
-docker pull ucberkeley/sis-qa-test-auto
+# Build docker containers
+./vagrant/scripts/build.sh all
 
 SCRIPT
+
+SIS_DASHBOARD_PORT_ENV = 'SIS_DASHBOARD_PORT'
+
+dashboard_port = 3000
+if ENV.key? SIS_DASHBOARD_PORT_ENV
+  dashboard_port = ENV[SIS_DASHBOARD_PORT_ENV]
+end
+
 
 VAGRANTFILE_API_VERSION = "2"
 
@@ -17,11 +26,14 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
     v.cpus = 2
-    v.gui = true
+    v.gui = false
   end
 
   # Ubuntu
   config.vm.box = "ubuntu/trusty64"
+
+  # Forward dashboard port
+  config.vm.network :forwarded_port, guest: dashboard_port, host: dashboard_port
 
   # Install latest docker
   config.vm.provision "docker"
