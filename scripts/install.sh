@@ -5,5 +5,8 @@ if [ $( id | sed -e 's/(.*//' ) != "uid=0" ]; then
   exit 1
 fi
 
-project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
-ln -s ${project_dir}/qata /usr/bin/qata
+installation_target=/usr/bin/qata
+if [ ! -f ${installation_target} ]; then
+  project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
+  ln -s ${project_dir}/qata ${installation_target}
+fi
