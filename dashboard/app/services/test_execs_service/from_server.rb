@@ -6,7 +6,7 @@ module TestExecsService
   class FromServer < Base
     @server_address = URI::HTTP.build({
       :host => 'localhost',
-      :port => ENV[SIS_TEST_SERVER_PORT_ENV].to_i
+      :port => ENV[SIS_SERVER_PORT_ENV].to_i
     }).to_s
 
     def self.execute
