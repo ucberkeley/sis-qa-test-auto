@@ -47,7 +47,7 @@ can be built locally by running `scripts/build.sh` (after installing Docker Engi
 1. [Install Docker Engine](https://docs.docker.com/installation/).
 1. Install the QATA framework with `scripts/install.sh`. This will create a symlink to the server
 script in /usr/bin.
-1. Run the Test Framework service with `qata start` (may required sudo. If using external test
+1. Run the service with `qata start` (may required sudo. If using external test
 and/or logs directory, run as `sudo -E qata start` to pass in environment variables). The first
 run will take longer since the docker container will be downloaded and then run.
 1. When required, stop the service with `qata stop`, or restart with `qata restart`
@@ -61,6 +61,13 @@ Engine](https://docs.docker.com/installation/)).
 1. In the project directory, run `docker-compose up` (may require sudo. If using external test
 and/or logs directory, run as `sudo -E docker-compose up` to pass in environment variables). The
 first run will take longer since the Docker images will be built and then run.
+
+### Using Vagrant
+This method runs Docker Engine inside a Vagrant VM.
+
+1. In the project directory, run `vagrant up`. This will also build the Docker images inside the
+VM and set all environment variables.
+1. `vagrant ssh` into the VM and then start the service with `sudo -E qata start`.
 
 ### Installing locally
 This method may speed up testing, but is otherwise not recommended. Follow instructions in
