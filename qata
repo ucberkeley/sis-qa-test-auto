@@ -82,7 +82,7 @@ start() {
         -e DISPLAY=${DISPLAY} \
         -e SIS_SERVER_PORT=${SIS_SERVER_PORT} \
         -e SIS_TEST_WEBDRIVER=${SIS_TEST_WEBDRIVER} \
-        -e SIS_SERVER_EXTRA_ARGS=${SIS_SERVER_EXTRA_ARGS} \
+        -e SIS_SERVER_EXTRA_ARGS="${SIS_SERVER_EXTRA_ARGS}" \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v ${SIS_TEST_DIR}:/test \
         -v ${SIS_LOGS_DIR}:/logs \
