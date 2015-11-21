@@ -31,7 +31,7 @@ $docker_setup = <<SCRIPT
   || docker rm $(docker ps -a -q)
 
 # Build docker containers
-sudo /vagrant/scripts/build.sh all
+/vagrant/scripts/build.sh all
 SCRIPT
 
 $sis_setup = <<SCRIPT
@@ -43,6 +43,7 @@ echo "Setting environment variables"
 cat > ~/.env << EOF
 #{get_env_file_string(sis_env_keys)}
 
+export SIS_DASHBOARD_EXTRA_ARGS='-b 0.0.0.0'
 export SIS_ENV_SET=true
 EOF
 source ~/.profile \
@@ -58,6 +59,7 @@ VAGRANTFILE_API_VERSION = '2'
 Vagrant.configure('2') do |config|
   # Setup resource requirements
   config.vm.provider 'virtualbox' do |v|
+    v.name = 'sis-qa-test-auto'
     v.memory = 2048
     v.cpus = 2
     v.gui = false

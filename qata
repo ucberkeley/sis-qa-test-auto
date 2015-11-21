@@ -82,6 +82,7 @@ start() {
         -e DISPLAY=${DISPLAY} \
         -e SIS_SERVER_PORT=${SIS_SERVER_PORT} \
         -e SIS_TEST_WEBDRIVER=${SIS_TEST_WEBDRIVER} \
+        -e SIS_SERVER_EXTRA_ARGS=${SIS_SERVER_EXTRA_ARGS} \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v ${SIS_TEST_DIR}:/test \
         -v ${SIS_LOGS_DIR}:/logs \
@@ -102,6 +103,7 @@ start() {
         -d \
         -e SIS_SERVER_PORT=${SIS_SERVER_PORT} \
         -e SIS_DASHBOARD_PORT=${SIS_DASHBOARD_PORT} \
+        -e SIS_DASHBOARD_EXTRA_ARGS="${SIS_DASHBOARD_EXTRA_ARGS}" \
         ${dashboard_docker_image})
   fi
 
