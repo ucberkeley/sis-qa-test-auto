@@ -8,7 +8,7 @@
         "steps": [
           {
             "result": {
-              "status": "skipped",
+              "status": "skipped"
             }
           },
           {
@@ -39,7 +39,7 @@
         "steps": [
           {
             "result": {
-              "status": "skipped",
+              "status": "skipped"
             }
           },
           {
@@ -65,7 +65,7 @@
         "steps": [
           {
             "result": {
-              "status": "skipped",
+              "status": "skipped"
             }
           },
           {
