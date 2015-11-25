@@ -7,4 +7,4 @@ cd /test
 bundle install
 SIS_TEST_DIR=/test \
   SIS_LOGS_DIR=/logs \
-  ./../server/src/server.py ${SIS_SERVER_PORT} ${SIS_SERVER_EXTRA_ARGS}
+  ./../qatserver/qatserver/server.py ${SIS_SERVER_PORT} ${SIS_SERVER_EXTRA_ARGS}

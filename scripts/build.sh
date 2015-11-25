@@ -11,7 +11,7 @@ usage() {
 build_server() {
 sudo docker build \
   -t ${DOCKER_NAMESPACE}/sis-qa-test-auto-server \
-  ${project_dir}/server
+  ${project_dir}/qatserver
 }
 
 build_dashboard() {
