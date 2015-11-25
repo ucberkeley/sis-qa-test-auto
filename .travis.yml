@@ -1,13 +1,30 @@
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - python3.4
+
 language: ruby
+
 rvm:
  - "1.9.3"
+
+before_install:
+  - wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py --user; rm -f get-pip.py
+
 install:
   - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle install --deployment --jobs 4 --retry 3
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm install
+  - cd ${TRAVIS_BUILD_DIR}/qatserver && pip install --user -r requirements.txt
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
+  - cd ${TRAVIS_BUILD_DIR}/dashboard && npm run test
+  - cd ${TRAVIS_BUILD_DIR}/qatserver && py.test -v
+
 cache:
   directories:
     - dashboard/vendor/bundle
     - dashboard/node_modules
-script:
-  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
-  - cd ${TRAVIS_BUILD_DIR}/dashboard && npm run test
+    - ${HOME}/.cache/pip
