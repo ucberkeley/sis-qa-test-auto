@@ -23,6 +23,14 @@ class TestTestExecResult:
         r.data = test_cucumber_report
         return r
 
+    @staticmethod
+    def assert_correct_number_of_counters(counters, passed=0, failed=0, skipped=0):
+        assert counters['passed'] == passed, 'not the correct number of passed'
+        assert counters['failed'] == failed, 'not the correct number of failed'
+        assert counters['skipped'] == skipped, 'not the correct number of skipped'
+        assert counters['completed'] == passed + failed + skipped, \
+            'not the correct number of completed'
+
     def test_iterator(self, result):
         expected_steps = set()
         for file in result.data:
@@ -42,31 +50,53 @@ class TestTestExecResult:
         }, 'result counters not initialized correctly'
 
     def test_update_counters(self, result):
-        def assert_correct_number_of_counters(counters, passed=0, failed=0, skipped=0):
-            assert counters['passed'] == passed, 'not the correct number of passed'
-            assert counters['failed'] == failed, 'not the correct number of failed'
-            assert counters['skipped'] == skipped, 'not the correct number of skipped'
-            assert counters['completed'] == passed + failed + skipped, \
-                'not the correct number of completed'
-
-        assert_correct_number_of_counters(result.counters)
+        self.assert_correct_number_of_counters(result.counters)
 
         result.update_counters('passed')
-        assert_correct_number_of_counters(result.counters,
+        self.assert_correct_number_of_counters(result.counters,
                                           passed=1)
 
         result.update_counters('passed')
-        assert_correct_number_of_counters(result.counters,
+        self.assert_correct_number_of_counters(result.counters,
                                           passed=2)
 
         result.update_counters('failed')
-        assert_correct_number_of_counters(result.counters,
+        self.assert_correct_number_of_counters(result.counters,
                                           passed=2, failed=1)
 
         result.update_counters('skipped')
-        assert_correct_number_of_counters(result.counters,
+        self.assert_correct_number_of_counters(result.counters,
                                           passed=2, failed=1, skipped=1)
 
         result.update_counters('skipped')
-        assert_correct_number_of_counters(result.counters,
+        self.assert_correct_number_of_counters(result.counters,
                                           passed=2, failed=1, skipped=2)
+
+    def test_test_step(self, result):
+        assert result.counters['total'] > 0, 'no test steps for test'
+        it = result.iterator()
+
+        try:
+            self.assert_correct_number_of_counters(result.counters)
+
+            next(it).set_result('.')
+            self.assert_correct_number_of_counters(result.counters,
+                                                   passed=1)
+
+            next(it).set_result('.')
+            self.assert_correct_number_of_counters(result.counters,
+                                                   passed=2)
+
+            next(it).set_result('F')
+            self.assert_correct_number_of_counters(result.counters,
+                                                   passed=2, failed=1)
+
+            next(it).set_result('-')
+            self.assert_correct_number_of_counters(result.counters,
+                                                   passed=2, failed=1, skipped=1)
+
+            next(it).set_result('-')
+            self.assert_correct_number_of_counters(result.counters,
+                                                   passed=2, failed=1, skipped=2)
+        except StopIteration:
+            raise RuntimeError('not enough test steps for test')
