@@ -7,26 +7,31 @@
         "line": 5,
         "steps": [
           {
+            "name": "feature_file1#element1#step1",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file1#element1#step2",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file1#element1#step3",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file1#element1#step4",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file1#element1#step5",
             "result": {
               "status": "skipped"
             }
@@ -38,16 +43,19 @@
         "line": 3,
         "steps": [
           {
+            "name": "feature_file1#element2#step1",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file1#element2#step2",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file1#element2#step3",
             "result": {
               "status": "skipped"
             }
@@ -64,26 +72,31 @@
         "line": 5,
         "steps": [
           {
+            "name": "feature_file2#element1#step1",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file2#element1#step2",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file2#element1#step3",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file2#element1#step4",
             "result": {
               "status": "skipped"
             }
           },
           {
+            "name": "feature_file2#element1#step5",
             "result": {
               "status": "skipped"
             }
