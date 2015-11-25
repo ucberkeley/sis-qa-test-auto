@@ -9,7 +9,7 @@ import os
 import os.path as osp
 import subprocess
 
-from __init__ import LOGS_DIR
+from src import LOGS_DIR
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
