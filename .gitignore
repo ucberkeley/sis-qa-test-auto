@@ -41,3 +41,6 @@ test/.config.json
 # Log files
 /logs/*
 !/logs/.keep
+
+# Test cache
+/qatserver/.cache

@@ -147,6 +147,7 @@ class TestsExecutor(ProcessPoolExecutor):
     updated when tests set executions are requested and when tests set
     executions are completed.
     """
+    execute_tests_func = execute_tests
 
     def __init__(self, results_manager: TestExecResultsManager, max_workers: int=None):
         super().__init__(max_workers)
@@ -156,6 +157,5 @@ class TestsExecutor(ProcessPoolExecutor):
     def submit(self, test_exec_uuid: str):
         test_exec_result = self.results_manager.TestExecResult()
         self.current_test_execs[test_exec_uuid] = test_exec_result
-        future = super().submit(execute_tests, test_exec_uuid, test_exec_result)
+        future = super().submit(self.execute_tests_func, test_exec_uuid, test_exec_result)
         future.add_done_callback(lambda _: self.current_test_execs.pop(test_exec_uuid))
-

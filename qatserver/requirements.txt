@@ -1,2 +1,3 @@
 tornado
-pytest
+pytest==2.8.3
+pytest-timeout
