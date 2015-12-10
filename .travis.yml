@@ -1,13 +1,20 @@
-language: ruby
-rvm:
- - "1.9.3"
+language: python
+
+python:
+  - "3.4.3"
+
 install:
   - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle install --deployment --jobs 4 --retry 3
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm install
+  - cd ${TRAVIS_BUILD_DIR}/qatserver && pip install -r requirements.txt
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
+  - cd ${TRAVIS_BUILD_DIR}/dashboard && npm run test
+  - cd ${TRAVIS_BUILD_DIR}/qatserver && python3.4 -m pytest -v
+
 cache:
   directories:
     - dashboard/vendor/bundle
     - dashboard/node_modules
-script:
-  - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
-  - cd ${TRAVIS_BUILD_DIR}/dashboard && npm run test
+    - ${HOME}/.cache/pip

@@ -71,7 +71,7 @@ VM and set all environment variables.
 
 ### Installing locally
 This method may speed up testing, but is otherwise not recommended. Follow instructions in
-[server/README.md](server/README.md) and [dashboard/README.md](dashboard/README.md).
+[qatserver/README.md](qatserver/README.md) and [dashboard/README.md](dashboard/README.md).
 
 ## Additional notes
 1. Keep the test execution server files and Gemfile (and Gemfile.lock) in docker/sis-qa-test-auto

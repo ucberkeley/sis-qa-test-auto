@@ -1,5 +1,5 @@
 server:
-  build: server/
+  build: qatserver/
   container_name: qata-server
   environment:
     - DISPLAY

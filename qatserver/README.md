@@ -9,6 +9,6 @@ install the Tornado Web package with `pip install tornado` (or `pip3 install tor
 1. If running tests on a headless browser, [install PhantomJS](http://phantomjs.org/download.html).
 1. Install gems required for testing by running `bundle install` in the test directory (you may have
 to run `gem install bundle` first).
-1. Still from the test directory, run `./src/server.py`.
+1. Still from the test directory, run `qatserver/server.py`.
 
 
