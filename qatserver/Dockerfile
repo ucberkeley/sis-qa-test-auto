@@ -28,5 +28,5 @@ RUN bash -c "\
 
 EXPOSE 8421
 
-COPY . /server/
-ENTRYPOINT ["/server/run_server.sh"]
+COPY . /qatserver/
+ENTRYPOINT ["/qatserver/run_server.sh"]

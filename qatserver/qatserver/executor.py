@@ -9,7 +9,7 @@ import os
 import os.path as osp
 import subprocess
 
-from qatserver import LOGS_DIR
+from . import LOGS_DIR
 
 __author__ = "Dibyo Majumdar"
 __email__ = "dibyo.majumdar@gmail.com"
@@ -130,8 +130,9 @@ def execute_tests(test_exec_uuid: str, test_exec_result: TestExecResult or TestE
 
         # completion
         test_exec_result.status = TestExecStatusEnum.done
-    except subprocess.SubprocessError as error:
+    except Exception as error:
         test_exec_result.status = TestExecStatusEnum.errored
+        print(error)
         test_exec_result.data = error
         with open(osp.join(logs_output, 'error.txt'), 'w') as error_out:
             error_out.write(error)
@@ -157,5 +158,5 @@ class TestsExecutor(ProcessPoolExecutor):
     def submit(self, test_exec_uuid: str):
         test_exec_result = self.results_manager.TestExecResult()
         self.current_test_execs[test_exec_uuid] = test_exec_result
-        future = super().submit(self.execute_tests_func, test_exec_uuid, test_exec_result)
+        future = super().submit(execute_tests, test_exec_uuid, test_exec_result)
         future.add_done_callback(lambda _: self.current_test_execs.pop(test_exec_uuid))
