@@ -4,6 +4,7 @@ from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
 import enum
 import json
+import multiprocessing
 from multiprocessing.managers import BaseManager, NamespaceProxy
 import os
 import os.path as osp
@@ -107,6 +108,8 @@ CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber' \
                          ' -f progress'
 
 def execute_tests(test_exec_uuid: str, test_exec_result: TestExecResult or TestExecResultProxy):
+    print('{worker}: starting {uuid}'.format(worker=multiprocessing.current_process().name,
+                                             uuid=test_exec_uuid))
     logs_output = osp.join(LOGS_DIR, test_exec_uuid)
     subprocess.check_call('mkdir -p {}'.format(logs_output).split())
 
@@ -148,15 +151,15 @@ class TestsExecutor(ProcessPoolExecutor):
     updated when tests set executions are requested and when tests set
     executions are completed.
     """
-    execute_tests_func = execute_tests
-
-    def __init__(self, results_manager: TestExecResultsManager, max_workers: int=None):
+    def __init__(self, results_manager: TestExecResultsManager, max_workers: int=None,
+                 execute_tests_func=execute_tests):
         super().__init__(max_workers)
         self.current_test_execs = {}
         self.results_manager = results_manager
+        self.execute_tests_func = execute_tests_func
 
     def submit(self, test_exec_uuid: str):
         test_exec_result = self.results_manager.TestExecResult()
         self.current_test_execs[test_exec_uuid] = test_exec_result
-        future = super().submit(execute_tests, test_exec_uuid, test_exec_result)
+        future = super().submit(self.execute_tests_func, test_exec_uuid, test_exec_result)
         future.add_done_callback(lambda _: self.current_test_execs.pop(test_exec_uuid))

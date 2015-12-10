@@ -28,6 +28,7 @@ class StubExecuteTestsFuncConnMessages(Enum):
     CALLED = 1
     COMPLETE = 2
 
+
 class StubExecuteTestsFunc:
     def __init__(self):
         self.main_conn, self.func_conn = Pipe()
@@ -159,8 +160,7 @@ class TestTestsExecutor:
     @pytest.yield_fixture
     def executor(self):
         manager = StubTestExecResultsManager()
-        with TestsExecutor(manager, 1) as e, StubExecuteTestsFunc() as func:
-            e.execute_tests_func = func
+        with StubExecuteTestsFunc() as func, TestsExecutor(manager, 1, func) as e:
             yield e
             e.shutdown(wait=False)
 
@@ -174,8 +174,10 @@ class TestTestsExecutor:
 
         sample_test_exec_uuid = 'sample_uuid'
         executor.submit(sample_test_exec_uuid)
+        assert executor.results_manager.TestExecResult_called, \
+            'TestExecResult not used'
         assert sample_test_exec_uuid in executor.current_test_execs, \
-            'test exec instance not added to current_test_exec'
+            'test exec instance not added to current_test_execs'
 
         while not executor.execute_tests_func.stub_called():
             pass

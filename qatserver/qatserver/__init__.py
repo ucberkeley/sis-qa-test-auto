@@ -16,4 +16,4 @@ SIS_TEST_DIR_ENV = 'SIS_TEST_DIR'
 try:
     TEST_DIR = osp.abspath(os.environ[SIS_TEST_DIR_ENV])
 except KeyError:
-    raise KeyError('{} environment variable not set'.format(SIS_TEST_DIR_ENV))
+    TEST_DIR = osp.abspath(osp.join(osp.dirname(__file__), '..', '..', 'test'))
