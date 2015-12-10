@@ -1,23 +1,12 @@
-sudo: required
+language: python
 
-language: ruby
-
-rvm:
- - "1.9.3"
-
-before_install:
-  - >
-    sudo add-apt-repository -y ppa:fkrull/deadsnakes \
-        && sudo apt-get update -qq \
-        && sudo apt-get install -yqq python3.4
-  - >
-    wget https://bootstrap.pypa.io/get-pip.py \
-        && python3.4 get-pip.py --user
+python:
+  - "3.4.3"
 
 install:
   - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle install --deployment --jobs 4 --retry 3
   - cd ${TRAVIS_BUILD_DIR}/dashboard && npm install
-  - cd ${TRAVIS_BUILD_DIR}/qatserver && pip install --user -r requirements.txt
+  - cd ${TRAVIS_BUILD_DIR}/qatserver && pip install -r requirements.txt
 
 script:
   - cd ${TRAVIS_BUILD_DIR}/dashboard && bundle exec rake
