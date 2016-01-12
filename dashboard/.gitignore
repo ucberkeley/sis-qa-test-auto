@@ -10,6 +10,9 @@
 # Ignore node modules
 /node_modules
 
+# Ignore generated asset files
+/public/assets
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal

@@ -8,7 +8,8 @@
   "forin": true,
   "freeze": true,
   "globals": {
-    "$": false
+    "$": false,
+    "angular": false
   },
   "immed": true,
   "indent": 2,
