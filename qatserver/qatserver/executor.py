@@ -70,7 +70,7 @@ class TestExecResult:
         }, indent=4)
 
     def iterator(self):
-        if self.data is None:
+        if self.data is None or isinstance(self.data, Exception):
             return
 
         for test_file in self.data:
@@ -138,7 +138,7 @@ def execute_tests(test_exec_uuid: str, test_exec_result: TestExecResult or TestE
         print(error)
         test_exec_result.data = error
         with open(osp.join(logs_output, 'error.txt'), 'w') as error_out:
-            error_out.write(error)
+            error_out.write(str(error))
     finally:
         with open(osp.join(logs_output, 'result.json'), 'w') as result_out:
             result_out.write(test_exec_result.json())
