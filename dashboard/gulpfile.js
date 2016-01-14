@@ -7,7 +7,7 @@
   var jshint = require('gulp-jshint');
   var jscs = require('gulp-jscs');
 
-  gulp.task('default', ['test', 'build']);
+  gulp.task('default', ['build']);
 
   gulp.task('test', ['jscs', 'jshint']);
 
@@ -28,11 +28,14 @@
   });
 
   gulp.task('browserify', function() {
-    return browserify(
-        './app/assets/javascripts/app.js', {
-          debug: true,
-          extensions: ['js']
-        })
+    return browserify([
+      './app/assets/javascripts/app.js',
+      './app/assets/javascripts/config.js',
+      './app/assets/javascripts/dashboard.controller.js'
+    ], {
+      debug: true,
+      extensions: ['js']
+    })
       .bundle()
       .pipe(source('app.js'))
       .pipe(gulp.dest('public/assets/javascript'));
