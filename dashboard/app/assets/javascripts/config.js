@@ -9,7 +9,8 @@
         .state('home', {
           url: '/home',
           templateUrl: '/home.html',
-          controller: 'DashboardController'
+          controller: 'DashboardController',
+          controllerAs: 'vm'
         });
 
       $urlRouterProvider.otherwise('home');

@@ -2,9 +2,11 @@
   'use strict';
 
   angular.module('qat-dashboard').controller('DashboardController', [
-    '$scope',
-    function($scope) {
-      $scope.testText = 'new test text';
+    'testExecs',
+    function(testExecs) {
+      var vm = this;
+
+      vm.testText = 'new test text';
     }
   ]);
 })();

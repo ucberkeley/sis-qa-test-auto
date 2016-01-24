@@ -31,7 +31,8 @@
     return browserify([
       './app/assets/javascripts/app.js',
       './app/assets/javascripts/config.js',
-      './app/assets/javascripts/dashboard.controller.js'
+      './app/assets/javascripts/dashboard.controller.js',
+      './app/assets/javascripts/testExecs.factory.js'
     ], {
       debug: true,
       extensions: ['js']
