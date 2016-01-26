@@ -7,7 +7,7 @@
       var vm = this;
 
       vm.testExecsMap = {};
-      vm.requestTestExecs = function() {
+      vm.requestTestExec = function() {
         testExecsFactory.create(null, function(testExec) {
           vm.testExecsMap[testExec.uuid] = testExec;
         });
