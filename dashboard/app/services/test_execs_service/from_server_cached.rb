@@ -17,7 +17,7 @@ module TestExecsService
     end
 
     def self.status_last(n=nil)
-      if n.nil?
+      if n.nil? or n <= 0
         n = @cache.size
       end
 

@@ -20,7 +20,12 @@
   </div>
 
   <div>
-    Sample Text: {{vm.testText}}
+    Currently running test runs:
+    <ul>
+      <li ng-repeat="testExec in vm.testExecsMap | orderBy: 'uuid' track by testExec.uuid">
+        {{testExec.uuid}}
+      </li>
+    </ul>
   </div>
 </script>
 </body>
