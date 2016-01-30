@@ -2,22 +2,14 @@
   'use strict';
 
   angular.module('qat-dashboard').controller('DashboardController', [
-    'testExecsFactory',
-    function(testExecsFactory) {
+    'testExecutor',
+    function(testExecutor) {
       var vm = this;
 
-      vm.testExecsMap = {};
+      vm.testExecsMap = testExecutor.all;
       vm.requestTestExec = function() {
-        testExecsFactory.create(null, function(testExec) {
-          vm.testExecsMap[testExec.uuid] = testExec;
-        });
+        testExecutor.new();
       };
-
-      testExecsFactory.index(null, function(testExecsList) {
-        testExecsList.forEach(function(testExec) {
-          vm.testExecsMap[testExec.uuid] = testExec;
-        });
-      });
     }
   ]);
 })();

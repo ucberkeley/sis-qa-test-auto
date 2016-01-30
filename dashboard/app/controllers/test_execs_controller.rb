@@ -13,5 +13,10 @@ class TestExecsController < ApplicationController
   def show
     render json: @@test_execs_service.status(params[:id])
   end
+
+  def delete
+    puts '#delete not implemented'
+    render json: @@test_execs_service.status(params[:id])
+  end
 end
 

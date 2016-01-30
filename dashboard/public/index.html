@@ -30,7 +30,7 @@
         <th>UUID</th>
         <th>Status</th>
       </tr>
-      <tr ng-repeat="testExec in vm.testExecsMap | toArray | orderBy: 'uuid' track by testExec.uuid">
+      <tr ng-repeat="testExec in vm.testExecsMap | toArray | orderBy:'uuid':true track by testExec.uuid">
         <td>{{testExec.uuid}}</td>
         <td>{{testExec.status}}</td>
       </tr>
