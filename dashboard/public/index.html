@@ -25,11 +25,16 @@
 
   <div>
     Currently running test runs:
-    <ul>
-      <li ng-repeat="testExec in vm.testExecsMap | orderBy: 'uuid' track by testExec.uuid">
-        {{testExec.uuid}}
-      </li>
-    </ul>
+    <table>
+      <tr>
+        <th>UUID</th>
+        <th>Status</th>
+      </tr>
+      <tr ng-repeat="testExec in vm.testExecsMap | toArray | orderBy: 'uuid' track by testExec.uuid">
+        <td>{{testExec.uuid}}</td>
+        <td>{{testExec.status}}</td>
+      </tr>
+    </table>
   </div>
 </script>
 </body>

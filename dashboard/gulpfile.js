@@ -32,7 +32,8 @@
       './app/assets/javascripts/app.js',
       './app/assets/javascripts/config.js',
       './app/assets/javascripts/dashboard.controller.js',
-      './app/assets/javascripts/testExecs.factory.js'
+      './app/assets/javascripts/testExecs.factory.js',
+      './app/assets/javascripts/toArray.filter.js'
     ], {
       debug: true,
       extensions: ['js']
