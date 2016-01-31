@@ -4,7 +4,8 @@
   angular.module('qat-dashboard').config([
     '$stateProvider',
     '$urlRouterProvider',
-    function($stateProvider, $urlRouterProvider) {
+    '$mdThemingProvider',
+    function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
       $stateProvider
         .state('home', {
           url: '/home',
@@ -14,6 +15,10 @@
         });
 
       $urlRouterProvider.otherwise('home');
+
+      $mdThemingProvider.theme('default')
+        .primaryPalette('deep-purple')
+        .accentPalette('red');
     }
   ]);
 })();

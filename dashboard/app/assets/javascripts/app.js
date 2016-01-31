@@ -1,5 +1,9 @@
 (function() {
   'use strict';
 
-  angular.module('qat-dashboard', ['ngResource', 'ui.router']);
+  angular.module('qat-dashboard', [
+    'ngResource',
+    'ui.router',
+    'ngMaterial'
+  ]);
 })();

@@ -1,0 +1,4 @@
+md-card[md-ink-ripple],
+div[md-ink-ripple] {
+    position: relative;
+}

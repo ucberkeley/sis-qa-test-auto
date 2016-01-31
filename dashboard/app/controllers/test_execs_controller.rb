@@ -6,7 +6,7 @@ class TestExecsController < ApplicationController
   end
 
   def index
-    @num = params.fetch(:num, 5).to_i
+    @num = params.fetch(:num, 0).to_i
     render json: @@test_execs_service.status_last(@num)
   end
 

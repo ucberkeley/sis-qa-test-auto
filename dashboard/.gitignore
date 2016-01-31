@@ -11,7 +11,7 @@
 /node_modules
 
 # Ignore generated asset files
-/public/assets
+/public/assets/javascript
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
