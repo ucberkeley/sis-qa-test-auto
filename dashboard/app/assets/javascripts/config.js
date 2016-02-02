@@ -7,14 +7,15 @@
     '$mdThemingProvider',
     function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
       $stateProvider
-        .state('home', {
-          url: '/home',
-          templateUrl: '/home.html',
+        .state('dashboard', {
+          url: '/dashboard',
+          templateUrl: '/dashboard.html',
           controller: 'DashboardController',
-          controllerAs: 'vm'
+          controllerAs: 'vm',
+          css: 'assets/css/dashboard.css'
         });
 
-      $urlRouterProvider.otherwise('home');
+      $urlRouterProvider.otherwise('dashboard');
 
       $mdThemingProvider.theme('default')
         .primaryPalette('deep-purple')

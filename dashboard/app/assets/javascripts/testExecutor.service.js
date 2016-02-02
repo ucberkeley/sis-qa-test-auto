@@ -9,8 +9,10 @@
       service.all = {};
       service.new = newTestExec;
       service.delete = deleteTestExec;
+      service.addUpdateCallback = addUpdateCallback;
 
       var testExecUpdateIntervalPeriod = 5; // seconds
+      var updateCallbacks = [];
 
       // Populate all
       testExecsFactory.index(null, function(testExecsList) {
@@ -38,6 +40,9 @@
               clearInterval(updateInterval);
             }
             service.all[uuid] = updatedTestExec;
+            updateCallbacks.forEach(function(callback) {
+              callback(updatedTestExec);
+            });
           });
         }, testExecUpdateIntervalPeriod * 1000);
       }
@@ -46,6 +51,10 @@
         testExecsFactory.delete({id: uuid}, function(testExec) {
           delete service.all[testExec];
         });
+      }
+
+      function addUpdateCallback(callback) {
+        updateCallbacks.push(callback);
       }
     }
   ]);

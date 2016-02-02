@@ -1,0 +1,22 @@
+.dashboard-item {
+    width: 900px;
+    position: relative;
+}
+
+.dashboard-item-status {
+    height:100%;
+    width: 120px;
+    right: 0;
+    border-radius: 0 2px 2px 0;
+    position: absolute;
+    background-color: grey;
+    line-height: 100%;
+
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.dashboard-item-status-shadow {
+    width: 120px;
+}

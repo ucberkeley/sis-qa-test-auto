@@ -15,6 +15,7 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-css/1.0.7/angular-css.min.js"></script>
 
   <script src="assets/javascript/app.js"></script>
 
@@ -22,36 +23,37 @@
 <body ng-app="qat-dashboard">
 <ui-view></ui-view>
 
-<script type="text/ng-template" id="/home.html">
+<script type="text/ng-template" id="/dashboard.html">
   <md-content>
     <md-toolbar class="md-medium-tall md-whiteframe-18dp" style="position: fixed;" layout-align="center">
       <div></div>
       <div><h2 class="md-display-1">QAT Dashboard</h2></div>
     </md-toolbar>
-    <div style="height: 88px;"></div>
+    <div class="md-medium-tall-shadow"></div>
 
     <br>
 
     <div layout="column" layout-align="start center">
-      <div style="width: 900px">
+      <div class="dashboard-item">
         <md-button class="md-raised md-accent" ng-click="vm.requestTestExec();">
           New Test Execution
         </md-button>
       </div>
-      <div
+      <md-card
+          class="dashboard-item"
           ng-repeat="testExec in vm.testExecsMap | toArray | orderBy:'uuid':true track by testExec.uuid"
-          style="width: 900px">
-        <md-card md-ink-ripple>
-          <md-card-content layout="row" layout-wrap>
-            <div flex layout="row" layout-align="center">
-              {{testExec.uuid}}
-            </div>
-            <div flex layout="row" layout-align="center">
-              {{testExec.status}}
-            </div>
-          </md-card-content>
-        </md-card>
-      </div>
+          layout="row" layout-align="center center" layout-wrap
+          md-ink-ripple>
+        <md-card-content flex>
+          <div layout="row" layout-align="center">
+            {{testExec.uuid}}
+            <div class="dashboard-item-status-shadow"></div>
+          </div>
+        </md-card-content>
+        <div class="dashboard-item-status" layout="column" layout-align="center center" layout-fill>
+          {{testExec.status}}
+        </div>
+      </md-card>
     </div>
   </md-content>
 </script>

@@ -7,9 +7,15 @@
       var vm = this;
 
       vm.testExecsMap = testExecutor.all;
-      vm.requestTestExec = function() {
+      vm.requestTestExec = requestTestExec;
+
+      testExecutor.addUpdateCallback(function(updatedTestExec) {
+        console.log('updating Test Exec', updatedTestExec.uuid);
+      });
+
+      function requestTestExec() {
         testExecutor.new();
-      };
+      }
     }
   ]);
 })();

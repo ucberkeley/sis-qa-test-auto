@@ -4,6 +4,7 @@
   angular.module('qat-dashboard', [
     'ngResource',
     'ui.router',
-    'ngMaterial'
+    'ngMaterial',
+    'door3.css'
   ]);
 })();
