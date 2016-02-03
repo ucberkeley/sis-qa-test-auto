@@ -9,13 +9,28 @@
     right: 0;
     border-radius: 0 2px 2px 0;
     position: absolute;
-    background-color: grey;
     line-height: 100%;
 
     font-family: "Helvetica Neue", sans-serif;
     font-weight: bold;
     color: #ffffff;
 }
+.dashboard-item-status.status-queued {
+    background-color: #BDBDBD;
+}
+.dashboard-item-status.status-dryrun {
+    background-color: #FFEE58;
+}
+.dashboard-item-status.status-executing {
+    background-color: #26C6DA;
+}
+.dashboard-item-status.status-done {
+    background-color: #66BB6A;
+}
+.dashboard-item-status.status-errored {
+    background-color: #EF5350;
+}
+
 
 .dashboard-item-status-shadow {
     width: 120px;

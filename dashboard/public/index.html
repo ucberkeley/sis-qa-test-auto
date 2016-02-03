@@ -50,7 +50,9 @@
             <div class="dashboard-item-status-shadow"></div>
           </div>
         </md-card-content>
-        <div class="dashboard-item-status" layout="column" layout-align="center center" layout-fill>
+        <div
+            class="dashboard-item-status {{vm.statusCssClass[testExec.status]}}"
+            layout="column" layout-align="center center" layout-fill>
           {{testExec.status}}
         </div>
       </md-card>
