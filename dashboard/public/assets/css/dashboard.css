@@ -40,13 +40,16 @@
     background-color: #BDBDBD;
 }
 .dashboard-item-status.status-dryrun {
-    background-color: #FFEE58;
+    background-color: #26C6DA;
 }
 .dashboard-item-status.status-executing {
-    background-color: #26C6DA;
+    background-color: #7E57C2;
 }
 .dashboard-item-status.status-done {
     background-color: #66BB6A;
+}
+.dashboard-item-status.status-done-with-failed {
+    background-color: #FFCA28;
 }
 .dashboard-item-status.status-errored {
     background-color: #EF5350;

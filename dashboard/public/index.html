@@ -48,7 +48,7 @@
         <md-card-content flex>
           <div layout="row">
             <span class="dashboard-item-uuid-time">
-              {{vm.extractDateFromUuid(testExec.uuid) | date:'medium'}}
+              {{vm.getDate(testExec) | date:'medium'}}
             </span>
             <span class="dashboard-item-counters" flex>
               <span ng-hide="testExec.status==='QUEUED'||testExec.status==='DRYRUN'">
@@ -79,7 +79,7 @@
           </div>
         </md-card-content>
         <div
-            class="dashboard-item-status {{vm.statusCssClass[testExec.status]}}"
+            class="dashboard-item-status {{vm.getStatusCssClass(testExec)}}"
             layout="column" layout-align="center center" layout-fill>
           {{testExec.status}}
         </div>
