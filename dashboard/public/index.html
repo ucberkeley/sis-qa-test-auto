@@ -45,8 +45,10 @@
           layout="row" layout-align="center center" layout-wrap
           md-ink-ripple>
         <md-card-content flex>
-          <div layout="row" layout-align="center">
-            {{testExec.uuid}}
+          <div layout="row">
+            <span class="dashboard-item-uuid-time">
+              {{vm.extractDateFromUuid(testExec.uuid) | date:'medium'}}
+            </span>
             <div class="dashboard-item-status-shadow"></div>
           </div>
         </md-card-content>

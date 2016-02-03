@@ -3,6 +3,11 @@
     position: relative;
 }
 
+.dashboard-item-uuid-time {
+    width: 200px;
+    border: #1e90ff solid 2px;
+}
+
 .dashboard-item-status {
     height:100%;
     width: 120px;
