@@ -7,7 +7,17 @@
   var jshint = require('gulp-jshint');
   var jscs = require('gulp-jscs');
 
-  gulp.task('default', ['build']);
+  gulp.task('default', ['all']);
+
+  gulp.task('all', function(callback) {
+    var runSequence = require('run-sequence');
+
+    runSequence(
+      'test',
+      'build',
+      callback
+    );
+  });
 
   gulp.task('test', ['jscs', 'jshint']);
 
