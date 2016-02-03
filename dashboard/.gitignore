@@ -10,7 +10,7 @@
 # Ignore node modules
 /node_modules
 
-# Ignore SASS
+# Ignore SCSS cache
 .gulp-scss-cache
 .sass-cache
 
