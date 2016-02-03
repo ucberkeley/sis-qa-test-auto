@@ -10,8 +10,12 @@
 # Ignore node modules
 /node_modules
 
+# Ignore SASS
+.gulp-scss-cache
+.sass-cache
+
 # Ignore generated asset files
-/public/assets/javascript
+/public/assets
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

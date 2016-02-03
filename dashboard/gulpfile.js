@@ -4,6 +4,7 @@
   var gulp = require('gulp');
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
+  var scss = require('gulp-scss');
   var jshint = require('gulp-jshint');
   var jscs = require('gulp-jscs');
 
@@ -11,7 +12,6 @@
 
   gulp.task('all', function(callback) {
     var runSequence = require('run-sequence');
-
     runSequence(
       'test',
       'build',
@@ -39,7 +39,7 @@
 
   gulp.task('browserify', function() {
     return browserify([
-      './app/assets/javascripts/app.js'
+      'app/assets/javascripts/app.js'
     ], {
       debug: true
     })
@@ -47,4 +47,10 @@
       .pipe(source('app.js'))
       .pipe(gulp.dest('public/assets/javascript'));
   });
+
+  gulp.task('scss', function() {
+    return gulp.src('app/assets/stylesheets/app.scss')
+      .pipe(scss())
+      .pipe(gulp.dest('public/assets/css'));
+  })
 })();
