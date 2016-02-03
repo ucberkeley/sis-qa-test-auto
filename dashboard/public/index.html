@@ -3,6 +3,7 @@
 <head>
   <title>QAT Dashboard</title>
 
+  <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:400,700'>
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
   <link rel="stylesheet" href="assets/css/common.css">
 
@@ -49,7 +50,32 @@
             <span class="dashboard-item-uuid-time">
               {{vm.extractDateFromUuid(testExec.uuid) | date:'medium'}}
             </span>
-            <div class="dashboard-item-status-shadow"></div>
+            <span class="dashboard-item-counters" flex>
+              <span ng-hide="testExec.status==='QUEUED'||testExec.status==='DRYRUN'">
+                <div>
+                  TOTAL:
+                  <span class="dashboard-item-counters-count">{{testExec.counters.total}}</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;
+                <div>
+                  COMPLETED:
+                  <span class="dashboard-item-counters-count">{{testExec.counters.completed || 0}}</span>
+                </div>
+                <span ng-show ="testExec.counters.failed > 0">
+                  &nbsp;&nbsp;&nbsp;
+                  <div>
+                    FAILED:
+                    <span class="dashboard-item-counters-count">{{testExec.counters.failed || 0}}</span>
+                  </div>
+                  &nbsp;&nbsp;&nbsp;
+                  <div>
+                    SKIPPED:
+                    <span class="dashboard-item-counters-count">{{testExec.counters.skipped || 0}}</span>
+                  </div>
+                </span>
+              </span>
+            </span>
+            <div class="dashboard-item-status-shadow" flex="none"></div>
           </div>
         </md-card-content>
         <div

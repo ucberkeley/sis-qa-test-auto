@@ -5,7 +5,20 @@
 
 .dashboard-item-uuid-time {
     width: 200px;
-    border: #1e90ff solid 2px;
+}
+
+.dashboard-item-counters {
+    font-weight: bold;
+    color: #757575;
+}
+
+.dashboard-item-counters div {
+    display: inline-block;
+}
+
+.dashboard-item-counters-count {
+    font-weight: normal;
+    color: black;
 }
 
 .dashboard-item-status {
@@ -16,9 +29,12 @@
     position: absolute;
     line-height: 100%;
 
-    font-family: "Helvetica Neue", sans-serif;
     font-weight: bold;
     color: #ffffff;
+}
+.dashboard-item-status-shadow {
+    border: black 1px solid;
+    width: 104px;
 }
 .dashboard-item-status.status-queued {
     background-color: #BDBDBD;
@@ -34,9 +50,4 @@
 }
 .dashboard-item-status.status-errored {
     background-color: #EF5350;
-}
-
-
-.dashboard-item-status-shadow {
-    width: 120px;
 }
