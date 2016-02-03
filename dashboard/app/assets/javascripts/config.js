@@ -11,8 +11,7 @@
           url: '/dashboard',
           templateUrl: '/dashboard.html',
           controller: 'DashboardController',
-          controllerAs: 'vm',
-          css: 'assets/css/dashboard.css'
+          controllerAs: 'vm'
         });
 
       $urlRouterProvider.otherwise('dashboard');

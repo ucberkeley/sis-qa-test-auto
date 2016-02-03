@@ -4,8 +4,7 @@
   angular.module('qat-dashboard', [
     'ngResource',
     'ui.router',
-    'ngMaterial',
-    'door3.css'
+    'ngMaterial'
   ]);
 
   require('./config');

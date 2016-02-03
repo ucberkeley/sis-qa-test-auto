@@ -1,3 +1,5 @@
+@import "util";
+
 #dashboard-heading {
   padding-left: 25px;
 }
@@ -12,49 +14,41 @@
 }
 
 .dashboard-item-counters {
-  font-weight: bold;
-  color: #757575;
+  @include font-main(bold, #757575);
+
+  div {
+    display: inline-block;
+  }
+
+  .dashboard-item-counters-count {
+    @include font-main(normal, black);
+  }
 }
 
-.dashboard-item-counters div {
-  display: inline-block;
-}
-
-.dashboard-item-counters-count {
-  font-weight: normal;
-  color: black;
-}
+$dashboard-status-width: 120px;
 
 .dashboard-item-status {
   height:100%;
-  width: 120px;
+  width: $dashboard-status-width;
   top: 0;
   right: 0;
   border-radius: 0 2px 2px 0;
   position: absolute;
   line-height: 100%;
+  @include font-main(bold, #FFFFFF);
 
-  font-weight: bold;
-  color: #ffffff;
+  @each $status, $color in
+                  (queued, #BDBDBD),
+                  (dryrun, #26C6DA),
+                  (executing, #7E57C2),
+                  (done, #66BB6A),
+                  (done-with-failed, #FFCA28),
+                  (errored, #EF5350) {
+    &.status-#{$status} {
+      background-color: $color;
+    }
+  }
 }
 .dashboard-item-status-shadow {
-  width: 104px;
-}
-.dashboard-item-status.status-queued {
-  background-color: #BDBDBD;
-}
-.dashboard-item-status.status-dryrun {
-  background-color: #26C6DA;
-}
-.dashboard-item-status.status-executing {
-  background-color: #7E57C2;
-}
-.dashboard-item-status.status-done {
-  background-color: #66BB6A;
-}
-.dashboard-item-status.status-done-with-failed {
-  background-color: #FFCA28;
-}
-.dashboard-item-status.status-errored {
-  background-color: #EF5350;
+  width: $dashboard-status-width - 2 * 8px;
 }
