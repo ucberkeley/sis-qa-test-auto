@@ -39,14 +39,9 @@
 
   gulp.task('browserify', function() {
     return browserify([
-      './app/assets/javascripts/app.js',
-      './app/assets/javascripts/config.js',
-      './app/assets/javascripts/dashboard.controller.js',
-      './app/assets/javascripts/testExecutor.service.js',
-      './app/assets/javascripts/toArray.filter.js'
+      './app/assets/javascripts/app.js'
     ], {
-      debug: true,
-      extensions: ['js']
+      debug: true
     })
       .bundle()
       .pipe(source('app.js'))
