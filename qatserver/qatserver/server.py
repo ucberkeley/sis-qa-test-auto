@@ -60,10 +60,6 @@ class StatusHandler(BaseHandler):
         # check if tests have already been completely executed.
         tests_log_dir = osp.join(LOGS_DIR, test_exec_uuid)
         if osp.exists(tests_log_dir):
-            error_file = osp.join(tests_log_dir, 'error.txt')
-            if osp.isfile(error_file):
-                with open(error_file) as error_in:
-                    self.write(error_in.read())
             result_file = osp.join(tests_log_dir, 'result.json')
             if osp.isfile(result_file):
                 with open(result_file) as result_in:

@@ -34,7 +34,7 @@
       function updateTestExec(uuid) {
         var updateInterval = setInterval(function() {
           testExecsFactory.show({id: uuid}, function(updatedTestExec) {
-            if (updatedTestExec.status === 'DONE') {
+            if (updatedTestExec.status === 'DONE' || updatedTestExec.status === 'ERRORED') {
               clearInterval(updateInterval);
             }
             service.all[uuid] = updatedTestExec;

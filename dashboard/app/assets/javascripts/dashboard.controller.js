@@ -17,7 +17,7 @@
         'EXECUTING': 'status-executing',
         'DONE': 'status-done',
         'DONE_WITH_FAILED': 'status-done-with-failed',
-        'ERROR': 'status-error'
+        'ERRORED': 'status-errored'
       };
 
       function requestTestExec() {
