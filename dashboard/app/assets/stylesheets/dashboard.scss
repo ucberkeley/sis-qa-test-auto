@@ -1,4 +1,8 @@
 @import "util";
+@import "angularMaterial.shim";
+
+
+$dashboard-item-status-width: 120px;
 
 #dashboard-heading {
   padding-left: 25px;
@@ -25,14 +29,12 @@
   }
 }
 
-$dashboard-status-width: 120px;
-
 .dashboard-item-status {
   height:100%;
-  width: $dashboard-status-width;
+  width: $dashboard-item-status-width;
   top: 0;
   right: 0;
-  border-radius: 0 2px 2px 0;
+  border-radius: 0 $card-border-radius $card-border-radius 0;
   position: absolute;
   line-height: 100%;
   @include font-main(bold, #FFFFFF);
@@ -50,5 +52,5 @@ $dashboard-status-width: 120px;
   }
 }
 .dashboard-item-status-shadow {
-  width: $dashboard-status-width - 2 * 8px;
+  width: $dashboard-item-status-width - $card-padding;
 }

@@ -1,12 +1,14 @@
+@import "angularMaterial.shim";
+
+
 body {
   font-family: 'Roboto', sans-serif;
 }
 
 .md-medium-tall-shadow {
-  height: 88px;
+  height: $toolbar-medium-tall-height;
 }
 
-md-card[md-ink-ripple],
-div[md-ink-ripple] {
+[md-ink-ripple] {
   position: relative;
 }
