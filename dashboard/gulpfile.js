@@ -14,8 +14,8 @@
       scss: 'app/assets/stylesheets/*.js'
     },
     dest: {
-      js: 'public/assets/js',
-      css: 'public/assets/css'
+      js: 'public/js',
+      css: 'public/css'
     }
   };
 

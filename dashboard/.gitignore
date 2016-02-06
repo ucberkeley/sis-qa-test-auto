@@ -15,7 +15,8 @@
 .sass-cache
 
 # Ignore generated asset files
-/public/assets
+/public/css
+/public/js
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
