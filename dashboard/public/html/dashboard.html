@@ -1,0 +1,60 @@
+<md-content>
+  <md-toolbar class="md-medium-tall md-whiteframe-18dp" style="position: fixed;" layout-align="center">
+    <div id="dashboard-heading"><h2 class="md-display-1">QAT Dashboard</h2></div>
+  </md-toolbar>
+  <div class="md-medium-tall-shadow"></div>
+
+  <br>
+
+  <div layout="column" layout-align="start center">
+    <div class="dashboard-item">
+      <md-button class="md-raised md-accent" ng-click="vm.requestTestExec();">
+        New Test Execution
+      </md-button>
+    </div>
+    <md-card
+        class="dashboard-item"
+        ng-repeat="testExec in vm.testExecsMap | toArray | orderBy:'uuid':true track by testExec.uuid"
+        layout="row" layout-align="center center" layout-wrap
+        md-ink-ripple>
+      <md-card-content flex>
+        <div layout="row">
+            <span class="dashboard-item-uuid-time">
+              {{vm.getDate(testExec) | date:'medium'}}
+            </span>
+            <span class="dashboard-item-counters" flex>
+              <span ng-hide="testExec.status==='QUEUED'||testExec.status==='DRYRUN'">
+                <div>
+                  TOTAL:
+                  <span class="dashboard-item-counters-count">{{testExec.counters.total}}</span>
+                </div>
+                &nbsp;&nbsp;&nbsp;
+                <div>
+                  COMPLETED:
+                  <span class="dashboard-item-counters-count">{{testExec.counters.completed || 0}}</span>
+                </div>
+                <span ng-show ="testExec.counters.failed > 0">
+                  &nbsp;&nbsp;&nbsp;
+                  <div>
+                    FAILED:
+                    <span class="dashboard-item-counters-count">{{testExec.counters.failed || 0}}</span>
+                  </div>
+                  &nbsp;&nbsp;&nbsp;
+                  <div>
+                    SKIPPED:
+                    <span class="dashboard-item-counters-count">{{testExec.counters.skipped || 0}}</span>
+                  </div>
+                </span>
+              </span>
+            </span>
+          <div class="dashboard-item-status-shadow" flex="none"></div>
+        </div>
+      </md-card-content>
+      <div
+          class="dashboard-item-status {{vm.getStatusCssClass(testExec)}}"
+          layout="column" layout-align="center center" layout-fill>
+        {{testExec.status}}
+      </div>
+    </md-card>
+  </div>
+</md-content>
