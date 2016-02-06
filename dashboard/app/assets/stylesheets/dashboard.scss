@@ -1,16 +1,16 @@
-@import "util";
-@import "angularMaterial.shim";
+@import 'util';
+@import 'angularMaterial.shim';
 
 
 $dashboard-item-status-width: 120px;
 
-#dashboard-heading {
+.dashboard-heading {
   padding-left: 25px;
 }
 
 .dashboard-item {
-  width: 900px;
   position: relative;
+  width: 900px;
 }
 
 .dashboard-item-uuid-time {
@@ -18,39 +18,40 @@ $dashboard-item-status-width: 120px;
 }
 
 .dashboard-item-counters {
-  @include font-main(bold, #757575);
+  @include font-main(#757575, bold);
 
   div {
     display: inline-block;
   }
 
   .dashboard-item-counters-count {
-    @include font-main(normal, black);
+    @include font-main(#000, normal);
   }
 }
 
 .dashboard-item-status {
-  height:100%;
-  width: $dashboard-item-status-width;
-  top: 0;
-  right: 0;
+  @include font-main(#fff, bold);
   border-radius: 0 $card-border-radius $card-border-radius 0;
-  position: absolute;
+  height: 100%;
   line-height: 100%;
-  @include font-main(bold, #FFFFFF);
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $dashboard-item-status-width;
 
   @each $status, $color in
-                  (queued, #BDBDBD),
-                  (dryrun, #26C6DA),
-                  (executing, #7E57C2),
-                  (done, #66BB6A),
-                  (done-with-failed, #FFCA28),
-                  (errored, #EF5350) {
+  (queued, #bdbdbd),
+  (dryrun, #26c6da),
+  (executing, #7e57c2),
+  (done, #66bb6a),
+  (done-with-failed, #ffca28),
+  (errored, #ef5350) {
     &.status-#{$status} {
       background-color: $color;
     }
   }
 }
+
 .dashboard-item-status-shadow {
   width: $dashboard-item-status-width - $card-padding;
 }

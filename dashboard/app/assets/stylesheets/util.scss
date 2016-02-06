@@ -1,4 +1,4 @@
-@mixin font-main($weight, $color) {
-  font-weight: $weight;
+@mixin font-main($color, $weight) {
   color: $color;
+  font-weight: $weight;
 }

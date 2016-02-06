@@ -7,11 +7,13 @@
   var scss = require('gulp-scss');
   var jshint = require('gulp-jshint');
   var jscs = require('gulp-jscs');
+  var sassLint = require('gulp-sass-lint');
 
   var paths = {
+    self: 'gulpfile.js',
     src: {
-      js: './**/*.js',
-      scss: 'app/assets/stylesheets/*.js'
+      js: 'app/assets/javascripts/*.js',
+      scss: 'app/assets/stylesheets/*.scss'
     },
     dest: {
       js: 'public/js',
@@ -30,22 +32,29 @@
     );
   });
 
-  gulp.task('test', ['jscs', 'jshint']);
+  gulp.task('test', ['jscs', 'jshint', 'sass-lint']);
 
   gulp.task('build', ['browserify', 'scss']);
 
   gulp.task('jshint', function() {
-    return gulp.src(paths.src.js)
+    return gulp.src([paths.self, paths.src.js])
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'))
       .pipe(jshint.reporter('fail'));
   });
 
   gulp.task('jscs', function() {
-    return gulp.src(paths.src.js)
+    return gulp.src([paths.self, paths.src.js])
       .pipe(jscs())
       .pipe(jscs.reporter('jscs-stylish'))
       .pipe(jscs.reporter('fail'));
+  });
+
+  gulp.task('sass-lint', function() {
+    gulp.src(paths.src.scss)
+      .pipe(sassLint())
+      .pipe(sassLint.format())
+      .pipe(sassLint.failOnError());
   });
 
   gulp.task('browserify', function() {
