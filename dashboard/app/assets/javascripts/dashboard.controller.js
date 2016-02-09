@@ -11,6 +11,7 @@
       vm.getDate = getDate;
       vm.getStatusCssClass = getStatusCssClass;
 
+      var uuidDateRe = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})/;
       var statusCssClasses = {
         'QUEUED': 'status-queued',
         'DRYRUN': 'status-dryrun',
@@ -25,16 +26,13 @@
       }
 
       function getDate(testExec) {
-        var uuid = testExec.uuid;
-
-        var year = parseInt(uuid.substring(0, 4));
-        var month = parseInt(uuid.substring(4, 6));
-        var day = parseInt(uuid.substring(6, 8));
-        var hour = parseInt(uuid.substring(8, 10));
-        var minute = parseInt(uuid.substring(10, 12));
-        var second = parseInt(uuid.substring(12, 14));
-        var millisecond = parseInt(uuid.substring(14, 17));
-        return new Date(year, month, day, hour, minute, second, millisecond);
+        var dateArgs = uuidDateRe.exec(testExec.uuid).slice(1, 8).map(function(arg) {
+          return parseInt(arg, 10);
+        });
+        dateArgs[1] -= 1;
+        /*jshint -W058 */
+        return new (Function.prototype.bind.apply(Date, [null].concat(dateArgs)));
+        /*jshint +W058 */
       }
 
       function getStatusCssClass(testExec) {
