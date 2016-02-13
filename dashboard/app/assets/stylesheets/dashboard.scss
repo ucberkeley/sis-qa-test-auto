@@ -1,4 +1,3 @@
-@import 'util';
 @import 'angularMaterial.shim';
 
 
@@ -9,7 +8,6 @@ $dashboard-item-status-width: 120px;
 }
 
 .dashboard-item {
-  position: relative;
   width: 900px;
 }
 
@@ -18,20 +16,23 @@ $dashboard-item-status-width: 120px;
 }
 
 .dashboard-item-counters {
-  @include font-main(#757575, bold);
+  color: $ng-grey-600;
+  font-weight: bold;
 
   div {
     display: inline-block;
   }
 
   .dashboard-item-counters-count {
-    @include font-main(#000, normal);
+    color: $black;
+    font-weight: normal;
   }
 }
 
 .dashboard-item-status {
-  @include font-main(#fff, bold);
   border-radius: 0 $card-border-radius $card-border-radius 0;
+  color: $white;
+  font-weight: bold;
   height: 100%;
   line-height: 100%;
   position: absolute;
@@ -40,12 +41,12 @@ $dashboard-item-status-width: 120px;
   width: $dashboard-item-status-width;
 
   @each $status, $color in
-  (queued, #bdbdbd),
-  (dryrun, #26c6da),
-  (executing, #7e57c2),
-  (done, #66bb6a),
-  (done-with-failed, #ffca28),
-  (errored, #ef5350) {
+  (queued, $ng-grey-400),
+  (dryrun, $ng-cyan-400),
+  (executing, $ng-deep-purple-400),
+  (done, $ng-green-400),
+  (done-with-failed, $ng-amber-400),
+  (errored, $ng-red-400) {
     &.status-#{$status} {
       background-color: $color;
     }
