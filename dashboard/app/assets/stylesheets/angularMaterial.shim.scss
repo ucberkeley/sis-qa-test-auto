@@ -1,0 +1,24 @@
+// Angular Material SCSS shim, used while styling other elements.
+
+// https://github.com/angular/material/blob/master/src/components/card/card.scss#L1
+$card-padding: 16px !default;
+
+// https://github.com/angular/material/blob/master/src/components/card/card-theme.scss#L1
+$card-border-radius: 2px !default;
+
+// https://github.com/angular/material/blob/master/src/components/toolbar/toolbar.scss#L4
+$toolbar-medium-tall-height: 88px !default;
+
+// Color definitions
+// from Angular Material Color Palette: https://www.google.com/design/spec/style/color.html#color-color-palette
+$black: #000;
+$ng-grey-600: #757575;
+$ng-grey-400: #bdbdbd;
+$white: #fff;
+
+$ng-amber-400: #ffca28;
+$ng-cyan-400: #26c6da;
+$ng-deep-purple-400: #7e57c2;
+$ng-green-400: #66bb6a;
+$ng-red-400: #ef5350;
+

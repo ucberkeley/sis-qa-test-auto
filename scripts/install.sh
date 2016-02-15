@@ -7,6 +7,6 @@ fi
 
 installation_target=/usr/bin/qata
 if [ ! -f ${installation_target} ]; then
-  project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
+  project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd)
   ln -s ${project_dir}/qata ${installation_target}
 fi

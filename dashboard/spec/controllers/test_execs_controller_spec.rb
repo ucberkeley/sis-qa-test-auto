@@ -19,7 +19,7 @@ RSpec.describe TestExecsController, :type => :controller do
   describe 'GET create' do
     it 'returns http success' do
       get :create
-      expect(response).to redirect_to :test_execs
+      expect(response).to have_http_status(:success)
     end
   end
 

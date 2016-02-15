@@ -4,15 +4,17 @@
   "browserify": true,
   "camelcase": true,
   "curly": true,
+  "devel": true,
   "eqeqeq": true,
   "forin": true,
   "freeze": true,
   "globals": {
-    "$": false
+    "angular": false
   },
   "immed": true,
   "indent": 2,
-  "latedef": true,
+  "jquery": true,
+  "latedef": "nofunc",
   "maxdepth": 5,
   "noempty": true,
   "nonew": true,

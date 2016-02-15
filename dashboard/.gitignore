@@ -10,6 +10,14 @@
 # Ignore node modules
 /node_modules
 
+# Ignore SCSS cache
+.gulp-scss-cache
+.sass-cache
+
+# Ignore generated asset files
+/public/css
+/public/js
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
