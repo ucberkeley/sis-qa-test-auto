@@ -6,7 +6,7 @@
 
   <br>
 
-  <div layout="column" layout-align="start center" class="dashboard-div">
+  <div layout="column" layout-align="start center" class="dashboard-div" layout-padding>
     <div class="dashboard-item">
       <md-button class="md-raised md-accent" ng-click="vm.requestTestExec();">
         New Test Execution
@@ -19,8 +19,9 @@
         md-ink-ripple>
       <md-card-content flex>
         <div layout="row">
-            <span class="dashboard-item-uuid-time" ng-bind="vm.getDate(testExec) | date:'medium'"></span>
-            <span class="dashboard-item-counters" flex>
+          <div layout="row" layout-xs="column" layout-align="center center" layout-wrap flex>
+            <div class="dashboard-item-uuid-time" ng-bind="vm.getDate(testExec) | date:'medium'" flex-xs></div>
+            <div class="dashboard-item-counters" flex>
               <span ng-hide="testExec.status==='QUEUED'||testExec.status==='DRYRUN'">
                 <div>
                   TOTAL:
@@ -41,15 +42,29 @@
                   </div>
                 </span>
               </span>
-            </span>
-          <div class="dashboard-item-status-shadow" flex="none"></div>
+            </div>
+            <div class="dashboard-item-status-shadow-gt-xs" flex-gt-xs="none" hide-xs></div>
+            <div
+                hide-xs
+                class="dashboard-item-status-gt-xs"
+                ng-class="vm.getStatusCssClass(testExec)"
+                layout="column" layout-align="center center" layout-fill
+                ng-bind="testExec.status">
+            </div>
+          </div>
+
+          <div class="dashboard-item-status-shadow-xs" hide-gt-xs flex="none"></div>
+          <div
+              hide-gt-xs
+              class="dashboard-item-status-xs"
+              ng-class="vm.getStatusCssClass(testExec)"
+              layout="row" layout-align="center center" layout-fill>
+            <div class="dashboard-item-status-xs-text">
+              <span ng-bind="testExec.status"></span>
+            </div>
+          </div>
         </div>
       </md-card-content>
-      <div
-          class="dashboard-item-status {{vm.getStatusCssClass(testExec)}}"
-          layout="column" layout-align="center center" layout-fill
-          ng-bind="testExec.status">
-      </div>
     </md-card>
   </div>
 </md-content>

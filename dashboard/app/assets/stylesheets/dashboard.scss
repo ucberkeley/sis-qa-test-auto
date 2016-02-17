@@ -1,7 +1,9 @@
 @import 'angularMaterial.shim';
 
 
-$dashboard-item-status-width: 120px;
+$dashboard-item-status-gt-xs-width: 120px;
+$dashboard-item-status-xs-height: 70px;
+$dashboard-item-status-xs-width: 40px;
 
 .dashboard-heading {
   padding-left: 25px;
@@ -12,12 +14,14 @@ $dashboard-item-status-width: 120px;
 }
 
 .dashboard-item-uuid-time {
+  text-align: center;
   width: 200px;
 }
 
 .dashboard-item-counters {
   color: $ng-grey-600;
   font-weight: bold;
+  text-align: center;
 
   div {
     display: inline-block;
@@ -33,7 +37,7 @@ $dashboard-item-status-width: 120px;
   }
 }
 
-.dashboard-item-status {
+%dashboard-item-status {
   border-radius: 0 $card-border-radius $card-border-radius 0;
   color: $white;
   font-weight: bold;
@@ -42,7 +46,6 @@ $dashboard-item-status-width: 120px;
   position: absolute;
   right: 0;
   top: 0;
-  width: $dashboard-item-status-width;
 
   @each $status, $color in
   (queued, $ng-grey-400),
@@ -57,6 +60,42 @@ $dashboard-item-status-width: 120px;
   }
 }
 
-.dashboard-item-status-shadow {
-  width: $dashboard-item-status-width - $card-padding;
+.dashboard-item-status-gt-xs {
+  @extend %dashboard-item-status;
+
+  width: $dashboard-item-status-gt-xs-width;
+}
+
+.dashboard-item-status-xs {
+  @extend %dashboard-item-status;
+
+  border-radius: 0 $card-border-radius $card-border-radius 0;
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: $dashboard-item-status-xs-width;
+
+  .dashboard-item-status-xs-text {
+    position: relative;
+    transform: rotate(-90deg);
+
+    span {
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.dashboard-item-status-shadow-gt-xs {
+  width: $dashboard-item-status-gt-xs-width - $card-padding;
+}
+
+.dashboard-item-status-shadow-xs {
+  height: $dashboard-item-status-xs-height;
+  width: $dashboard-item-status-xs-width;
+}
+
+.vertical-text {
+  transform: rotate(90deg);
+  transform-origin: left top 0;
 }
