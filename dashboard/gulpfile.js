@@ -8,7 +8,11 @@
   var scss = require('gulp-scss');
   var jshint = require('gulp-jshint');
   var jscs = require('gulp-jscs');
+  var minifyCss = require('gulp-minify-css');
+  var rename = require('gulp-rename');
+  var streamify = require('gulp-streamify');
   var sassLint = require('gulp-sass-lint');
+  var uglify = require('gulp-uglify');
 
   var paths = {
     self: 'gulpfile.js',
@@ -75,20 +79,24 @@
       debug: true
     })
       .bundle()
-      .pipe(source('app.js'))
+      .pipe(source('app.min.js'))
+      .pipe(streamify(uglify()))
       .pipe(gulp.dest(paths.dest.js));
   });
 
   gulp.task('browserify-lib', function() {
     return browserify([paths.src.js.lib])
       .bundle()
-      .pipe(source('lib.js'))
+      .pipe(source('lib.min.js'))
+      .pipe(streamify(uglify()))
       .pipe(gulp.dest(paths.dest.js));
   });
 
   gulp.task('scss', function() {
     return gulp.src('app/assets/stylesheets/app.scss')
       .pipe(scss())
+      .pipe(minifyCss())
+      .pipe(rename('app.min.css'))
       .pipe(gulp.dest(paths.dest.css));
   });
 })();
