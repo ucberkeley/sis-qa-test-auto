@@ -21,8 +21,19 @@
     "url": "https://github.com/ucberkeley/sis-qa-test-auto/issues"
   },
   "dependencies": {
+    "angular": "~1.5.0",
+    "angular-animate": "~1.5.0",
+    "angular-aria": "~1.5.0",
+    "angular-material": "~1.0.5",
+    "angular-resource": "~1.5.0",
+    "angular-ui-router": "~0.2.18",
     "browserify": "~13.0.0",
+    "delete": "~0.3.0",
     "gulp": "~3.9.0",
+    "gulp-minify-css": "~1.2.4",
+    "gulp-rename": "~1.2.2",
+    "gulp-streamify": "~1.0.2",
+    "gulp-uglify": "~1.5.3",
     "run-sequence": "~1.1.5",
     "vinyl-source-stream": "~1.1.0"
   },
