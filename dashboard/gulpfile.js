@@ -3,6 +3,7 @@
 
   var gulp = require('gulp');
   var browserify = require('browserify');
+  var del = require('delete');
   var source = require('vinyl-source-stream');
   var scss = require('gulp-scss');
   var jshint = require('gulp-jshint');
@@ -12,7 +13,10 @@
   var paths = {
     self: 'gulpfile.js',
     src: {
-      js: 'app/assets/javascripts/*.js',
+      js: {
+        app: 'app/assets/javascripts/angular/app.js',
+        lib: 'app/assets/javascripts/lib/index.js'
+      },
       scss: 'app/assets/stylesheets/*.scss'
     },
     dest: {
@@ -36,15 +40,22 @@
 
   gulp.task('build', ['browserify', 'scss']);
 
+  gulp.task('build-clean', function(callback) {
+    return del([
+      paths.dest.js,
+      paths.dest.css
+    ], callback);
+  });
+
   gulp.task('jshint', function() {
-    return gulp.src([paths.self, paths.src.js])
+    return gulp.src([paths.self, paths.src.js.app, paths.src.js.lib])
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'))
       .pipe(jshint.reporter('fail'));
   });
 
   gulp.task('jscs', function() {
-    return gulp.src([paths.self, paths.src.js])
+    return gulp.src([paths.self, paths.src.js.app, paths.src.js.lib])
       .pipe(jscs())
       .pipe(jscs.reporter('jscs-stylish'))
       .pipe(jscs.reporter('fail'));
@@ -57,12 +68,21 @@
       .pipe(sassLint.failOnError());
   });
 
-  gulp.task('browserify', function() {
-    return browserify(['app/assets/javascripts/app.js'], {
+  gulp.task('browserify', ['browserify-app', 'browserify-lib']);
+
+  gulp.task('browserify-app', function() {
+    return browserify([paths.src.js.app], {
       debug: true
     })
       .bundle()
       .pipe(source('app.js'))
+      .pipe(gulp.dest(paths.dest.js));
+  });
+
+  gulp.task('browserify-lib', function() {
+    return browserify([paths.src.js.lib])
+      .bundle()
+      .pipe(source('lib.js'))
       .pipe(gulp.dest(paths.dest.js));
   });
 
