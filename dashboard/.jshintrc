@@ -13,7 +13,6 @@
   },
   "immed": true,
   "indent": 2,
-  "jquery": true,
   "latedef": "nofunc",
   "maxdepth": 5,
   "noempty": true,

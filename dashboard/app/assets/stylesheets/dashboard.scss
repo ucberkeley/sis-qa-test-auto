@@ -1,6 +1,8 @@
-@import 'angularMaterial.shim';
+@import '../../../node_modules/angular-material/angular-material';
+@import 'angular-material-palette';
 
 
+$dashboard-md-card-border-radius: 2px;
 $dashboard-item-status-gt-xs-width: 120px;
 $dashboard-item-status-xs-height: 70px;
 $dashboard-item-status-xs-width: 40px;
@@ -19,7 +21,7 @@ $dashboard-item-status-xs-width: 40px;
 }
 
 .dashboard-item-counters {
-  color: $ng-grey-600;
+  color: $md-grey-600;
   font-weight: bold;
   text-align: center;
 
@@ -38,7 +40,7 @@ $dashboard-item-status-xs-width: 40px;
 }
 
 %dashboard-item-status {
-  border-radius: 0 $card-border-radius $card-border-radius 0;
+  border-radius: 0 $dashboard-md-card-border-radius $dashboard-md-card-border-radius 0;
   color: $white;
   font-weight: bold;
   height: 100%;
@@ -48,12 +50,12 @@ $dashboard-item-status-xs-width: 40px;
   top: 0;
 
   @each $status, $color in
-  (queued, $ng-grey-400),
-  (dryrun, $ng-cyan-400),
-  (executing, $ng-deep-purple-400),
-  (done, $ng-green-400),
-  (done-with-failed, $ng-amber-400),
-  (errored, $ng-red-400) {
+  (queued, $md-grey-400),
+  (dryrun, $md-cyan-400),
+  (executing, $md-deep-purple-400),
+  (done, $md-green-400),
+  (done-with-failed, $md-amber-400),
+  (errored, $md-red-400) {
     &.status-#{$status} {
       background-color: $color;
     }
@@ -69,7 +71,7 @@ $dashboard-item-status-xs-width: 40px;
 .dashboard-item-status-xs {
   @extend %dashboard-item-status;
 
-  border-radius: 0 $card-border-radius $card-border-radius 0;
+  border-radius: 0 $dashboard-md-card-border-radius $dashboard-md-card-border-radius 0;
   height: 100%;
   right: 0;
   top: 0;
