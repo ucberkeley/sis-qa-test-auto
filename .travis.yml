@@ -1,4 +1,5 @@
 language: python
+sudo: false
 
 python:
   - "3.4.3"
@@ -16,5 +17,4 @@ script:
 cache:
   directories:
     - dashboard/vendor/bundle
-    - dashboard/node_modules
     - ${HOME}/.cache/pip
