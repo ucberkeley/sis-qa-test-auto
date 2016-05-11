@@ -1,4 +1,4 @@
-class CalcentralAcademicsTab < SitePrism::Page
+class CalcentralStudentsAcademicsTab < SitePrism::Page
 
   set_url $config['calcentralAcademicsTab']
 

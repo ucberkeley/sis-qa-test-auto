@@ -4,7 +4,7 @@ Given 'I login to calcentral with valid advisor credentials & navigate to my das
 end
 
 Then 'I should see Student Lookup card' do
-  @advisor_dashboard =  AdvisorDashboardPage.new
+  @advisor_dashboard =  CalcentralAdvisorDashboardTab.new
   assert @advisor_dashboard.has_student_lookup_card?
 end
 

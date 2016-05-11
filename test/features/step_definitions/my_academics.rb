@@ -4,7 +4,7 @@ Given 'I login to calcentral with valid student credentials' do
 end
 
 Then 'I navigate to my academics tab' do
-  @academics_tab = CalcentralAcademicsTab.new
+  @academics_tab = CalcentralStudentsAcademicsTab.new
 end
 
 Then 'I see enrollment card is available' do
