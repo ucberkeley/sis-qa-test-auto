@@ -1,25 +1,27 @@
 source 'https://rubygems.org'
 
 
-# Use JSON for interpretting config file
+# Use assert statements while testing.
+gem 'solid_assert'
+
+# Use JSON for interpreting credentials file.
 gem 'json'
 
-# Use Cucumber as DSL for browser tests
+# Use Cucumber as DSL for browser tests.
 gem 'cucumber'
 
-# Use Capybara to write step_definitions for Cucumber tests
+# Use Capybara to write step_definitions for Cucumber tests.
 gem 'capybara'
 
+# Use SitePrism to provide a PageObject model for web pages being tested.
+gem 'site_prism'
+
 group :webdriver_poltergeist do
-  # Use Poltergeist (along with PhantomJS) as headless webdriver for Capybara
+  # Use Poltergeist (along with PhantomJS) as headless webdriver for Capybara.
   gem 'poltergeist'
 end
 
 group :webdriver_selenium do
-  # Use Selenium (along with firefox) as webdriver for Capybara
+  # Use Selenium (along with firefox) as webdriver for Capybara.
   gem 'selenium-webdriver'
 end
-
-
-
-
