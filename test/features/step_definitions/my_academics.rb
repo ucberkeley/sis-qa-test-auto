@@ -1,4 +1,4 @@
-Then 'I login to calcentral with valid credentials' do
+Given 'I login to calcentral with valid student credentials' do
   auth_page = CalcentralCalNetAuthPage.new
   auth_page.login $usernames['ugrad_student'], $passwords['ugrad_student']
 end
