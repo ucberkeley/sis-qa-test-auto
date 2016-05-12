@@ -4,18 +4,22 @@ require 'pathname'
 require 'capybara/cucumber'
 
 
-SIS_TEST_DIR_ENV = 'SIS_TEST_DIR'
-
-if ENV.has_key? SIS_TEST_DIR_ENV
-  $config = JSON.parse(Pathname.new(ENV[SIS_TEST_DIR_ENV]).join('.config.json').read)
-  $usernames = JSON.parse(Pathname.new(ENV[SIS_TEST_DIR_ENV]).join('.usernames.json').read)
-  $passwords = JSON.parse(Pathname.new(ENV[SIS_TEST_DIR_ENV]).join('.passwords.json').read)
+SIS_TESTING_ENV_ENV = 'SIS_TESTING_ENV'
+if ENV.has_key? SIS_TESTING_ENV_ENV
+  testing_env = ENV[SIS_TESTING_ENV_ENV]
 else
-  $config = JSON.parse(Pathname.new(__FILE__).dirname.dirname.dirname.join('.config.json').read)
-  $usernames = JSON.parse(Pathname.new(__FILE__).dirname.dirname.dirname.join('.usernames.json').read)
-  $passwords = JSON.parse(Pathname.new(__FILE__).dirname.dirname.dirname.join('.passwords.json').read)
+  testing_env = 'dev'
 end
 
+SIS_TEST_DIR_ENV = 'SIS_TEST_DIR'
+if ENV.has_key? SIS_TEST_DIR_ENV
+  test_dir = Pathname.new(ENV[SIS_TEST_DIR_ENV])
+else
+  test_dir = Pathname.new(__FILE__).dirname.dirname.dirname
+end
+$config = JSON.parse(test_dir.join('.config.json').read)[testing_env]
+$usernames = JSON.parse(test_dir.join('.usernames.json').read)
+$passwords = JSON.parse(test_dir.join('.passwords.json').read)
 
 SIS_TEST_WEBDRIVER_ENV = 'SIS_TEST_WEBDRIVER'
 if ENV.has_key? SIS_TEST_WEBDRIVER_ENV and ENV[SIS_TEST_WEBDRIVER_ENV].downcase == 'poltergeist'
