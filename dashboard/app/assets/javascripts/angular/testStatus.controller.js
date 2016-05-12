@@ -13,6 +13,8 @@
         steps: [],
         counters: []
       };
+      vm.scenarioOpenMap = {};
+      vm.currScenario = null;
       vm.getScenarioStatusCssClass = getScenarioStatusCssClass;
       vm.getStepStatusCssClass = getStepStatusCssClass;
 
@@ -31,7 +33,23 @@
 
       var testUpdate = $interval(function() {
         vm.test = testExecutor.all[vm.test.uuid];
-      }, 100);
+
+        vm.test.steps.forEach(function(file) {
+          file.scenarios.forEach(function(scenario) {
+            vm.scenarioOpenMap[scenario.name] =
+              vm.scenarioOpenMap[scenario.name] || false;
+            if (scenario.steps[0][1] === 'pending') {
+            } else if (scenario.steps[scenario.steps.length-1][1] === 'pending') {
+              vm.currScenario = scenario;
+            }
+          });
+        });
+        if (vm.test.status === 'DONE') {
+          vm.currScenario = null;
+          $interval.cancel(testUpdate);
+        }
+
+      }, 200);
 
       function getScenarioStatusCssClass(scenario) {
         var numPending = 0, numCompleted = 0, numFailed = 0;

@@ -11,20 +11,25 @@
             <h2 class="md-headline">{{ file.name }}</h2>
             </div>
           </div>
-          <div ng-repeat="scenario in file.scenarios" class="scenario">
-            <div layout="row" layout-align="start center"
-                 class="scenario-header" ng-class="vm.getScenarioStatusCssClass(scenario)">
+          <div ng-repeat="scenario in file.scenarios" class="scenario" md-whiteframe="2">
+            <div
+                layout="row" layout-align="start center"
+                class="scenario-header" ng-class="vm.getScenarioStatusCssClass(scenario)"
+                ng-click="vm.scenarioOpenMap[scenario.name] = !vm.scenarioOpenMap[scenario.name]"
+                md-ink-ripple>
               <span class="md-title">{{ scenario.name }}</span>
             </div>
-            <div ng-repeat="step in scenario.steps" class="step" layout="row">
-              <div class="md-subhead" flex>{{ step[0] }}</div>
-              <div class="step-status-shadow"></div>
-              <div
-                  class="step-status"
-                  ng-class="vm.getStepStatusCssClass(step)"
-                  layout="column" layout-align="center center" layout-fill
-                  ng-bind="step[1]">
-              </div>
+            <div ng-show="scenario.name === vm.currScenario.name  || vm.scenarioOpenMap[scenario.name]">
+              <div ng-repeat="step in scenario.steps" class="step" layout="row">
+                <div class="md-subhead" flex>{{ step[0] }}</div>
+                <div class="step-status-shadow"></div>
+                <div
+                    class="step-status"
+                    ng-class="vm.getStepStatusCssClass(step)"
+                    layout="column" layout-align="center center" layout-fill
+                    ng-bind="step[1]">
+                </div>
+            </div>
             </div>
           </div>
         </div>
