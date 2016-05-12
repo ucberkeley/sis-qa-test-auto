@@ -5,7 +5,7 @@ MAINTAINER Dibyo Majumdar <dibyo.majumdar@gmail.com>
 USER root
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y curl \
     && command curl -sSL https://rvm.io/mpapis.asc | gpg --import - \
-    && curl -sSL https://get.rvm.io | bash -s stable --ruby=jruby
+    && curl -sSL https://get.rvm.io | bash -s stable --ruby=ruby
 RUN usermod -a -G rvm developer
 
 RUN apt-get update && apt-get install -y python3-pip \

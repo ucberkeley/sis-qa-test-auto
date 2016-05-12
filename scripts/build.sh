@@ -5,10 +5,10 @@ project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
 
 
 usage() {
-  echo "Usage: $0 [all|server|dashboard]"
+  echo "Usage: $0 [all|qatserver|dashboard]"
 }
 
-build_server() {
+build_qatserver() {
 sudo docker build \
   -t ${DOCKER_NAMESPACE}/sis-qa-test-auto-server \
   ${project_dir}/qatserver
@@ -22,14 +22,14 @@ sudo docker build \
 
 
 case "$1" in
-  server)
-    build_server
+  qatserver)
+    build_qatserver
     ;;
   dashboard)
     build_dashboard
     ;;
   all)
-    build_server
+    build_qatserver
     build_dashboard
     ;;
   *)
