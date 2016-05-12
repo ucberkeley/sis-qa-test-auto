@@ -94,7 +94,7 @@ class TestTestExecResult:
 
         actual_total_steps = 0
         for test_step in result.iterator():
-            assert test_step._step['name'] in expected_steps, 'test step not in expected steps'
+            assert test_step.step['name'] in expected_steps, 'test step not in expected steps'
             actual_total_steps += 1
         assert actual_total_steps == len(expected_steps), 'not the expected number of test steps'
 

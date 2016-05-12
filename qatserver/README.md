@@ -11,5 +11,3 @@ install the Tornado Web package with `pip install tornado` (or `pip3 install tor
 to run `gem install bundle` first).
 1. Add the qatserver module to PYTHONPATH by running `../scripts/qatserver_setup.sh`.
 1. Still from the test directory, run `python3 -m qatserver`.
-
-
