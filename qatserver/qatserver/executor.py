@@ -63,22 +63,33 @@ class TestExecResult:
     @data.setter
     def data(self, data):
         self._data = data
-        self._step_refs = list(test_step.step for test_step in self.iterator())
-        self.counters['total'] = sum(1 for _ in self.iterator())
+        self._step_refs = []
+        self._step_ref_pos = 0
+        self.counters['total'] = 0
+        for test_step in self.iterator():
+            test_step.step['result']['status'] = 'pending'
+            self._step_refs.append(test_step.step)
+            self.counters['total'] += 1
 
     def json(self):
         steps = []
         for test_file in self._data:
-            file = []
+            scenarios = []
             for test_scenario in test_file['elements']:
-                scenario = []
+                scenario_steps = []
                 for test_step in test_scenario['steps']:
-                    scenario.append([
+                    scenario_steps.append([
                         test_step['keyword'] + test_step['name'],
                         test_step['result']['status']
                     ])
-                file.append(scenario)
-            steps.append(file)
+                scenarios.append({
+                    'name': test_scenario['name'],
+                    'steps': scenario_steps
+                })
+            steps.append({
+                'name': test_file['name'],
+                'scenarios': scenarios
+            })
         return json.dumps({
             'status': self.status.name.upper(),
             'counters': self.counters,

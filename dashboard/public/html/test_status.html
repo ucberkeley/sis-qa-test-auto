@@ -1,3 +1,22 @@
 <div>
-  {{vm.test}}
+  <div layout="column" layout-align="start center" class="tst-status-div" layout-padding>
+    <md-card
+        class="dashboard-item"
+        ng-repeat="file in vm.test.steps"
+        layout="row" layout-align="start center" layout-wrap>
+      <md-card-content layout="column" layout-align="center start">
+        <h2 class="md-headline" style="text-align: left">{{ file.name }}</h2>
+        <div ng-repeat="scenario in file.scenarios">
+          <h3 class="md-title">{{ scenario.name }}</h3>
+          <div ng-repeat="step in scenario.steps">
+            {{  step[0] }}
+          </div>
+          <div ng-if="!$last">
+            <br>
+            <md-divider ></md-divider>
+          </div>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
 </div>

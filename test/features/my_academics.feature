@@ -6,3 +6,8 @@ Feature: My Academics Enrollment Page
     Given I login to calcentral with valid student credentials
     And I navigate to my academics tab
     Then I see enrollment card is available
+
+  Scenario: My academics enrollment card exists part 2
+    Given I login to calcentral with valid student credentials
+    And I navigate to my academics tab
+    Then I see enrollment card is available
