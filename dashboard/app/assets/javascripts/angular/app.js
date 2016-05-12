@@ -9,6 +9,7 @@
 
   require('./config');
   require('./dashboard.controller');
+  require('./testStatus.controller');
   require('./testExecutor.service');
   require('./toArray.filter');
 })();

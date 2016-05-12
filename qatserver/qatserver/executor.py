@@ -52,9 +52,8 @@ class TestExecResult:
                  counters: dict=None, data=None):
         self.status = status
         self.counters = counters if counters is not None else Counter()
-        self._data = data
+        self._data = data if data is not None else []
         self._step_refs = list(test_step.step for test_step in self.iterator())
-        print(self._step_refs)
         self._step_ref_pos = 0
 
     @property
@@ -69,7 +68,7 @@ class TestExecResult:
 
     def json(self):
         steps = []
-        for test_file in self.data:
+        for test_file in self._data:
             file = []
             for test_scenario in test_file['elements']:
                 scenario = []

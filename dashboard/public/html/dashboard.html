@@ -17,7 +17,7 @@
         ng-repeat="testExec in vm.testExecsMap | toArray | orderBy:'uuid':true track by testExec.uuid"
         layout="row" layout-align="center center" layout-wrap
         md-ink-ripple>
-      <md-card-content flex>
+      <md-card-content flex ui-sref="testStatus({uuid: testExec.uuid})">
         <div layout="row">
           <div layout="row" layout-xs="column" layout-align="center center" layout-wrap flex>
             <div class="dashboard-item-uuid-time" ng-bind="vm.getDate(testExec) | date:'medium'" flex-xs></div>
