@@ -9,7 +9,7 @@
       vm.testExecsMap = testExecutor.all;
       vm.requestTestExec = requestTestExec;
       vm.getDate = getDate;
-      vm.getStatusCssClass = getStatusCssClass;
+      vm.getStepStatusCssClass = getStepStatusCssClass;
 
       var uuidDateRe = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})/;
       var statusCssClasses = {
@@ -35,7 +35,7 @@
         /*jshint +W058 */
       }
 
-      function getStatusCssClass(testExec) {
+      function getStepStatusCssClass(testExec) {
         var status = testExec.status;
         if (status === 'DONE' && testExec.counters.failed > 0) {
           status = 'DONE_WITH_FAILED';
