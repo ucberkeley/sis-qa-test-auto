@@ -11,6 +11,7 @@ $dashboard-item-status-xs-width: 40px;
 }
 
 .dashboard-item {
+  cursor: pointer;
   width: 900px;
 }
 
@@ -55,7 +56,7 @@ $dashboard-item-status-xs-width: 40px;
   (done, $md-green-400),
   (done-with-failed, $md-amber-400),
   (errored, $md-red-400) {
-    &.status-#{$status} {
+    &.test-status-#{$status} {
       background-color: $color;
     }
   }

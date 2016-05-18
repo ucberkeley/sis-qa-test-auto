@@ -4,6 +4,10 @@
 $scenario-header-height: 40px;
 $step-status-width: 80px;
 
+.file {
+  width: 900px;
+}
+
 .file-status {
   width: 100%;
 }
@@ -14,6 +18,7 @@ $step-status-width: 80px;
 
 .scenario-header {
   color: $white;
+  cursor: pointer;
   height: $scenario-header-height;
   line-height: 100%;
   padding: 10px;
@@ -24,7 +29,7 @@ $step-status-width: 80px;
   (executing, $md-deep-purple-400),
   (done, $md-green-400),
   (done-with-failed, $md-amber-400) {
-    &.status-#{$status} {
+    &.scenario-status-#{$status} {
       background-color: $color;
     }
   }
@@ -54,7 +59,7 @@ $step-status-width: 80px;
   (passed, $md-green-400),
   (skipped, $md-cyan-400),
   (failed, $md-red-400) {
-    &.status-#{$status} {
+    &.step-status-#{$status} {
       background-color: $color;
     }
   }

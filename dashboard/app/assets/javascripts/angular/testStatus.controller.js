@@ -19,37 +19,41 @@
       vm.getStepStatusCssClass = getStepStatusCssClass;
 
       var scenarioStatusCssClasses = {
-        'pending': 'status-pending',
-        'executing': 'status-executing',
-        'done': 'status-done',
-        'done-with-failed': 'status-done-with-failed'
+        'pending': 'scenario-status-pending',
+        'executing': 'scenario-status-executing',
+        'done': 'scenario-status-done',
+        'done-with-failed': 'scenario-status-done-with-failed'
       };
       var stepStatusCssClasses = {
-        'pending': 'status-pending',
-        'passed': 'status-passed',
-        'skipped': 'status-skipped',
-        'failed': 'status-failed'
+        'pending': 'step-status-pending',
+        'passed': 'step-status-passed',
+        'skipped': 'step-status-skipped',
+        'failed': 'step-status-failed'
       };
 
+      var testUpdateInterval = 0.2; // seconds
       var testUpdate = $interval(function() {
         vm.test = testExecutor.all[vm.test.uuid];
+        if (vm.test.status === 'DONE') {
+          vm.currScenario = null;
+          $interval.cancel(testUpdate);
+          return;
+        }
 
         vm.test.steps.forEach(function(file) {
           file.scenarios.forEach(function(scenario) {
             vm.scenarioOpenMap[scenario.name] =
               vm.scenarioOpenMap[scenario.name] || false;
             if (scenario.steps[0][1] === 'pending') {
-            } else if (scenario.steps[scenario.steps.length-1][1] === 'pending') {
+              return;
+            }
+            if (scenario.steps[scenario.steps.length-1][1] === 'pending') {
               vm.currScenario = scenario;
             }
           });
         });
-        if (vm.test.status === 'DONE') {
-          vm.currScenario = null;
-          $interval.cancel(testUpdate);
-        }
 
-      }, 200);
+      }, testUpdateInterval * 1000);
 
       function getScenarioStatusCssClass(scenario) {
         var numPending = 0, numCompleted = 0, numFailed = 0;
