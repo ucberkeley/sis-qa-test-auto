@@ -40,6 +40,11 @@ $step-status-width: 80px;
   position: relative;
 }
 
+.step-tag {
+  min-height: 0;
+  line-height: inherit;
+}
+
 .step-status-shadow {
   width: $step-status-width;
 }

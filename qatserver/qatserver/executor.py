@@ -75,17 +75,22 @@ class TestExecResult:
         steps = []
         for test_file in self._data:
             scenarios = []
+            scenario_steps = []
             for test_scenario in test_file['elements']:
-                scenario_steps = []
+                tags = [test_scenario['keyword']]
                 for test_step in test_scenario['steps']:
-                    scenario_steps.append([
-                        test_step['keyword'] + test_step['name'],
-                        test_step['result']['status']
-                    ])
-                scenarios.append({
-                    'name': test_scenario['name'],
-                    'steps': scenario_steps
-                })
+                    scenario_steps.append({
+                        'tags': tags,
+                        'keyword': test_step['keyword'],
+                        'name': test_step['name'],
+                        'status': test_step['result']['status']
+                    })
+                if test_scenario['keyword'] != 'Background':
+                    scenarios.append({
+                        'name': test_scenario['name'],
+                        'steps': scenario_steps
+                    })
+                    scenario_steps = []
             steps.append({
                 'name': test_file['name'],
                 'scenarios': scenarios

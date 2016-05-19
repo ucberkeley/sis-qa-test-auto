@@ -44,10 +44,10 @@
           file.scenarios.forEach(function(scenario) {
             vm.scenarioOpenMap[scenario.name] =
               vm.scenarioOpenMap[scenario.name] || false;
-            if (scenario.steps[0][1] === 'pending') {
+            if (scenario.steps[0].status === 'pending') {
               return;
             }
-            if (scenario.steps[scenario.steps.length-1][1] === 'pending') {
+            if (scenario.steps[scenario.steps.length - 1].status === 'pending') {
               vm.currScenario = scenario;
             }
           });
@@ -58,16 +58,16 @@
       function getScenarioStatusCssClass(scenario) {
         var numPending = 0, numCompleted = 0, numFailed = 0;
         scenario.steps.forEach(function(step) {
-          switch (step[1]) {
+          switch (step.status) {
             case 'pending':
-              numPending ++;
+              numPending++;
               break;
             case 'failed':
-              numFailed ++;
-              numCompleted ++;
+              numFailed++;
+              numCompleted++;
               break;
             case 'passed':
-              numCompleted ++;
+              numCompleted++;
               break;
           }
         });
@@ -83,7 +83,7 @@
       }
 
       function getStepStatusCssClass(step) {
-        return stepStatusCssClasses[step[1]];
+        return stepStatusCssClasses[step.status];
       }
     }
   ]);

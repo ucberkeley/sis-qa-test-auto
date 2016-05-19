@@ -20,14 +20,17 @@
               <span class="md-title">{{ scenario.name }}</span>
             </div>
             <div ng-show="scenario.name === vm.currScenario.name  || vm.scenarioOpenMap[scenario.name]">
-              <div ng-repeat="step in scenario.steps" class="step" layout="row">
-                <div class="md-subhead" flex>{{ step[0] }}</div>
+              <div ng-repeat="step in scenario.steps" class="step" layout="row" layout-align="start center">
+                <div class="md-subhead" flex>{{ step.keyword }} {{ step.name }}</div>
+                <div ng-if="step.tags.indexOf('Background') >= 0">
+                  <md-button ng-disabled="true" class="md-primary step-tag">Background</md-button>
+                </div>
                 <div class="step-status-shadow"></div>
                 <div
                     class="step-status"
                     ng-class="vm.getStepStatusCssClass(step)"
                     layout="column" layout-align="center center" layout-fill
-                    ng-bind="step[1]">
+                    ng-bind="step.status">
                 </div>
             </div>
             </div>
