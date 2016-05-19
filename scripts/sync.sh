@@ -10,6 +10,7 @@ project_dir=$(cd $(dirname ${BASH_SOURCE[0]})/.. && pwd )
 : ${SIS_TEST_DIR:=${project_dir}/test}
 SIS_SERVER_DIR=${project_dir}/qatserver
 
+cp ${SIS_TEST_DIR}/.ruby-version ${SIS_SERVER_DIR}
 if [ -f ${SIS_TEST_DIR}/Gemfile ] && ! cmp --silent ${SIS_TEST_DIR}/Gemfile ${SIS_SERVER_DIR}/Gemfile; then
   cp ${SIS_TEST_DIR}/Gemfile ${SIS_SERVER_DIR}
   if [ -f ${SIS_TEST_DIR}/Gemfile.lock ]; then
