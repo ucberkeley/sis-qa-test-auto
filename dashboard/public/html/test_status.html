@@ -8,7 +8,7 @@
         <div class="file-status">
           <div layout="row">
             <div flex>
-            <h2 class="md-headline">{{ file.name }}</h2>
+            <h2 class="md-headline" ng-bind="file.name"></h2>
             </div>
           </div>
           <div ng-repeat="scenario in file.scenarios" class="scenario" md-whiteframe="2">
@@ -17,11 +17,11 @@
                 class="scenario-header" ng-class="vm.getScenarioStatusCssClass(scenario)"
                 ng-click="vm.scenarioOpenMap[scenario.name] = !vm.scenarioOpenMap[scenario.name]"
                 md-ink-ripple>
-              <span class="md-title">{{ scenario.name }}</span>
+              <span class="md-title" ng-bind="scenario.name"></span>
             </div>
             <div ng-show="scenario.name === vm.currScenario.name  || vm.scenarioOpenMap[scenario.name]">
               <div ng-repeat="step in scenario.steps" class="step" layout="row" layout-align="start center">
-                <div class="md-subhead" flex>{{ step.keyword }} {{ step.name }}</div>
+                <div class="md-subhead" flex ng-bind="step.keyword + ' ' + step.name"></div>
                 <div ng-if="step.tags.indexOf('Background') >= 0">
                   <md-button ng-disabled="true" class="md-primary step-tag">Background</md-button>
                 </div>
