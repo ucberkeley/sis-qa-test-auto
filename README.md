@@ -26,16 +26,8 @@ The QA Test Automation framework is itself highly automated. There are a number 
 up and run the framework. The two main components: server and dashboard have been
 [Docker](https://www.docker.com/)ized. Local installation is also possible but not recommended.
 
-First, add file `${SIS_TEST_DIR}/.config.json` with the following information:
-
-   ```json
-   {
-       "website_url": "<Campus Solutions Test Instance URL>",
-       "userid": "<User ID for Test Instance>",
-       "password": "<Password for Test Instance>",
-       "title": "Berkeley Student Information System"
-   }
-   ```
+First, add the configuration/credential files required for running the tests by following
+[these instructions](test/README.md).
 
 Then, follow instructions in one of the following sections.
 

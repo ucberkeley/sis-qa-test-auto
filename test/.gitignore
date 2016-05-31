@@ -1,0 +1,5 @@
+# Configuration and Credential files
+.config.json
+.usernames.json
+.passwords.json
+

@@ -4,13 +4,22 @@ require 'pathname'
 require 'capybara/cucumber'
 
 
-SIS_TEST_DIR_ENV = 'SIS_TEST_DIR'
-if ENV.has_key? SIS_TEST_DIR_ENV
-  $config = JSON.parse(Pathname.new(ENV[SIS_TEST_DIR_ENV]).join('.config.json').read)
+SIS_TESTING_ENV_ENV = 'SIS_TESTING_ENV'
+if ENV.has_key? SIS_TESTING_ENV_ENV
+  testing_env = ENV[SIS_TESTING_ENV_ENV]
 else
-  $config = JSON.parse(Pathname.new(__FILE__).dirname.dirname.dirname.join('.config.json').read)
+  testing_env = 'dev'
 end
 
+SIS_TEST_DIR_ENV = 'SIS_TEST_DIR'
+if ENV.has_key? SIS_TEST_DIR_ENV
+  test_dir = Pathname.new(ENV[SIS_TEST_DIR_ENV])
+else
+  test_dir = Pathname.new(__FILE__).dirname.dirname.dirname
+end
+$config = JSON.parse(test_dir.join('.config.json').read)[testing_env]
+$usernames = JSON.parse(test_dir.join('.usernames.json').read)
+$passwords = JSON.parse(test_dir.join('.passwords.json').read)
 
 SIS_TEST_WEBDRIVER_ENV = 'SIS_TEST_WEBDRIVER'
 if ENV.has_key? SIS_TEST_WEBDRIVER_ENV and ENV[SIS_TEST_WEBDRIVER_ENV].downcase == 'poltergeist'
@@ -23,5 +32,11 @@ else
   Capybara.default_driver = :selenium
 end
 
-Capybara.default_wait_time = 5
+SitePrism.configure do |config|
+  config.use_implicit_waits = true
+end
+
+Capybara.ignore_hidden_elements = true
+Capybara.default_max_wait_time = 2
+SolidAssert.enable_assertions
 

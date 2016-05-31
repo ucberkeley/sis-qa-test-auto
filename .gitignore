@@ -35,9 +35,6 @@ __pycache__/
 
 ## Project files/directories
 
-# Configuration files
-test/.config.json
-
 # Log files
 /logs/*
 !/logs/.keep
