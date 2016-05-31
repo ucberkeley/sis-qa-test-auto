@@ -1,5 +1,5 @@
 Feature: Advisor My Dashboard Page
-  As an advisor I should be able to do student lookup by search students by name,SID,UID & Navigate to Student Overview page
+  As an advisor, I should be able to do student lookup searching students by name,SID,UID.
 
 
   Scenario: Student Lookup card exists
