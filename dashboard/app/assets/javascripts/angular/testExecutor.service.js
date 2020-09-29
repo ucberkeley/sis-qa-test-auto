@@ -25,7 +25,7 @@
           method: 'DELETE'
         }
       });
-      var testExecUpdateIntervalPeriod = 5; // seconds
+      var testExecUpdateIntervalPeriod = 1; // seconds
 
       // Populate all
       TestExec.index(null, function(testExecsList) {

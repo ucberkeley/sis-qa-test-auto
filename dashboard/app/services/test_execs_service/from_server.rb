@@ -18,7 +18,7 @@ module TestExecsService
       response_body = make_get_request status_request
       unless response_body.nil?
         json_hash = JSON.parse response_body
-        return TestExec.new(uuid, json_hash['status'], json_hash['counters'])
+        return TestExec.new(uuid, json_hash['status'], json_hash['counters'], json_hash['steps'])
       end
     end
 

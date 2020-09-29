@@ -41,18 +41,20 @@ class TestExecResult:
 
         def __init__(self, result: 'TestExecResult' or 'TestExecResultProxy', step: dict):
             self.test_exec_result = result
-            self._step = step
+            self.step = step
 
         def set_result(self, symbol: str):
             result = self.symbol_result_map[symbol]
-            self._step['result']['status'] = result
+            self.step['result']['status'] = result
             self.test_exec_result.update_counters(result)
 
     def __init__(self, status: TestExecStatusEnum=TestExecStatusEnum.queued,
                  counters: dict=None, data=None):
         self.status = status
         self.counters = counters if counters is not None else Counter()
-        self._data = data
+        self._data = data if data is not None else []
+        self._step_refs = list(test_step.step for test_step in self.iterator())
+        self._step_ref_pos = 0
 
     @property
     def data(self):
@@ -61,12 +63,42 @@ class TestExecResult:
     @data.setter
     def data(self, data):
         self._data = data
-        self.counters['total'] = sum(1 for _ in self.iterator())
+        self._step_refs = []
+        self._step_ref_pos = 0
+        self.counters['total'] = 0
+        for test_step in self.iterator():
+            test_step.step['result']['status'] = 'pending'
+            self._step_refs.append(test_step.step)
+            self.counters['total'] += 1
 
     def json(self):
+        steps = []
+        for test_file in self._data:
+            scenarios = []
+            scenario_steps = []
+            for test_scenario in test_file['elements']:
+                tags = [test_scenario['keyword']]
+                for test_step in test_scenario['steps']:
+                    scenario_steps.append({
+                        'tags': tags,
+                        'keyword': test_step['keyword'],
+                        'name': test_step['name'],
+                        'status': test_step['result']['status']
+                    })
+                if test_scenario['keyword'] != 'Background':
+                    scenarios.append({
+                        'name': test_scenario['name'],
+                        'steps': scenario_steps
+                    })
+                    scenario_steps = []
+            steps.append({
+                'name': test_file['name'],
+                'scenarios': scenarios
+            })
         return json.dumps({
             'status': self.status.name.upper(),
             'counters': self.counters,
+            'steps': steps
         }, indent=4)
 
     def iterator(self):
@@ -79,12 +111,15 @@ class TestExecResult:
                     yield TestExecResult.TestStep(self, test_step)
 
     def update_counters(self, curr_result: str):
+        step = self._step_refs[self._step_ref_pos]
+        step['result']['status'] = curr_result
+        self._step_ref_pos += 1
         self.counters[curr_result] += 1
         self.counters['completed'] += 1
 
 
 class TestExecResultProxy(NamespaceProxy):
-    """Proxy for TestsSetResult, for syncing between multiple processes."""
+    """Proxy for TestExecResult, for syncing between multiple processes."""
     _exposed_ = ('__getattribute__', '__setattr__', '__delattr__',
                  'update_counters')
 
@@ -106,6 +141,7 @@ CUCUMBER_DRYRUN_CMD = 'bundle exec cucumber -d' \
 CUCUMBER_EXECUTION_CMD = 'bundle exec cucumber' \
                          ' -f json -o {output}' \
                          ' -f progress'
+
 
 def execute_tests(test_exec_uuid: str, test_exec_result: TestExecResult or TestExecResultProxy):
     print('{worker}: starting {uuid}'.format(worker=multiprocessing.current_process().name,

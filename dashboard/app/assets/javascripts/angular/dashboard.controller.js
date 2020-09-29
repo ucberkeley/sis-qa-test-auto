@@ -9,16 +9,16 @@
       vm.testExecsMap = testExecutor.all;
       vm.requestTestExec = requestTestExec;
       vm.getDate = getDate;
-      vm.getStatusCssClass = getStatusCssClass;
+      vm.getTestStatusCssClass = getTestStatusCssClass;
 
       var uuidDateRe = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})/;
       var statusCssClasses = {
-        'QUEUED': 'status-queued',
-        'DRYRUN': 'status-dryrun',
-        'EXECUTING': 'status-executing',
-        'DONE': 'status-done',
-        'DONE_WITH_FAILED': 'status-done-with-failed',
-        'ERRORED': 'status-errored'
+        'QUEUED': 'test-status-queued',
+        'DRYRUN': 'test-status-dryrun',
+        'EXECUTING': 'test-status-executing',
+        'DONE': 'test-status-done',
+        'DONE_WITH_FAILED': 'test-status-done-with-failed',
+        'ERRORED': 'test-status-errored'
       };
 
       function requestTestExec() {
@@ -35,7 +35,7 @@
         /*jshint +W058 */
       }
 
-      function getStatusCssClass(testExec) {
+      function getTestStatusCssClass(testExec) {
         var status = testExec.status;
         if (status === 'DONE' && testExec.counters.failed > 0) {
           status = 'DONE_WITH_FAILED';

@@ -17,7 +17,7 @@
         ng-repeat="testExec in vm.testExecsMap | toArray | orderBy:'uuid':true track by testExec.uuid"
         layout="row" layout-align="center center" layout-wrap
         md-ink-ripple>
-      <md-card-content flex>
+      <md-card-content flex ui-sref="testStatus({uuid: testExec.uuid})">
         <div layout="row">
           <div layout="row" layout-xs="column" layout-align="center center" layout-wrap flex>
             <div class="dashboard-item-uuid-time" ng-bind="vm.getDate(testExec) | date:'medium'" flex-xs></div>
@@ -47,7 +47,7 @@
             <div
                 hide-xs
                 class="dashboard-item-status-gt-xs"
-                ng-class="vm.getStatusCssClass(testExec)"
+                ng-class="vm.getTestStatusCssClass(testExec)"
                 layout="column" layout-align="center center" layout-fill
                 ng-bind="testExec.status">
             </div>
@@ -57,7 +57,7 @@
           <div
               hide-gt-xs
               class="dashboard-item-status-xs"
-              ng-class="vm.getStatusCssClass(testExec)"
+              ng-class="vm.getTestStatusCssClass(testExec)"
               layout="row" layout-align="center center" layout-fill>
             <div class="dashboard-item-status-xs-text">
               <span ng-bind="testExec.status"></span>

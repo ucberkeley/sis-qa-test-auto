@@ -1,0 +1,42 @@
+<div>
+  <div layout="column" layout-align="start center" class="tst-status-div" layout-padding>
+    <md-card
+        class="file"
+        ng-repeat="file in vm.test.steps"
+        layout="row" layout-align="start center" layout-padding>
+      <md-card-content layout="column" layout-align="center start" flex>
+        <div class="file-status">
+          <div layout="row">
+            <div flex>
+            <h2 class="md-headline" ng-bind="file.name"></h2>
+            </div>
+          </div>
+          <div ng-repeat="scenario in file.scenarios" class="scenario" md-whiteframe="2">
+            <div
+                layout="row" layout-align="start center"
+                class="scenario-header" ng-class="vm.getScenarioStatusCssClass(scenario)"
+                ng-click="vm.scenarioOpenMap[scenario.name] = !vm.scenarioOpenMap[scenario.name]"
+                md-ink-ripple>
+              <span class="md-title" ng-bind="scenario.name"></span>
+            </div>
+            <div ng-show="scenario.name === vm.currScenario.name  || vm.scenarioOpenMap[scenario.name]">
+              <div ng-repeat="step in scenario.steps" class="step" layout="row" layout-align="start center">
+                <div class="md-subhead" flex ng-bind="step.keyword + ' ' + step.name"></div>
+                <div ng-if="step.tags.indexOf('Background') >= 0">
+                  <md-button ng-disabled="true" class="md-primary step-tag">Background</md-button>
+                </div>
+                <div class="step-status-shadow"></div>
+                <div
+                    class="step-status"
+                    ng-class="vm.getStepStatusCssClass(step)"
+                    layout="column" layout-align="center center" layout-fill
+                    ng-bind="step.status">
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+</div>

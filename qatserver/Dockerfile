@@ -19,7 +19,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget \
 
 USER developer
 
-COPY Gemfile Gemfile.lock ${HOME}/
+COPY .ruby-version Gemfile Gemfile.lock ${HOME}/
 RUN bash -c "\
     source /etc/profile.d/rvm.sh \
     && cd ${HOME} \

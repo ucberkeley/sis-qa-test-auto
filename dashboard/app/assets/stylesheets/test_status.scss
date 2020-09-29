@@ -1,0 +1,71 @@
+@import 'angular-material-palette';
+
+
+$scenario-header-height: 40px;
+$step-status-width: 80px;
+
+.file {
+  width: 900px;
+}
+
+.file-status {
+  width: 100%;
+}
+
+.scenario {
+  margin-bottom: 2px;
+}
+
+.scenario-header {
+  color: $white;
+  cursor: pointer;
+  height: $scenario-header-height;
+  line-height: 100%;
+  padding: 10px;
+  position: relative;
+
+  @each $status, $color in
+  (pending, $md-grey-400),
+  (executing, $md-deep-purple-400),
+  (done, $md-green-400),
+  (done-with-failed, $md-amber-400) {
+    &.scenario-status-#{$status} {
+      background-color: $color;
+    }
+  }
+}
+
+.step {
+  padding: 10px;
+  position: relative;
+}
+
+.step-tag {
+  min-height: 0;
+  line-height: inherit;
+}
+
+.step-status-shadow {
+  width: $step-status-width;
+}
+
+.step-status {
+  color: $white;
+  font-weight: bold;
+  height: 100%;
+  line-height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $step-status-width;
+
+  @each $status, $color in
+  (pending, $md-grey-400),
+  (passed, $md-green-400),
+  (skipped, $md-cyan-400),
+  (failed, $md-red-400) {
+    &.step-status-#{$status} {
+      background-color: $color;
+    }
+  }
+}
